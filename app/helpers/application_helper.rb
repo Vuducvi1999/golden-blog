@@ -12,6 +12,11 @@ module ApplicationHelper
     end
   end
 
+  def toastr_custom_message message
+    text = "<script>toastr.error('#{message}', '', { closeButton: true, newestOnTop: true })</script>"
+    return text.html_safe
+  end
+
   def icon_sign_in_with provider 
     if provider == "Facebook"
       'fab fa-facebook-square'
