@@ -13,3 +13,21 @@
  *= require_tree .
  *= require_self
  */
+
+.sign-in-with {
+  position: relative;
+  & div {
+    background: white;
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    height: 0.1px;
+    background-color: #dee2e6;
+    width: 100%;
+    z-index: -100;
+  }
+}
