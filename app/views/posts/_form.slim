@@ -9,8 +9,8 @@
   .mb-3.row.mb-2 
     = form.label :categories, class:'col-2'
     .col-10
-      = form.select :categories_id, Category.pluck(:name, :id),{},multiple:true,\
-      class:'form-select focus-box-none'
+      = form.select :categories_id, Category.pluck(:name, :id), {selected:post.categories.pluck(:id)}, \
+      multiple:true, size: 5, class:'form-select focus-box-none'
   .mb-5
     = form.label :content, class:'mb-2'
     = form.rich_text_area :content, cols:4, class:'trix-content form-control focus-box-none rich_text_content'
