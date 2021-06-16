@@ -1,7 +1,11 @@
-p
-  strong Title:
-  = @post.title
-= @post.content
-= link_to 'Edit', edit_post_path(@post)
-| \
-= link_to 'Back', posts_path
+.row.my-5
+  .col-3 
+  .col-6 
+    = link_to posts_path, class:'mb-3 d-block' do
+      i.fas.fa-long-arrow-alt-left 
+      |  Back
+    h1
+      = @post.title
+    = @post.content.to_s.html_safe
+    = link_to 'Edit', edit_post_path(@post), class:'btn btn-primary py-2 fs-5'
+    
