@@ -1,0 +1,7 @@
+.row
+  .col-12.my-5
+    = link_to :back, class:'mb-3 d-block' do
+      i.fas.fa-arrow-left
+      | Back
+    h1 New Post
+    = render 'form', post: @post
