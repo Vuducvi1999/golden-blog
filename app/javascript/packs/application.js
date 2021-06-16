@@ -16,3 +16,6 @@ global.toastr = require("toastr")
 Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
+
+require("trix")
+require("@rails/actiontext")

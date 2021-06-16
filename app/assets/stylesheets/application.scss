@@ -13,6 +13,7 @@
  *= require_tree .
  *= require_self
  */
+@import "./actiontext.scss";
 
 .sign-in-with {
   position: relative;
@@ -30,4 +31,26 @@
     width: 100%;
     z-index: -100;
   }
+}
+
+.title-create {
+  border: none !important;
+  border-bottom: 1px solid #dee2e6 !important;
+  text-align: center;
+  padding-bottom: 0 !important;
+  font-size: 1.3rem !important;
+  font-weight: bolder !important;
+  &:focus {
+    border-bottom: 1px solid #80c2d0 !important;
+  }
+}
+
+.focus-box-none {
+  &:focus {
+    box-shadow: none !important;
+  }
+}
+
+.rich_text_content {
+  border: none !important;
 }
