@@ -44,6 +44,11 @@ class PostsController < ApplicationController
   def update
     respond_to do |format|
       if @post.update(post_params)
+        # nếu update thành công thì add categories, có thể add categories trước cũng được
+        # nhưng lỡ lủng thì lỡ update categories trong post rồi nên không revert lại được
+        categories_id = params[:post][:categories_id].select{|item| item.present?}
+        categories = Category.where(id:categories_id)
+        @post.categories = categories
         format.html { redirect_to @post, notice: "Post was successfully updated." }
         format.json { render :show, status: :ok, location: @post }
       else
