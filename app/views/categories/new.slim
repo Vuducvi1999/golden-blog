@@ -1,5 +1,10 @@
-h1 New Category
+.row.py-5
+  .col-2 
+  .col-8 
+    = link_to categories_path do 
+      i.fas.fa-long-arrow-alt-left
+      |  Back
+    h1 New Category
 
-= render 'form', category: @category
-
-= link_to 'Back', categories_path
+    = render 'form', category: @category
+    

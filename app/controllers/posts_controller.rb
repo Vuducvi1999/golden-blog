@@ -3,7 +3,7 @@ class PostsController < ApplicationController
 
   # GET /posts or /posts.json
   def index
-    @posts = Post.all
+    @posts = current_user.posts
   end
 
   # GET /posts/1 or /posts/1.json
@@ -21,10 +21,16 @@ class PostsController < ApplicationController
 
   # POST /posts or /posts.json
   def create
-    @post = Post.new(post_params)
-
+    @post = current_user.posts.build(post_params)
+    # kiểm tra nếu không có category thì báo lỗi 
+    # Nếu có categories thì thêm vào post
+    categories_id = params[:post][:categories_id].select{|item| item.present?}
+    categories = Category.where(id:categories_id)
+    @post.categories = categories 
+    
     respond_to do |format|
       if @post.save
+        puts current_user.posts.last.categories.pluck(:name)
         format.html { redirect_to @post, notice: "Post was successfully created." }
         format.json { render :show, status: :created, location: @post }
       else
@@ -59,7 +65,7 @@ class PostsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_post
-      @post = Post.find(params[:id])
+      @post = current_user.posts.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
