@@ -1,5 +1,7 @@
 = render partial:'layouts/header', locals:{background:'bg-transparent'}
-= render partial:'layouts/banner', locals:{banner_path: asset_path('blog-template/home-bg.jpg')}
+- banner_path = asset_path('blog-template/home-bg.jpg')
+- site_headings = {h1: 'GoldenOwl Blog', subheading: 'Quality articles with famous writers'}
+= render partial:'layouts/banner', locals:{banner_path:banner_path, site_headings:site_headings}
 .container  
   .row.mb-5
     .col-8.offset-2 

@@ -7,4 +7,7 @@ class HomeController < ApplicationController
 
   def sample_post
   end
+
+  def about
+  end
 end

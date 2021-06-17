@@ -5,9 +5,9 @@ header.masthead[style="background-image: url(#{banner_path})"]
         - unless local_assigns[:post] 
           .site-heading
             h1
-              | Golden Blog
+              | #{site_headings[:h1]}
             span.subheading
-              | A Blog Theme by Start Bootstrap
+              | #{site_headings[:subheading]}
         - else 
           .post-heading
             h1

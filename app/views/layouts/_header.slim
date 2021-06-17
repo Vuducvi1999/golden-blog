@@ -1,7 +1,7 @@
 nav#mainNav.navbar.navbar-expand-lg class='#{background}'
   .container.px-4.px-lg-5
     = link_to root_path, class:'navbar-brand' do
-      | GoldenBlog
+      | GoldenOld Blog
     button.navbar-toggler[type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"]
       |  Menu 
       i.fas.fa-bars
@@ -11,7 +11,7 @@ nav#mainNav.navbar.navbar-expand-lg class='#{background}'
           = link_to root_path, class:'nav-link px-lg-3 py-3 py-lg-4' do 
             | Home
         li.nav-item
-          = link_to root_path, class:'nav-link px-lg-3 py-3 py-lg-4' do 
+          = link_to about_path, class:'nav-link px-lg-3 py-3 py-lg-4' do 
             | About
         li.nav-item
           = link_to sample_post_path, class:'nav-link px-lg-3 py-3 py-lg-4' do 
