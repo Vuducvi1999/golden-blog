@@ -8,8 +8,10 @@
       .mb-3
         = @post.content.to_s.html_safe
       .d-flex.mb-5
+        | Categories: 
         - @post.categories.pluck(:name).each do |item|
-            button.btn.btn-info.px-2.py-1.me-2.focus-box-none 
+            button.btn.btn-info.px-2.py-1.mx-2.focus-box-none 
               | #{item}
-      = link_to 'Edit', edit_post_path(@post), class:'btn btn-primary py-2 fs-5'
+      - if current_user.present?
+        = link_to 'Edit', edit_post_path(@post), class:'btn btn-primary py-2 fs-5'
 
