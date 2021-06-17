@@ -8,8 +8,8 @@
     - category.errors.each do |error|
       = render partial:'shared/toastr_error.slim', locals:{message: error.full_message}
     
-  .mb-3
-    = form.label :name, class:'mb-2'
-    = form.text_field :name, class:'form-control'
+  .mb-3.form-floating
+    = form.text_field :name, id:'category name', class:'form-control'
+    = form.label 'Category name', for:'category name'
   .mb-3
     = form.submit 'Create', class:'btn btn-primary py-2 fs-5'

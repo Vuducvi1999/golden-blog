@@ -36,9 +36,8 @@
 .title-create {
   border: none !important;
   border-bottom: 1px solid #dee2e6 !important;
-  text-align: center;
   padding: 0 !important;
-  font-size: 1.3rem !important;
+  font-size: 1.4rem !important;
   font-weight: bolder !important;
   &:focus {
     border-bottom: 1px solid #80c2d0 !important;
@@ -53,4 +52,28 @@
 
 .rich_text_content {
   border: none !important;
+  padding: 0!important;
+}
+
+.full-background-dashboard::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: -100;
+  background-color: #343a40;
+  min-width: 100%;
+}
+
+.no-banner-styles {
+  margin-top: 7rem;
+}
+
+.bg-light-dark {
+  background-color: #343a40!important;
+}
+
+.bg-transparent{
+  background-color: transparent;
 }

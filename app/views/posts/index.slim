@@ -1,19 +1,21 @@
-.row.py-5 
-  .col-2 
-  .col-8 
-    h1 Posts
-    table
-      thead
-        tr
-          th Title
-          th Content
-          th colspan="3" 
-      tbody
-        - @posts.each do |post|
+= render partial: 'layouts/header', locals:{background: 'bg-light-dark'}
+.container.no-banner-styles
+  .row.mb-5
+    .col-2 
+    .col-8 
+      h1 Posts
+      table
+        thead
           tr
-            td= post.title
-            td= link_to 'Show', post
-            td= link_to 'Edit', edit_post_path(post)
-            td= link_to 'Destroy', post, method: :delete, data: {confirm: 'Are you sure?'}
-    br/
-    = link_to 'New Post', new_post_path, class:'btn btn-primary fs-5 py-2'
+            th Title
+            th Content
+            th colspan="3" 
+        tbody
+          - @posts.each do |post|
+            tr
+              td= post.title
+              td= link_to 'Show', post
+              td= link_to 'Edit', edit_post_path(post)
+              td= link_to 'Destroy', post, method: :delete, data: {confirm: 'Are you sure?'}
+      br/
+      = link_to 'New Post', new_post_path, class:'btn btn-primary fs-5 py-2'

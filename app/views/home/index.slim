@@ -1,9 +1,14 @@
-h1 Home
-p Find me in app/views/home/index.html.erb
-= link_to  "signout", destroy_user_session_path, method:'delete'
-br/
-= link_to  "change profile", edit_user_registration_path
-br/
-= link_to  "Posts", posts_path
-br/
-= link_to  "Categories", categories_path
+= render partial:'layouts/header', locals:{background:'bg-transparent'}
+= render partial:'layouts/banner', locals:{banner_path: asset_path('blog-template/home-bg.jpg')}
+.container  
+  .row.mb-5
+    .col-8.offset-2 
+      h1 Home
+      p Find me in app/views/home/index.html.erb
+      = link_to  "signout", destroy_user_session_path, method:'delete'
+      br/
+      = link_to  "change profile", edit_user_registration_path
+      br/
+      = link_to  "Posts", posts_path
+      br/
+      = link_to  "Categories", categories_path

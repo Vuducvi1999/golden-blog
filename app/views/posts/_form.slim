@@ -1,18 +1,20 @@
-= form_with(model: post) do |form|
+= form_with model: post, class:'mt-4' do |form|
   - if post.errors.any?
     - post.errors.each do |error|
       = render partial:'shared/toastr_error.slim', locals:{message: error.full_message}
 
-  .mb-3
-    = form.label :title, class:'mb-2'
-    = form.text_field :title, class:'form-control title-create focus-box-none'
-  .mb-3.row.mb-2 
+  .mb-4
+    = form.text_field :title, class:'form-control title-create focus-box-none', placeholder:'Title'
+  .mb-4.row
+    = form.label :thumbnail, class:'col-2'
+    .col-10 
+      = form.file_field :thumbnail, class:'form-control focus-box-none', placeholder:'Thumbnail'
+  .mb-4.row 
     = form.label :categories, class:'col-2'
     .col-10
       = form.select :categories_id, Category.pluck(:name, :id), {selected:post.categories.pluck(:id)}, \
       multiple:true, size: 5, class:'form-select focus-box-none'
   .mb-5
-    = form.label :content, class:'mb-2'
-    = form.rich_text_area :content, cols:4, class:'trix-content form-control focus-box-none rich_text_content'
+    = form.rich_text_area :content,id:'content', cols:4, class:'trix-content form-control focus-box-none rich_text_content', placeholder:"Typing..."
   .mb-3
     = form.submit class:'btn btn-primary py-2 fs-5'
