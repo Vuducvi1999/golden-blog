@@ -3,12 +3,26 @@
 * Copyright 2013-2021 Start Bootstrap
 * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-clean-blog/blob/master/LICENSE)
 */
-window.addEventListener('DOMContentLoaded', () => {
+
+
+
+document.addEventListener('turbolinks:load', () => {
     let scrollPos = 0;
     const mainNav = document.getElementById('mainNav');
     const headerHeight = mainNav.clientHeight;
+
+    let needTags = document.querySelectorAll('figcaption.attachment__caption')
+    needTags.forEach(item=>{
+        item.classList.add('caption','text-muted')
+        item.classList.remove('attachment__caption')
+    })
+
     window.addEventListener('scroll', function() {
         const currentTop = document.body.getBoundingClientRect().top * -1;
+        // console.log('scrollPos: ', scrollPos)
+        // console.log('currentTop: ', currentTop)
+        console.log('mainNav: ', mainNav)
+        
         if ( currentTop < scrollPos) {
             // Scrolling Up
             if (currentTop > 0 && mainNav.classList.contains('is-fixed')) {
@@ -27,3 +41,4 @@ window.addEventListener('DOMContentLoaded', () => {
         scrollPos = currentTop;
     });
 })
+
