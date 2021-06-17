@@ -37,7 +37,7 @@
   border: none !important;
   border-bottom: 1px solid #dee2e6 !important;
   padding: 0 !important;
-  font-size: 1.4rem !important;
+  font-size: 1.6rem !important;
   font-weight: bolder !important;
   &:focus {
     border-bottom: 1px solid #80c2d0 !important;
@@ -52,7 +52,7 @@
 
 .rich_text_content {
   border: none !important;
-  padding: 0!important;
+  padding: 0 !important;
 }
 
 .full-background-dashboard::after {
@@ -71,9 +71,15 @@
 }
 
 .bg-light-dark {
-  background-color: #343a40!important;
+  background-color: #343a40 !important;
 }
 
-.bg-transparent{
+.bg-transparent {
   background-color: transparent;
+}
+
+.short-des-create {
+  font-size: 1.2rem !important;
+  font-style: italic;
+  font-weight: normal !important;
 }
