@@ -3,10 +3,12 @@
     - post.errors.each do |error|
       = render partial:'shared/toastr_error.slim', locals:{message: error.full_message}
 
-  .mb-4
-    = form.text_field :title, class:'form-control title-create focus-box-none', placeholder:'Title'
-  .mb-4
-    = form.text_field :short_description, class:'form-control title-create short-des-create focus-box-none', placeholder:'Short description'
+  .my-5.form-floating
+    = form.text_field :title, id:'title',class:'form-control title-create focus-box-none fs-3', placeholder:'Title'
+    = form.label 'Title', for:'title', class:'label-title-create p-0'
+  .mb-4.form-floating
+    = form.text_field :short_description,id:"short description", class:'form-control title-create short-des-create focus-box-none fs-5 fw-light', placeholder:'Short description'
+    = form.label 'Short Description', for:'short description', class:'label-short-des-create p-0'
   .mb-4.row
     = form.label :thumbnail, class:'col-2'
     .col-10 

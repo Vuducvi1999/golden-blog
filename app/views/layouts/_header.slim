@@ -1,6 +1,11 @@
-nav#mainNav.navbar.navbar-expand-lg
+- if current_user 
+  - add_classes = "user-layout"
+- else 
+  - add_classes = ''
+
+nav#mainNav.navbar.navbar-expand-lg.border-0 class='#{add_classes}'
   .container.px-4.px-lg-5
-    = link_to root_path, class:'navbar-brand' do
+    = link_to root_path, class:'navbar-brand ' do
       | GoldenOld Blog
     button.navbar-toggler[type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"]
       |  Menu 
@@ -15,18 +20,21 @@ nav#mainNav.navbar.navbar-expand-lg
             | Contact
         li.nav-item.dropdown
           a#header-account-menu.dropdown-toggle.nav-link.px-lg-3.py-3.py-lg-4 href="#" data-bs-toggle="dropdown"
-            |  Account 
+            - if current_user.present?
+              |  #{current_user.username}
+            - else 
+              |  Hello guest 
           - if current_user.present?
-            ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="header-account-menu"
+            ul class="dropdown-menu bg-custom-transparent border-0 user-dropdown-menu" aria-labelledby="header-account-menu"
               li
-                = link_to  "Posts", posts_path, class:'dropdown-item'
+                = link_to  "Dashboard", posts_path, class:'dropdown-item '
               li 
-                = link_to  "Profile", edit_user_registration_path, class:'dropdown-item'
+                = link_to  "Profile", edit_user_registration_path, class:'dropdown-item '
               li
-                = link_to  "signout", destroy_user_session_path, method:'delete', class:'dropdown-item'
+                = link_to  "signout", destroy_user_session_path, method:'delete', class:'dropdown-item '
           - else 
-            ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="header-account-menu"
+            ul class="dropdown-menu bg-custom-transparent border-0 guest-dropdown-menu" aria-labelledby="header-account-menu"
               li
-                = link_to  "Log in", new_user_session_path, class:'dropdown-item'
+                = link_to  "Log in", new_user_session_path, class:'dropdown-item '
               li 
-                = link_to  "Sign up", new_user_registration_path, class:'dropdown-item'
+                = link_to  "Sign up", new_user_registration_path, class:'dropdown-item '

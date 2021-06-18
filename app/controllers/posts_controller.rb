@@ -2,6 +2,7 @@ class PostsController < ApplicationController
   before_action :authenticate_user!, except: %i[show]
   before_action :set_post, only: %i[ edit update destroy ]
 
+
   # GET /posts or /posts.json
   def index
     @posts = current_user.posts

@@ -66,29 +66,110 @@
   min-width: 100%;
 }
 
-.no-banner-styles {
-  margin-top: 7rem;
-}
-
 .bg-light-dark {
   background-color: #343a40;
 }
 
 .bg-custom-transparent {
-  background-color: transparent;
+  background-color: transparent !important;
 }
 
-.short-des-create {
-  font-size: 1.2rem !important;
-  font-style: italic;
-  font-weight: normal !important;
+nav#mainNav.navbar.navbar-expand-lg.user-layout {
+  & * {
+    color: #212529 !important;
+    &:hover {
+      color: #d3d2d2 !important;
+    }
+  }
+  &.is-fixed {
+    background-color: #212529;
+    & * {
+      color: #fff !important;
+      &:hover {
+        color: #0085a1 !important;
+      }
+    }
+  }
 }
 
 .text-dark * {
   color: #212529 !important;
 }
 
-.min-height {
-  min-height: 100vh;
+.no-banner-styles {
+  margin-top: 7rem;
 }
 
+.min-height {
+  min-height: 100vh;
+  &.no-banner-styles {
+    min-height: calc(100vh - 7rem);
+  }
+}
+
+.form-floating {
+  & > input.title-create {
+    height: 2rem;
+  }
+
+  & > .form-control.title-create {
+    &:focus ~ label {
+      transform: scale(0.65) translateY(-2.5rem);
+    }
+    &:not(:placeholder-shown) ~ label {
+      transform: scale(0.65) translateY(-2.5rem);
+    }
+  }
+
+  & > .form-control.title-create.short-des-create {
+    &:focus ~ label {
+      transform: scale(0.65) translateY(-2rem);
+    }
+    &:not(:placeholder-shown) ~ label {
+      transform: scale(0.65) translateY(-2rem);
+    }
+  }
+}
+
+.dropdown-menu.bg-custom-transparent.border-0 {
+  & .dropdown-item {
+    &:hover {
+      color: #0085a1;
+    }
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.0625em;
+    text-transform: uppercase;
+  }
+
+  &.user-dropdown-menu .dropdown-item {
+    &:hover {
+      background-color: transparent;
+    }
+  }
+  &.guest-dropdown-menu .dropdown-item {
+    color: #fff;
+    &:hover {
+      background-color: transparent;
+      color: #c8c8c8;
+    }
+  }
+}
+
+nav.is-fixed {
+  & .dropdown-menu.bg-custom-transparent.border-0 {
+    .dropdown-item {
+      &:hover {
+        color: #0085a1 !important;
+      }
+    }
+
+    &.user-dropdown-menu .dropdown-item {
+      color: #fff;
+    }
+
+    &.guest-dropdown-menu .dropdown-item {
+      color: #212529;
+    }
+  }
+}
