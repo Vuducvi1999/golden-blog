@@ -6,7 +6,7 @@ class Dashboard::PostsController < ApplicationController
 
   # GET /posts or /posts.json
   def index
-    @posts = current_user.posts
+    @posts = current_user.posts.order("updated_at desc")
   end
 
   # GET /posts/1 or /posts/1.json
