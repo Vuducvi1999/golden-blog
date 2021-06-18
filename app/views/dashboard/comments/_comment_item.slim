@@ -1,0 +1,9 @@
+.my-3.d-grid  
+  .image-user
+  .info-comment
+    h4.m-0 
+      | #{comment.user.username}
+    p.m-0  style="font-size: 1rem"
+      | #{time_ago_in_words comment.created_at} ago
+    p.m-0.mt-3 
+      | #{comment.content}

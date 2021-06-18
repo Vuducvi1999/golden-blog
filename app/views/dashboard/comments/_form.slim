@@ -1,0 +1,12 @@
+
+- comment = Comment.new
+= form_with model: [:dashboard, @post, comment] , class:'mt-4' do |form|
+  - if comment.errors.any?
+    - comment.errors.each do |error|
+      = render partial:'shared/toastr_error.slim', locals:{message: error.full_message}
+
+  .my-5
+    = form.text_area :content, class:'form-control title-create focus-box-none fs-3', placeholder:'Comment here...'
+
+  .mb-3
+    = form.submit class:'btn btn-primary py-2 fs-5'

@@ -4,6 +4,7 @@ module ApplicationHelper
       full_message = ''
       flash.each do |type, message|
         type = 'success' if type == 'notice'
+        type = 'info' if type == 'info'
         type = 'error' if type == 'alert'
         text = "<script>toastr.#{type}('#{message}', '', { closeButton: true, newestOnTop: true })</script>"
         full_message << text.html_safe
@@ -24,6 +25,5 @@ module ApplicationHelper
       'fab fa-google'
     end
   end
-
 
 end

@@ -14,4 +14,9 @@
               | #{item}
       - if current_user.present?
         = link_to 'Edit', edit_dashboard_post_path(@post), class:'btn btn-primary py-2 fs-5'
+      .post-comment-create
+        = render partial: 'dashboard/comments/form'
+      .list-comments-post 
+        - @post.comments.each do |comment|
+          = render partial: 'dashboard/comments/comment_item', locals: {comment: comment}
 
