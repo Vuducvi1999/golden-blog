@@ -27,7 +27,7 @@ nav#mainNav.navbar.navbar-expand-lg.border-0 class='#{add_classes}'
           - if current_user.present?
             ul class="dropdown-menu bg-custom-transparent border-0 user-dropdown-menu" aria-labelledby="header-account-menu"
               li
-                = link_to  "Dashboard", dashboard_posts_path, class:'dropdown-item '
+                = link_to  "Dashboard", dashboard_path, class:'dropdown-item '
               li 
                 = link_to  "Profile", edit_user_registration_path, class:'dropdown-item '
               li

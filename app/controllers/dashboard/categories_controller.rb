@@ -1,5 +1,6 @@
-class CategoriesController < ApplicationController
+class Dashboard::CategoriesController < ApplicationController
   before_action :set_category, only: %i[ edit update destroy ]
+  before_action :check_admin_account
 
   # GET /categories or /categories.json
   def index
@@ -61,5 +62,13 @@ class CategoriesController < ApplicationController
     # Only allow a list of trusted parameters through.
     def category_params
       params.require(:category).permit(:name)
+    end
+
+    # Check is admin access
+    def check_admin_account
+      if current_user.username != 'admin'
+        flash[:alert]= "Only admin can access"
+        redirect_back fallback_location: root_path
+      end
     end
 end

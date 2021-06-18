@@ -1,4 +1,4 @@
-= form_with model: post, class:'mt-4' do |form|
+= form_with model: [:dashboard, post], class:'mt-4' do |form|
   - if post.errors.any?
     - post.errors.each do |error|
       = render partial:'shared/toastr_error.slim', locals:{message: error.full_message}

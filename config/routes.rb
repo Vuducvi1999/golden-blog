@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   
   
   namespace :dashboard do
+    get '/' => "dashboard#index"
     resources :categories, except: %i[show]
     resources :posts, except: %i[show]
   end
