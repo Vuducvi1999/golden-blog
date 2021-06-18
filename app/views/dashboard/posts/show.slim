@@ -13,7 +13,9 @@
             button.btn.btn-info.px-2.py-1.mx-2.focus-box-none 
               | #{item}
       - if current_user.present?
-        = link_to 'Edit', edit_dashboard_post_path(@post), class:'btn btn-primary py-2 fs-5'
+        .d-flex.justify-content-between
+          = link_to 'Edit', edit_dashboard_post_path(@post), class:'btn btn-primary py-2 fs-5'
+          = link_to 'Delete', dashboard_post_path(@post), method:'delete', class:'btn btn-danger py-2 fs-5'
       .post-comment-create
         = render partial: 'dashboard/comments/form'
       .list-comments-post 
