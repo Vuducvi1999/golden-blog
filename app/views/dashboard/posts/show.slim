@@ -13,5 +13,5 @@
             button.btn.btn-info.px-2.py-1.mx-2.focus-box-none 
               | #{item}
       - if current_user.present?
-        = link_to 'Edit', edit_post_path(@post), class:'btn btn-primary py-2 fs-5'
+        = link_to 'Edit', edit_dashboard_post_path(@post), class:'btn btn-primary py-2 fs-5'
 
