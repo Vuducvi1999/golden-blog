@@ -1,5 +1,10 @@
-.my-3.d-grid  
-  .image-user
+.my-3.d-grid style="grid-template-columns: 6% auto;" 
+  .image-user.me-3
+    - if comment.user.avatar.present?
+      - avatar = url_for(comment.user.avatar)
+    - else 
+      - avatar = asset_path 'avatar-default.png'
+    img.w-100 src="#{avatar}"
   .info-comment
     h4.m-0 
       | #{comment.user.username}

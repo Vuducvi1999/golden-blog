@@ -2,7 +2,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   before_action :check_update_field, only: %i[update]
 
   def check_update_field
-    find_record = User.where(username: params[:user][:username])
+    find_record = User.where.not(id:current_user.id).where(username: params[:user][:username])
 
     if find_record.present?
       flash[:alert] = 'username already exist'
