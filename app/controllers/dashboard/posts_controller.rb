@@ -1,8 +1,8 @@
 
 class Dashboard::PostsController < ApplicationController
   before_action :authenticate_user!, except: %i[show]
-  before_action :set_post, only: %i[ edit update destroy ]
-
+  before_action :set_post, only: %i[ edit update destroy create_comment_post ]
+  before_action :comment_params, only: %i[create_comment_post]
 
   # GET /posts or /posts.json
   def index
@@ -20,7 +20,20 @@ class Dashboard::PostsController < ApplicationController
       format.html 
       format.js
     end
-    
+  end
+
+  def create_comment_post
+    @comment = @post.comments.build(comment_params)
+    @comment.user = current_user  
+
+    respond_to do |format|
+      unless @comment.save
+        flash[:alert] = "Fail to add comment" 
+      end
+      format.html
+      format.js
+      # redirect_back(fallback_location:root_path)
+    end
   end
 
   # GET /posts/new
@@ -93,5 +106,9 @@ class Dashboard::PostsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def post_params
       params.require(:post).permit(:title,:content,:thumbnail,:short_description)
+    end
+
+    def comment_params
+      params.require(:comment).permit(:content)
     end
 end

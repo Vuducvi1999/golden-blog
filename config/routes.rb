@@ -17,7 +17,11 @@ Rails.application.routes.draw do
   end
   
   namespace :dashboard, path:"posts", as:"post"  do
-    resources :posts, path:'', as:'', only: %i[show]
+    resources :posts, path:'', as:'', only: %i[show] do
+      member do
+        post :create_comment_post
+      end
+    end
   end
 
 

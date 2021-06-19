@@ -1,3 +1,2 @@
 let comment_list = document.getElementById('#comments-list');
 console.log(comment_list);
-comment_list.innerHTML += "<%= escape_javascript(render partial: 'dashboard/comments/comment_item', locals: {comment: comment})%>";
