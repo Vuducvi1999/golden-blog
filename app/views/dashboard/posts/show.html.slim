@@ -24,7 +24,7 @@
         - comment_paginate(@post.comments).each do |comment|
           = render partial: 'dashboard/comments/comment_item', locals: {comment: comment}
         .d-flex.justify-content-center 
-          = will_paginate comment_paginate(@post.comments)
+          = will_paginate comment_paginate(@post.comments), inner_window: 2, outer_window: 1
 
         
 

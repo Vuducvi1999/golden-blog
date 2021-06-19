@@ -12,27 +12,10 @@ class Dashboard::PostsController < ApplicationController
   # GET /posts/1 or /posts/1.json
   def show
     @post = Post.find_by id:params[:id]
-    respond_to do |format|
-      unless @post.present?
-        flash[:alert] = "Not found post"
-        redirect_to root_path
-      end
-      format.html 
-      format.js
-    end
-  end
-
-  def create_comment_post
-    @comment = @post.comments.build(comment_params)
-    @comment.user = current_user  
-
-    respond_to do |format|
-      unless @comment.save
-        flash[:alert] = "Fail to add comment" 
-      end
-      format.html
-      format.js
-      # redirect_back(fallback_location:root_path)
+   
+    unless @post.present?
+      flash[:alert] = "Not found post"
+      redirect_to root_path
     end
   end
 
