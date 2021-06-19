@@ -16,6 +16,7 @@ class Dashboard::PostsController < ApplicationController
       flash[:alert] = "Not found post"
       redirect_to root_path
     end
+    
   end
 
   # GET /posts/new

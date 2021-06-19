@@ -1,0 +1,3 @@
+
+let comment_list = document.getElementById('#comments-list')
+comment_list.innerHTML += <%= j render partial:'dashboard/comments/comment_item', locals:{comment:comment}%>

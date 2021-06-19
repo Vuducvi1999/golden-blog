@@ -6,9 +6,9 @@
       - avatar = asset_path 'avatar-default.png'
     img.w-100 src="#{avatar}"
   .info-comment
-    h4.m-0 
+    h6.m-0 
       | #{comment.user.username}
-    p.m-0  style="font-size: 1rem"
+    p.m-0  style="font-size: .8rem"
       | #{time_ago_in_words comment.created_at} ago
     p.m-0.mt-3 style="white-space: pre-line;"
       | #{comment.content}

@@ -1,7 +1,7 @@
 = render partial: 'layouts/header', locals:{text_color: 'text-dark'}
 = render partial: 'layouts/banner', locals:{banner_path: url_for(@post.thumbnail), post:@post }
 
-.container.no-banner-styles
+.container
   .row.my-5
     .col-2 
     .col-8
@@ -18,7 +18,10 @@
           = link_to 'Delete', dashboard_post_path(@post), method:'delete', class:'btn btn-danger py-2 fs-5'
       .post-comment-create
         = render partial: 'dashboard/comments/form'
-      .list-comments-post 
+      #comments-list.list-comments-post
         - @post.comments.each do |comment|
           = render partial: 'dashboard/comments/comment_item', locals: {comment: comment}
+
+
+        
 
