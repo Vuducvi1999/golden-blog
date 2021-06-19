@@ -63,3 +63,4 @@ gem "omniauth-rails_csrf_protection"
 gem "dotenv-rails"
 
 gem 'jquery-rails'
+gem 'will_paginate'

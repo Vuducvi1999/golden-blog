@@ -28,9 +28,6 @@ document.addEventListener('turbolinks:load', () => {
 
     window.addEventListener('scroll', function() {
         const currentTop = document.body.getBoundingClientRect().top * -1;
-        // console.log('scrollPos: ', scrollPos)
-        // console.log('currentTop: ', currentTop)
-        console.log('mainNav: ', mainNav)
         
         if ( currentTop < scrollPos) {
             // Scrolling Up

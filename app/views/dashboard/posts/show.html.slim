@@ -13,15 +13,18 @@
             button.btn.btn-info.px-2.py-1.mx-2.focus-box-none 
               | #{item}
       - if current_user.present?
-        .d-flex.justify-content-between
+        .d-flex.justify-content-between 
           = link_to 'Edit', edit_dashboard_post_path(@post), class:'btn btn-primary py-2 fs-5'
           = link_to 'Delete', dashboard_post_path(@post), method:'delete', class:'btn btn-danger py-2 fs-5'
       .post-comment-create
         = render partial: 'dashboard/comments/form'
+      h5.border-bottom.pb-2
+        | #{@post.comments.length} comments
       #comments-list.list-comments-post
-        - @post.comments.each do |comment|
+        - comment_paginate(@post.comments).each do |comment|
           = render partial: 'dashboard/comments/comment_item', locals: {comment: comment}
-
+        .d-flex.justify-content-center 
+          = will_paginate comment_paginate(@post.comments)
 
         
 
