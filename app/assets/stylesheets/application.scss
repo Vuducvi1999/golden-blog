@@ -164,14 +164,25 @@ nav.is-fixed {
       }
     }
 
-    &.user-dropdown-menu .dropdown-item {
-      color: #fff;
+    &.user-dropdown-menu {
+      background-color: #212529 !important;
+      & .dropdown-item {
+        color: #fff;
+      }
     }
 
-    &.guest-dropdown-menu .dropdown-item {
-      color: #212529;
+    &.guest-dropdown-menu {
+      background-color: rgba(255, 255, 255, 0.9) !important;
+      & .dropdown-item {
+        color: #212529;
+      }
     }
   }
+}
+
+ul.dropdown-menu {
+  border-radius: 0 !important;
+  margin-top: 0.5rem !important;
 }
 
 .thumbnail-post-dashboard {
