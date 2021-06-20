@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  get 'binhluan/create'
   root 'home#index'
   get "contact" => 'home#contact'
   get "about" => 'home#about'
@@ -18,9 +17,7 @@ Rails.application.routes.draw do
   end
   
   namespace :dashboard, path:"posts", as:"post"  do
-    resources :posts, path:'', as:'', only: %i[show] do
-      post "binhluan" => "binhluan#create"
-    end
+    resources :posts, path:'', as:'', only: %i[show]
   end
 
 

@@ -1,6 +1,6 @@
 
 - comment = Comment.new
-= form_with model: [:dashboard, @post, comment], local:false,remote:true, class:'mt-4' do |form|
+= form_with model: [:dashboard, @post, comment], local:false, class:'mt-4' do |form|
   - if comment.errors.any?
     - comment.errors.each do |error|
       = render partial:'shared/toastr_error.slim', locals:{message: error.full_message}

@@ -12,5 +12,4 @@ class Post < ApplicationRecord
   has_many :categories, through: :post_categories
 
   has_many :comments, dependent: :destroy
-  has_many :binhluans, dependent: :destroy
 end
