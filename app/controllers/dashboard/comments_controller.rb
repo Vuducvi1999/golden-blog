@@ -18,7 +18,7 @@ class Dashboard::CommentsController < ApplicationController
         flash[:alert] = "Fail to add comment" 
         format.html {redirect_to @post }
         format.js {render partial:"dashboard/comments/create.js.erb"}
-      else  
+      else
         format.html {redirect_to @post }
         format.js {render partial:"dashboard/comments/create.js.erb"}
       end

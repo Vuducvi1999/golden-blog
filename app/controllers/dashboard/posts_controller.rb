@@ -12,10 +12,16 @@ class Dashboard::PostsController < ApplicationController
   # GET /posts/1 or /posts/1.json
   def show
     @post = Post.find_by id:params[:id]
+    @page = params[:page]
    
-    unless @post.present?
-      flash[:alert] = "Not found post"
-      redirect_to root_path
+    respond_to do |format|
+      unless @post.present?
+        flash[:alert] = "Not found post"
+        format.html {redirect_to root_path}        
+        format.js {render partial:'dashboard/posts/show.js.erb'}
+      end
+      format.html 
+      format.js {render partial:'dashboard/posts/show.js.erb'}
     end
   end
 

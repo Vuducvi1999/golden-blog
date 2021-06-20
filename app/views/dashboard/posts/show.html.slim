@@ -22,10 +22,11 @@
         | #{@post.comments.length} comments
       #comments-list.list-comments-post
         - unless @post.comments.empty?
-          - comment_paginate(@post.comments).each do |comment|
-            = render partial: 'dashboard/comments/comment_item', locals: {comment: comment}
-          .d-flex.justify-content-center 
-            = will_paginate comment_paginate(@post.comments), inner_window: 2, outer_window: 1
+          #wrap-comments-component
+            - comment_paginate(@post.comments).each do |comment|
+              = render partial: 'dashboard/comments/comment_item', locals: {comment: comment}
+          #call-paginate-ajax.d-flex.justify-content-center 
+            = will_paginate comment_paginate(@post.comments), inner_window: 2, outer_window: 1, :renderer => RemoteLinkPaginationHelper::LinkRenderer
         - else 
           i.my-3 style="font-size:1.1rem" 
             | Haven't comments yet! Be the first user comment.
