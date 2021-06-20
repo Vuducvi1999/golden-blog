@@ -18,6 +18,14 @@
           = link_to 'Delete', dashboard_post_path(@post), method:'delete', class:'btn btn-danger py-2 fs-5'
       .post-comment-create
         = render partial: 'dashboard/comments/form'
+      .binhluan-create-form 
+        = form_with model:[:dashboard, @post, Binhluan.new], local:false, url: post__binhluan_path(@post) do |form|
+          = form.text_area :body
+          = form.submit 
+      #binhluan-id 
+        h3 Binh Luan
+        - @post.binhluans.each do |binhluan|
+          p = binhluan.body
       h5.border-bottom.pb-2
         | #{@post.comments.length} comments
       #comments-list.list-comments-post

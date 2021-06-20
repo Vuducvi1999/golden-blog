@@ -8,19 +8,15 @@ class Dashboard::CommentsController < ApplicationController
   end
   
   def create
-    # Lúc này comment mới chỉ thuộc về post, ta cần thêm ràng buộc với user tạo comment
     @comment = @post.comments.build(comment_params)
     @comment.user = current_user  
-
 
     respond_to do |format|
       unless @comment.save
         flash[:alert] = "Fail to add comment" 
-        format.html {redirect_to @post }
-        format.js 
+        format.js {}
       else  
-        format.html {redirect_to @post }
-        format.js 
+        format.js {}
       end
     end
 
