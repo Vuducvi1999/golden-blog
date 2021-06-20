@@ -17,15 +17,6 @@ document.addEventListener('turbolinks:load', () => {
         item.classList.remove('attachment__caption')
     })
 
-    // let button_comment = document.getElementById('button-comment')
-    // button_comment.addEventListener('click',(event)=>{
-    //     setTimeout(() => {
-    //         document.getElementById('comments-list').contentWindow.location.reload(true);
-    //     }, 1000);
-        
-        
-    // })
-
     window.addEventListener('scroll', function() {
         const currentTop = document.body.getBoundingClientRect().top * -1;
         
