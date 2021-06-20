@@ -6,7 +6,7 @@
       = render partial:'shared/toastr_error.slim', locals:{message: error.full_message}
 
   .my-3
-    = form.text_area :content, rows:5, class:'form-control focus-box-none', placeholder:'Comment here...'
+    = form.text_area :content, rows:5, id:"text-area-comment", class:'form-control focus-box-none', placeholder:'Comment here...'
 
   .mb-3
     = form.submit class:'btn btn-primary py-2 fs-5', id:'button-comment'

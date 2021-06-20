@@ -18,13 +18,16 @@
           = link_to 'Delete', dashboard_post_path(@post), method:'delete', class:'btn btn-danger py-2 fs-5'
       .post-comment-create
         = render partial: 'dashboard/comments/form'
-      h5.border-bottom.pb-2
+      h5#count-number-comments.border-bottom.pb-2
         | #{@post.comments.length} comments
       #comments-list.list-comments-post
-        - comment_paginate(@post.comments).each do |comment|
-          = render partial: 'dashboard/comments/comment_item', locals: {comment: comment}
-        .d-flex.justify-content-center 
-          = will_paginate comment_paginate(@post.comments), inner_window: 2, outer_window: 1
-
+        - unless @post.comments.empty?
+          - comment_paginate(@post.comments).each do |comment|
+            = render partial: 'dashboard/comments/comment_item', locals: {comment: comment}
+          .d-flex.justify-content-center 
+            = will_paginate comment_paginate(@post.comments), inner_window: 2, outer_window: 1
+        - else 
+          i.my-3 style="font-size:1.1rem" 
+            | Haven't comments yet! Be the first user comment.
         
 
