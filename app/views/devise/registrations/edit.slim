@@ -1,12 +1,12 @@
+
+- banner_path = asset_path('blog-template/home-bg.jpg')
+- site_headings = {h1: "Edit #{resource_name.to_s.humanize}", subheading: ''}
+= render partial:'layouts/banner', locals:{banner_path:banner_path, site_headings:site_headings}
+
+
 .container
   .row
-    .col-6.offset-3.my-5
-      = link_to :back, class:'mb-3 d-block' do
-        i.fas.fa-long-arrow-alt-left
-        |  Back 
-      h2.mb-4.fs-1
-        | Edit 
-        = resource_name.to_s.humanize
+    .col-6.offset-3.mb-5
       = form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|
         = render "devise/shared/error_messages", resource: resource
         .mb-3

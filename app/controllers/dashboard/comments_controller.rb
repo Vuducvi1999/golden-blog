@@ -17,10 +17,10 @@ class Dashboard::CommentsController < ApplicationController
       unless @comment.save
         flash[:alert] = "Fail to add comment" 
         format.html {redirect_to @post }
-        format.js 
+        format.js {render "dashboard/comments/create"}
       else  
         format.html {redirect_to @post }
-        format.js 
+        format.js {render "dashboard/comments/create"}
       end
     end
 

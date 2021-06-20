@@ -20,8 +20,8 @@
         .mb-3
           = f.label :password, class:'mb-2'
           - if @minimum_password_length
-            em
-              | (
+            i[style="font-size: .7em"]
+              |  (
               = @minimum_password_length
               |  characters minimum)
           br
