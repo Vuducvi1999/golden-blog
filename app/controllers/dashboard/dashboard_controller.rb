@@ -1,4 +1,5 @@
 class Dashboard::DashboardController < ApplicationController
+  before_action :set_post, only: %i[publish_post]
   def index
   end
 
@@ -11,4 +12,5 @@ class Dashboard::DashboardController < ApplicationController
       format.js {render partial:"dashboard/dashboard/manage_posts.js.erb"}
     end
   end
+
 end

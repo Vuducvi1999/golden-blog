@@ -1,9 +1,9 @@
 
 class Dashboard::PostsController < ApplicationController
   before_action :authenticate_user!, except: %i[show]
-  before_action :set_post, only: %i[edit update destroy ]
+  before_action :set_post, only: %i[edit update destroy publish_post unpublish_post]
   before_action :check_post_published, only: %i[show]
-
+  before_action :check_admin_to_publish, only: %i[publish_post unpublish_post]
 
   # GET /posts or /posts.json
   def index
@@ -80,13 +80,42 @@ class Dashboard::PostsController < ApplicationController
     end
   end
 
+  # Cho phép admin publish
+  def publish_post
+    @post.published = true
+    @post.published_at = DateTime.now 
+
+    respond_to do |format|
+      if @post.save 
+        format.html { redirect_back fallback_location:root_path }
+        format.js { render partial:"dashboard/dashboard/publish_post.js.erb" }
+      else
+        redirect_back fallback_location: root_path
+      end
+    end
+  end
+  # Cho phép admin unpublish
+  def unpublish_post
+    @post.published = false
+    @post.published_at = nil 
+
+    respond_to do |format|
+      if @post.save 
+        format.html { redirect_back fallback_location:root_path }
+        format.js { render partial:"dashboard/dashboard/unpublish_post.js.erb" }
+      else
+        redirect_back fallback_location: root_path
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_post
       @post = Post.find_by id:params[:id]
       unless @post.present?
-        flash[:alert] = "Not found post"
-        redirect_to root_path
+        flash[:alert] = "Post not found"
+        redirect_back fallback_location: root_path
       end
     end
 
@@ -102,7 +131,7 @@ class Dashboard::PostsController < ApplicationController
       if @post.published == false 
         if current_user.present? == false
           flash[:info] = "This post is being process by admin to publish!"
-          return redirect_back fallback_location:root_path  
+          return redirect_back fallback_location:root_path
         elsif current_user.role == User::ROLES[:admin]
           return 
         elsif current_user.id != @post.user.id 
@@ -116,5 +145,17 @@ class Dashboard::PostsController < ApplicationController
       flash[:info] = "This post is being process by admin to publish!"
       return redirect_back fallback_location:root_path  
     end
-    
+
+    def message_and_redirect_if_user_not_admin
+      flash[:info] = "Only admin can publish post!"
+      return redirect_back fallback_location:root_path  
+    end
+
+    # kiểm tra người publish, unpublish có phải là admin hay không
+    def check_admin_to_publish
+      @post = Post.find_by id:params[:id]
+      if not current_user.present? || current_user.role != User::ROLES[:admin]
+        return message_and_redirect_if_user_not_admin
+      end
+    end
 end

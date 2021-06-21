@@ -14,6 +14,10 @@ Rails.application.routes.draw do
     resources :categories, path:'manage/categories', except: %i[show]
     resources :posts, except: %i[show] do
       resources :comments, except: %i[show index]
+      member do
+        post 'publish_post'
+        post 'unpublish_post'
+      end
     end
   end
   

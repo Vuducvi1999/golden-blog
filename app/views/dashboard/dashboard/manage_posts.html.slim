@@ -8,7 +8,7 @@
         - unpublished_paginate(@unpublished).each do |post|
           .border.ps-3
             = render partial:'shared/post_dashboard_item', locals: { post: post, is_admin_manage: true }
-      #call-paginate-unpublished-ajax.mt-3 
+      #call-paginate-unpublished-ajax.mt-3.d-flex.justify-content-center
         = will_paginate unpublished_paginate(@unpublished), inner_window: 2, outer_window: 1,\
           :renderer => RemoteLinkPaginationHelper::LinkRenderer, param_name: "page_unpublished"
     .col-6 
@@ -17,6 +17,6 @@
         - recently_published_paginate(@recently_published).each do |post|
           .border.ps-3
             = render partial:'shared/post_dashboard_item', locals: { post: post, is_admin_manage: true }
-      #call-paginate-recently_published-ajax.mt-3 
+      #call-paginate-recently_published-ajax.mt-3.d-flex.justify-content-center
         = will_paginate recently_published_paginate(@recently_published), inner_window: 2, outer_window: 1,\
           :renderer => RemoteLinkPaginationHelper::LinkRenderer, param_name: 'page_recently_published'

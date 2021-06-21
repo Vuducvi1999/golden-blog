@@ -7,21 +7,21 @@
     .col-8
       .mb-3
         = @post.content.to_s.html_safe
-      .d-flex.mb-5
+      .d-flex.mb-5.align-items-baseline.bg-light.rounded.font-monospace style="font-size: 1.1rem"
         | Categories: 
         - @post.categories.pluck(:name).each do |item|
-            button.btn.btn-info.px-2.py-1.mx-2.focus-box-none 
-              | #{item}
+            = link_to root_path, class:'mx-2 fs-6 text-primary ' do 
+              | ##{item}
       - if is_author
         .d-flex.justify-content-between 
           = link_to 'Edit', edit_dashboard_post_path(@post), class:'btn btn-primary py-2 fs-5'
           = link_to 'Delete', dashboard_post_path(@post), method:'delete', class:'btn btn-danger py-2 fs-5',data: {confirm: 'Are you sure?'}
-      - else is_admin
+      - elsif is_admin
         .d-flex.justify-content-between
           - if @post.published == false
-            = link_to 'Publish', edit_dashboard_post_path(@post), class:'btn btn-primary py-2 fs-5'
+            = link_to 'Publish', publish_post_dashboard_post_path(@post), method:'post', class:'btn btn-primary py-2 fs-5'
           - else
-            = link_to 'Unpublish', edit_dashboard_post_path(@post), class:'btn btn-primary py-2 fs-5'
+            = link_to 'Unpublish', unpublish_post_dashboard_post_path(@post), method:'post', class:'btn btn-primary py-2 fs-5'
       - if is_published
         .post-comment-create
           - if current_user.present?
@@ -39,7 +39,8 @@
               - comment_paginate(@post.comments).each do |comment|
                 = render partial: 'dashboard/comments/comment_item', locals: {comment: comment}
             #call-paginate-ajax.d-flex.justify-content-center 
-              = will_paginate comment_paginate(@post.comments), inner_window: 2, outer_window: 1, :renderer => RemoteLinkPaginationHelper::LinkRenderer
+              = will_paginate comment_paginate(@post.comments), inner_window: 2, outer_window: 1,\
+                :renderer => RemoteLinkPaginationHelper::LinkRenderer
           - else 
             i.my-3 style="font-size:1.1rem" 
               | Haven't had comments! Be the first user comment.
