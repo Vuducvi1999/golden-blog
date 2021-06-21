@@ -6,7 +6,7 @@ module ApplicationHelper
         type = 'success' if type == 'notice'
         type = 'info' if type == 'info'
         type = 'error' if type == 'alert'
-        text = "<script>toastr.#{type}('#{message}', '', { closeButton: true, newestOnTop: true })</script>"
+        text = "<script>toastr.#{type}('#{message}', '', {timeOut: 0, extendedTimeOut: 0, tapToDismiss: false, closeButton: true, newestOnTop: true })</script>"
         full_message << text.html_safe
       end
       full_message.html_safe
@@ -14,7 +14,7 @@ module ApplicationHelper
   end
 
   def toastr_custom_message message
-    text = "<script>toastr.error('#{message}', '', { closeButton: true, newestOnTop: true })</script>"
+    text = "<script>toastr.error('#{message}', '', {timeOut: 0, extendedTimeOut: 0, tapToDismiss: false, closeButton: true, newestOnTop: true })</script>"
     return text.html_safe
   end
 
