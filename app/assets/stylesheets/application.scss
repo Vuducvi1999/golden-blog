@@ -14,6 +14,8 @@
  *= require_self
  */
 @import "./actiontext.scss";
+@import "./home.scss";
+@import "./posts.scss";
 
 .sign-in-with {
   position: relative;
@@ -74,23 +76,7 @@
   background-color: transparent !important;
 }
 
-nav#mainNav.navbar.navbar-expand-lg.user-layout {
-  & * {
-    color: #212529 !important;
-    &:hover {
-      color: #d3d2d2 !important;
-    }
-  }
-  &.is-fixed {
-    background-color: #212529;
-    & * {
-      color: #fff !important;
-      &:hover {
-        color: #0085a1 !important;
-      }
-    }
-  }
-}
+
 
 .text-dark * {
   color: #212529 !important;
@@ -131,76 +117,7 @@ nav#mainNav.navbar.navbar-expand-lg.user-layout {
   }
 }
 
-.dropdown-menu.bg-custom-transparent.border-0 {
-  & .dropdown-item {
-    &:hover {
-      color: #0085a1;
-    }
-    font-size: 0.75rem;
-    font-weight: 800;
-    letter-spacing: 0.0625em;
-    text-transform: uppercase;
-  }
 
-  &.user-dropdown-menu .dropdown-item {
-    &:hover {
-      background-color: transparent;
-    }
-  }
-  &.guest-dropdown-menu .dropdown-item {
-    color: #fff;
-    &:hover {
-      background-color: transparent;
-      color: #c8c8c8;
-    }
-  }
-}
-
-nav.is-fixed {
-  & .dropdown-menu.bg-custom-transparent.border-0 {
-    .dropdown-item {
-      &:hover {
-        color: #0085a1 !important;
-      }
-    }
-
-    &.user-dropdown-menu {
-      background-color: #212529 !important;
-      & .dropdown-item {
-        color: #fff;
-      }
-    }
-
-    &.guest-dropdown-menu {
-      background-color: rgba(255, 255, 255, 0.9) !important;
-      & .dropdown-item {
-        color: #212529;
-      }
-    }
-  }
-}
-
-ul.dropdown-menu {
-  border-radius: 0 !important;
-  margin-top: 0.5rem !important;
-}
-
-.thumbnail-post-dashboard {
-  & div {
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    cursor: pointer;
-  }
-  & div:hover {
-    transform: scale(1.01);
-    transition: 0.2s;
-  }
-  position: relative;
-  height: 100%;
-  padding: 1rem 0 10% 0;
-  margin-right: 1rem;
-}
 
 .dashboard-your-posts {
   display: grid;
