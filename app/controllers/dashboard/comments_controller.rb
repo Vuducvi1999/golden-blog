@@ -1,17 +1,16 @@
 class Dashboard::CommentsController < ApplicationController
+  before_action :authenticate!
+  skip_before_action :authenticate_user!
   before_action :set_comment, only: %i[edit update destroy]
   before_action :set_post 
-  before_action :authenticate_user!
 
   def new
     # @comment = @post.comments.build
   end
   
   def create
-    # Lúc này comment mới chỉ thuộc về post, ta cần thêm ràng buộc với user tạo comment
     @comment = @post.comments.build(comment_params)
-    @comment.user = current_user  
-
+    @comment.user = current_user
 
     respond_to do |format|
       unless @comment.save
@@ -49,6 +48,16 @@ class Dashboard::CommentsController < ApplicationController
     end
   end
 
+  def authenticate!
+    # kiểm tra user login
+    if current_user.present?
+      return false
+    else
+      flash[:alert] = "Please login to comment"
+      return redirect_to new_user_session_path
+    end
+  end
+
   private
     def set_comment
       @comment = @post.comments.find_by(id: params[:id])
@@ -61,5 +70,7 @@ class Dashboard::CommentsController < ApplicationController
     def comment_params
       params.require(:comment).permit(:content)
     end
+
+
   
 end
