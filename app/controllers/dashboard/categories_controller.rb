@@ -66,7 +66,7 @@ class Dashboard::CategoriesController < ApplicationController
 
     # Check is admin access
     def check_admin_account
-      if current_user.username != 'admin'
+      if current_user.role != User::ROLES[:admin]
         flash[:alert]= "Only admin can access"
         redirect_back fallback_location: root_path
       end

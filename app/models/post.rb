@@ -5,11 +5,11 @@ class Post < ApplicationRecord
   validates :thumbnail, presence: { message:"must be given please"}
   
   has_rich_text :content
-  has_one_attached :thumbnail
+  has_one_attached :thumbnail, dependent: :destroy
   
   belongs_to :user
   has_many :post_categories, dependent: :destroy
-  has_many :categories, through: :post_categories
+  has_many :categories, through: :post_categories, dependent: :destroy
 
   has_many :comments, dependent: :destroy
 end
