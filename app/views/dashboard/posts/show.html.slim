@@ -17,7 +17,13 @@
           = link_to 'Edit', edit_dashboard_post_path(@post), class:'btn btn-primary py-2 fs-5'
           = link_to 'Delete', dashboard_post_path(@post), method:'delete', class:'btn btn-danger py-2 fs-5'
       .post-comment-create
-        = render partial: 'dashboard/comments/form'
+        - if current_user.present?
+          = render partial: 'dashboard/comments/form'
+        - else 
+          p.fst-italic.fs-6 
+            |  Please 
+            = link_to "login", new_user_session_path, class:"text-decoration-none text-primary" 
+            |  to comment.
       h5#count-number-comments.border-bottom.pb-2
         | #{@post.comments.length} comments
       #comments-list.list-comments-post
@@ -29,6 +35,6 @@
             = will_paginate comment_paginate(@post.comments), inner_window: 2, outer_window: 1, :renderer => RemoteLinkPaginationHelper::LinkRenderer
         - else 
           i.my-3 style="font-size:1.1rem" 
-            | Haven't comments yet! Be the first user comment.
+            | Haven't had comments! Be the first user comment.
         
 
