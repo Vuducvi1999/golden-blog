@@ -12,29 +12,37 @@
         - @post.categories.pluck(:name).each do |item|
             button.btn.btn-info.px-2.py-1.mx-2.focus-box-none 
               | #{item}
-      - if current_user.present?
+      - if is_author
         .d-flex.justify-content-between 
           = link_to 'Edit', edit_dashboard_post_path(@post), class:'btn btn-primary py-2 fs-5'
-          = link_to 'Delete', dashboard_post_path(@post), method:'delete', class:'btn btn-danger py-2 fs-5'
-      .post-comment-create
-        - if current_user.present?
-          = render partial: 'dashboard/comments/form'
-        - else 
-          p.fst-italic.fs-6 
-            |  Please 
-            = link_to "login", new_user_session_path, class:"text-decoration-none text-primary" 
-            |  to comment.
-      h5#count-number-comments.border-bottom.pb-2
-        | #{@post.comments.length} comments
-      #comments-list.list-comments-post
-        - unless @post.comments.empty?
-          #wrap-comments-component
-            - comment_paginate(@post.comments).each do |comment|
-              = render partial: 'dashboard/comments/comment_item', locals: {comment: comment}
-          #call-paginate-ajax.d-flex.justify-content-center 
-            = will_paginate comment_paginate(@post.comments), inner_window: 2, outer_window: 1, :renderer => RemoteLinkPaginationHelper::LinkRenderer
-        - else 
-          i.my-3 style="font-size:1.1rem" 
-            | Haven't had comments! Be the first user comment.
-        
+          = link_to 'Delete', dashboard_post_path(@post), method:'delete', class:'btn btn-danger py-2 fs-5',data: {confirm: 'Are you sure?'}
+      - else is_admin
+        .d-flex.justify-content-between
+          - if @post.published == false
+            = link_to 'Publish', edit_dashboard_post_path(@post), class:'btn btn-primary py-2 fs-5'
+          - else
+            = link_to 'Unpublish', edit_dashboard_post_path(@post), class:'btn btn-primary py-2 fs-5'
+      - if is_published
+        .post-comment-create
+          - if current_user.present?
+            = render partial: 'dashboard/comments/form'
+          - else 
+            p.fst-italic.fs-6 
+              |  Please 
+              = link_to "login", new_user_session_path, class:"text-decoration-none text-primary" 
+              |  to comment.
+        h5#count-number-comments.border-bottom.pb-2
+          | #{@post.comments.length} comments
+        #comments-list.list-comments-post
+          - unless @post.comments.empty?
+            #wrap-comments-component
+              - comment_paginate(@post.comments).each do |comment|
+                = render partial: 'dashboard/comments/comment_item', locals: {comment: comment}
+            #call-paginate-ajax.d-flex.justify-content-center 
+              = will_paginate comment_paginate(@post.comments), inner_window: 2, outer_window: 1, :renderer => RemoteLinkPaginationHelper::LinkRenderer
+          - else 
+            i.my-3 style="font-size:1.1rem" 
+              | Haven't had comments! Be the first user comment.
+      - elsif !is_admin && !is_author
+        h5.mt-5 Waiting for admin to publish this post
 

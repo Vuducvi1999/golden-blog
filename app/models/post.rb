@@ -12,4 +12,8 @@ class Post < ApplicationRecord
   has_many :categories, through: :post_categories, dependent: :destroy
 
   has_many :comments, dependent: :destroy
+
+  before_create do |post|
+    post.published = false
+  end
 end

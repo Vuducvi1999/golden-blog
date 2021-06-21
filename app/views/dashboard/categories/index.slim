@@ -3,16 +3,23 @@
     .col-2 
     .col-8 
       h1 Categories
-      table
+      table.table
         thead
           tr
+            th #
             th Name
+            th Posts count
             th Actions
         tbody
-          - @categories.each do |category|
+          - @categories.each_with_index do |category, index|
             tr
-              td= category.name
-              td= link_to 'Edit', edit_dashboard_category_path(category)
-              td= link_to 'Destroy', dashboard_category_path(category), method: :delete, data:  { confirm: 'Are you sure?'  }
+              td =index + 1
+              td.fw-bold =category.name
+              td =category.posts.length
+              td
+                =link_to edit_dashboard_category_path(category), class:"me-3" do 
+                  i class="fas fa-edit text-success"
+                =link_to dashboard_category_path(category), method: :delete, data:  { confirm: 'Are you sure?'  } do 
+                  i class="fas fa-trash-alt text-danger"
       br
       = link_to 'New Category', new_dashboard_category_path, class:'btn btn-primary fs-5 py-2'

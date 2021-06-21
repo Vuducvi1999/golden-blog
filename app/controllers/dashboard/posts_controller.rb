@@ -1,8 +1,9 @@
 
 class Dashboard::PostsController < ApplicationController
   before_action :authenticate_user!, except: %i[show]
-  before_action :set_post, only: %i[ edit update destroy create_comment_post ]
-  before_action :comment_params, only: %i[create_comment_post]
+  before_action :set_post, only: %i[edit update destroy ]
+  before_action :check_post_published, only: %i[show]
+
 
   # GET /posts or /posts.json
   def index
@@ -10,14 +11,11 @@ class Dashboard::PostsController < ApplicationController
   end
 
   # GET /posts/1 or /posts/1.json
-  def show
-    @post = Post.find_by id:params[:id]
-    @page = params[:page]
-   
+  def show    
     respond_to do |format|
       unless @post.present?
         flash[:alert] = "Not found post"
-        format.html {redirect_to root_path}        
+        format.html {redirect_to root_path}   
         format.js {render partial:'dashboard/posts/show.js.erb'}
       end
       format.html 
@@ -85,7 +83,7 @@ class Dashboard::PostsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_post
-      @post = current_user.posts.find_by(id: params[:id])
+      @post = Post.find_by id:params[:id]
       unless @post.present?
         flash[:alert] = "Not found post"
         redirect_to root_path
@@ -96,8 +94,25 @@ class Dashboard::PostsController < ApplicationController
     def post_params
       params.require(:post).permit(:title,:content,:thumbnail,:short_description)
     end
+    
+    def check_post_published
+      @post = Post.find_by id:params[:id]
 
-    def comment_params
-      params.require(:comment).permit(:content)
+      if @post.published == false 
+        if current_user.present? == false
+          flash[:info] = "This post is being process by admin to publish!"
+          return redirect_back fallback_location:root_path  
+        elsif current_user.role == User::ROLES[:admin]
+          return 
+        elsif current_user.id != @post.user.id 
+          flash[:info] = "This post is being process by admin to publish!"
+          return redirect_back fallback_location:root_path  
+        end
+      end
+    end
+
+    def message_and_redirect_if_post_unpublished
+      flash[:info] = "This post is being process by admin to publish!"
+      return redirect_back fallback_location:root_path  
     end
 end
