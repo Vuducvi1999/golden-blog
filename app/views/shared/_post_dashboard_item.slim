@@ -1,16 +1,24 @@
 
-.d-grid.dashboard-your-posts
-  .thumbnail-post-dashboard.d-flex.align-items-center 
-    = link_to post_path(post) do
-      div style="background-image: url(#{url_for(post.thumbnail)});"
-        img src="#{url_for(post.thumbnail)}" style="visibility: hidden; width:100%"
+
+- is_admin_manage ||= false
+- add_class_grid = is_admin_manage ? '' : 'dashboard-your-posts'
+- add_class_post_title = is_admin_manage ? 'mt-2' : 'post-title'
+- add_class_post_meta = is_admin_manage ? 'mb-2 post-meta fs-6' : 'post-meta'
+
+.d-grid class="#{add_class_grid}"
+  - if not is_admin_manage
+    .thumbnail-post-dashboard.d-flex.post-title
+      = link_to post_path(post) do
+        div style="background-image: url(#{url_for(post.thumbnail)});"
+          img src="#{url_for(post.thumbnail)}" style="visibility: hidden; width:100%"
   .info-by-word-post-dashboard.post-preview 
     = link_to post_path(post) do
-      h2.post-title
+      h2 class="#{add_class_post_title}"
         | #{post.title}
-      h3.post-subtitle
-        | #{post.short_description}
-    p.post-meta
+      - if not is_admin_manage
+        h3.post-subtitle
+          | #{post.short_description}
+    p class="#{add_class_post_meta}"
       |  Posted by #{post.user.username} 
       |  on #{post.created_at.strftime("%B #{post.created_at.day.ordinalize}, %Y")}
 

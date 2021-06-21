@@ -1,8 +1,9 @@
-$('#call-paginate-ajax').html(
-"<%= j will_paginate comment_paginate(@post.comments), inner_window: 2, outer_window: 1, :renderer => RemoteLinkPaginationHelper::LinkRenderer %>"
-);
 $('#wrap-comments-component').html(
 "<% comment_paginate(@post.comments).each do |comment| %>"+
   "<%= j render partial: 'dashboard/comments/comment_item', locals: {comment: comment}%>"+
-"<%end %>"
+  "<%end %>"
+);
+
+$('#call-paginate-ajax').html(
+"<%= j will_paginate comment_paginate(@post.comments), inner_window: 2, outer_window: 1, :renderer => RemoteLinkPaginationHelper::LinkRenderer %>"
 );

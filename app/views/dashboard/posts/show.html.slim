@@ -1,4 +1,4 @@
-= render partial: 'layouts/header', locals:{text_color: 'text-dark'}
+
 = render partial: 'layouts/banner', locals:{banner_path: url_for(@post.thumbnail), post:@post }
 
 .container
@@ -43,6 +43,6 @@
           - else 
             i.my-3 style="font-size:1.1rem" 
               | Haven't had comments! Be the first user comment.
-      - elsif !is_admin && !is_author
+      - elsif is_author
         h5.mt-5 Waiting for admin to publish this post
 

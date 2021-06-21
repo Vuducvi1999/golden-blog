@@ -1,4 +1,4 @@
-= render partial: 'layouts/header', locals:{text_color: 'text-dark'}
+
 .container.no-banner-styles.min-height
   .row.mb-5
     .col-2 
@@ -16,8 +16,12 @@
               | !
 
       - else 
-        - @posts.each do |post|
-          = render partial:'shared/post_dashboard_item', locals: { post:post }
+        - @posts.each_with_index do |post, index|
+          - if index != @posts.length - 1
+            .border-bottom 
+              = render partial:'shared/post_dashboard_item', locals: { post:post }
+          - else 
+            = render partial:'shared/post_dashboard_item', locals: { post:post }
         / tr
         /   td= post.title
         /   td= link_to 'Show', post_path(post)

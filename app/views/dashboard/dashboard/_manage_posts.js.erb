@@ -1,0 +1,22 @@
+$('#wrap-unpublished-component').html(
+`<% unpublished_paginate(@unpublished).each do |post| %>
+  <div class="border ps-3">
+    <%= j render partial:'shared/post_dashboard_item', locals: { post: post, is_admin_manage: true } %>
+  </div>
+<%end %>`
+);
+$('#call-paginate-unpublished-ajax').html(
+`<%= j will_paginate unpublished_paginate(@unpublished), inner_window: 2, outer_window: 1,\
+:renderer => RemoteLinkPaginationHelper::LinkRenderer, param_name: "page_unpublished" %>`
+);
+$('#wrap-recently_published-component').html(
+`<% recently_published_paginate(@recently_published).each do |post| %>
+  <div class="border ps-3">
+    <%= j render partial:'shared/post_dashboard_item', locals: { post: post, is_admin_manage: true } %>
+  </div>
+<%end %>`
+);
+$('#call-paginate-recently_published-ajax').html(
+`<%= j will_paginate recently_published_paginate(@recently_published), inner_window: 2, outer_window: 1,\
+:renderer => RemoteLinkPaginationHelper::LinkRenderer, param_name: "page_recently_published" %>`
+);

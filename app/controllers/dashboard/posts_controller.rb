@@ -95,6 +95,7 @@ class Dashboard::PostsController < ApplicationController
       params.require(:post).permit(:title,:content,:thumbnail,:short_description)
     end
     
+    # kiểm tra published và redirect nếu cần thiết
     def check_post_published
       @post = Post.find_by id:params[:id]
 
@@ -115,4 +116,5 @@ class Dashboard::PostsController < ApplicationController
       flash[:info] = "This post is being process by admin to publish!"
       return redirect_back fallback_location:root_path  
     end
+    
 end

@@ -10,7 +10,8 @@ Rails.application.routes.draw do
   
   namespace :dashboard do
     get '/' => "dashboard#index"
-    resources :categories, except: %i[show]
+    get 'manage/posts' => 'dashboard#manage_posts'
+    resources :categories, path:'manage/categories', except: %i[show]
     resources :posts, except: %i[show] do
       resources :comments, except: %i[show index]
     end
