@@ -7,11 +7,11 @@
     .col-8
       .mb-3
         = @post.content.to_s.html_safe
-      .d-flex.mb-5.align-items-baseline.bg-light.rounded.font-monospace style="font-size: 1.1rem"
-        | Categories: 
-        - @post.categories.pluck(:name).each do |item|
-            = link_to root_path, class:'mx-2 fs-6 text-primary ' do 
-              | ##{item}
+      .d-flex.mb-5.align-items-baseline.font-monospace style="font-size: 1rem"
+        i class="fas fa-tags me-2"
+        - @post.categories.pluck(:id,:name).each do |item|
+            = link_to search_dashboard_posts_path(categories_id:[item[0]]), class:'me-2 badge bg-secondary badge-category fw-bold' do 
+              | #{item[1]}
       - if is_author
         .d-flex.justify-content-between 
           = link_to 'Edit', edit_dashboard_post_path(@post), class:'btn btn-primary py-2 fs-5'

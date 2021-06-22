@@ -1,7 +1,7 @@
 
 class Dashboard::PostsController < ApplicationController
-  before_action :authenticate_user!, except: %i[show]
-  before_action :set_post, only: %i[edit update destroy publish_post unpublish_post]
+  before_action :authenticate_user!, except: %i[show search]
+  before_action :set_post, only: %i[edit update destroy publish_post unpublish_post ]
   before_action :check_post_published, only: %i[show]
   before_action :check_admin_to_publish, only: %i[publish_post unpublish_post]
 
@@ -109,10 +109,23 @@ class Dashboard::PostsController < ApplicationController
     end
   end
 
+  # Chức năng search
+  def search
+    post_title = params[:post_title] ? params[:post_title].split(' ').join("%") : ''
+    categories_id = params[:categories_id] ? params[:categories_id].select{|i| not i.blank?} : []
+    @categories = Category.where(id: categories_id).pluck(:id, :name)
+
+    @posts = Post.joins(:post_categories) 
+              .where(["lower(title) like ?","%#{post_title.downcase}%"])
+              .order(updated_at: :desc)
+    @posts = categories_id.empty? ? @posts : @posts.where("post_categories.category_id in (#{categories_id.join(',')})")
+
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_post
-      @post = Post.find_by id:params[:id]
+      @post = Post.find_by(id:params[:id]).includes(:categories)
       unless @post.present?
         flash[:alert] = "Post not found"
         redirect_back fallback_location: root_path

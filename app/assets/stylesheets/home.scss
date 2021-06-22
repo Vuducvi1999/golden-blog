@@ -86,3 +86,24 @@ ul.dropdown-menu {
   padding: 1rem 0 10% 0;
   margin-right: 1rem;
 }
+
+.content-collapse-search {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 0.5rem;
+  min-width: 100%;
+}
+
+.p-relative {
+  position: relative;
+}
+
+.dropdown-menu.categories-search-dropdown.border-left-0.border-right-0 {
+  width: 100%;
+  margin-top: 0 !important;
+  border: none;
+  border-top: 1px solid rgb(199, 199, 199);
+  padding: 0;
+  overflow-y: auto;
+}

@@ -18,6 +18,9 @@ Rails.application.routes.draw do
         post 'publish_post'
         post 'unpublish_post'
       end
+      collection do
+        get 'search'
+      end
     end
   end
   

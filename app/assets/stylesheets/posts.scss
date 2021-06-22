@@ -27,6 +27,9 @@
   color: #c0c0c0;
 }
 
-.dashboard-post-image{
-
+.badge-category{
+  &:hover{
+    background: #0085a1 !important;
+    color: white;
+  }
 }
