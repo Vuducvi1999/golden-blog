@@ -35,6 +35,7 @@ class User < ApplicationRecord
     user
   end
 
+  private 
   def set_role_user 
     self.role = ROLES[:user]
   end
