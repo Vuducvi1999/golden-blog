@@ -7,3 +7,5 @@ $('#wrap-comments-component').html(
 $('#call-paginate-ajax').html(
 "<%= j will_paginate comment_paginate(@post.comments), inner_window: 2, outer_window: 1, :renderer => RemoteLinkPaginationHelper::LinkRenderer %>"
 );
+
+$("#message-no-comment").html('')

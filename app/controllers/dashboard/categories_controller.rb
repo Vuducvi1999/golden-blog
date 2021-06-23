@@ -1,56 +1,38 @@
-class Dashboard::CategoriesController < ApplicationController
+class Dashboard::CategoriesController < BaseController
   before_action :set_category, only: %i[ edit update destroy ]
-  before_action :check_admin_account
 
-  # GET /categories or /categories.json
   def index
     @categories = Category.all
   end
-
-  # GET /categories/new
+  
   def new
     @category = Category.new
   end
 
-  # GET /categories/1/edit
   def edit
   end
 
-  # POST /categories or /categories.json
   def create
     @category = Category.new(category_params)
 
-    respond_to do |format|
-      if @category.save
-        format.html { redirect_to dashboard_categories_path, notice: "Category was successfully created." }
-        format.json { render :show, status: :created, location: @category }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @category.errors, status: :unprocessable_entity }
-      end
+    if @category.save
+      redirect_to dashboard_categories_path, notice: "Category was successfully created." 
+    else
+      render :new, status: :unprocessable_entity 
     end
   end
 
-  # PATCH/PUT /categories/1 or /categories/1.json
   def update
-    respond_to do |format|
-      if @category.update(category_params)
-        format.html { redirect_to dashboard_categories_path, notice: "Category was successfully updated." }
-        format.json { render :show, status: :ok, location: @category }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @category.errors, status: :unprocessable_entity }
-      end
+    if @category.update(category_params)
+      redirect_to dashboard_categories_path, notice: "Category was successfully updated." 
+    else
+      render :edit, status: :unprocessable_entity 
     end
   end
 
-  # DELETE /categories/1 or /categories/1.json
   def destroy
     @category.destroy
-    respond_to do |format|
-      format.html { redirect_to dashboard_categories_path, notice: "Category was successfully destroyed." }
-      format.json { head :no_content }
-    end
+    redirect_to dashboard_categories_path, notice: "Category was successfully destroyed." 
   end
 
   private
@@ -64,11 +46,5 @@ class Dashboard::CategoriesController < ApplicationController
       params.require(:category).permit(:name)
     end
 
-    # Check is admin access
-    def check_admin_account
-      if current_user.role != User::ROLES[:admin]
-        flash[:alert]= "Only admin can access"
-        return redirect_back fallback_location: root_path
-      end
-    end
+
 end

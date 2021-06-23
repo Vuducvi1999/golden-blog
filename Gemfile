@@ -52,15 +52,14 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
+# additional 
 gem 'devise'
 gem 'image_processing', '~> 1.2'
 gem 'slim-rails'
 gem 'slim'
-
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
 gem "omniauth-rails_csrf_protection"
 gem "dotenv-rails"
-
 gem 'jquery-rails'
 gem 'will_paginate'

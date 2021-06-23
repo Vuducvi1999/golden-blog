@@ -48,9 +48,9 @@
 }
 
 .focus-box-none {
-  &:focus {
+  &:focus, &:active, &:visited {
     box-shadow: none !important;
-  }
+  }  
 }
 
 .rich_text_content {

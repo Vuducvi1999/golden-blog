@@ -13,7 +13,7 @@ Rails.application.routes.draw do
     get 'manage/posts' => 'dashboard#manage_posts'
     resources :categories, path:'manage/categories', except: %i[show]
     resources :posts, except: %i[show] do
-      resources :comments, except: %i[show index]
+      resources :comments, except: %i[show index new edit]
       member do
         post 'approve_post'
         post 'reject_post'
