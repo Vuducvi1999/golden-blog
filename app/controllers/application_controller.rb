@@ -15,4 +15,20 @@ class ApplicationController < ActionController::Base
       devise_parameter_sanitizer.permit :sign_in, keys: [:login, :password]
       devise_parameter_sanitizer.permit :account_update, keys: added_attrs
     end
+
+    def is_admin
+      current_user.role == User::ROLES[:admin]
+    end
+  
+    def is_author
+      current_user.id == @post.user.id
+    end
+
+    def is_new_post
+      @post.status == Post::STATUS[:new]
+    end
+
+    def is_rejected_post
+      @post.status == Post::STATUS[:rejected]
+    end
 end

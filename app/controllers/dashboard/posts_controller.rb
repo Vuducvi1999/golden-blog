@@ -111,25 +111,22 @@ class Dashboard::PostsController < ApplicationController
       params.require(:post).permit(:title,:content,:thumbnail,:short_description)
     end
     
-    # kiểm tra status và redirect nếu cần thiết
+    # kiểm tra status post và redirect nếu truy cập không hợp lệ
     def check_post_status
       @post = Post.find_by id:params[:id]
 
-      if @post.status == Post::STATUS[:new]
+      if is_new_post
         return condition_post_if_status_is 'new'
-      elsif @post.status == Post::STATUS[:rejected]
+      elsif is_rejected_post
         return condition_post_if_status_is 'rejected'
       end
     end
 
     def condition_post_if_status_is status
-      if current_user.present? == false
-        return status=="new" ? message_and_redirect_if_post_is_new : message_and_redirect_if_post_is_rejected
-      elsif current_user.role == User::ROLES[:admin] || current_user.id == @post.user.id
-        return 
-      else
-        return status=="new" ? message_and_redirect_if_post_is_new : message_and_redirect_if_post_is_rejected
-      end
+      # nếu người dùng đã đăng nhập và là tác giả hoặc admin thì tiếp tục process
+      return if current_user && (is_admin || is_author)
+      # nếu không thì redirect và alert
+      return status=="new" ? message_and_redirect_if_post_is_new : message_and_redirect_if_post_is_rejected
     end
 
     def message_and_redirect_if_post_is_new
@@ -150,8 +147,7 @@ class Dashboard::PostsController < ApplicationController
     # kiểm tra người change status có phải là admin hay không
     def check_admin_to_change_status
       @post = Post.find_by id:params[:id]
-      if not current_user.present? || current_user.role != User::ROLES[:admin]
-        return message_and_redirect_if_user_not_admin
-      end
+      return message_and_redirect_if_user_not_admin unless current_user || is_admin
+      return
     end
 end

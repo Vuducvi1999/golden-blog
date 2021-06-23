@@ -3,6 +3,10 @@ class Post < ApplicationRecord
   validates :content, presence: true
   validates :categories, presence: { message:"must be given please"}
   validates :thumbnail, presence: { message:"must be given please"}
+
+  before_create do |post|
+    post.status = Post::STATUS[:new]
+  end
   
   has_rich_text :content
   has_one_attached :thumbnail, dependent: :destroy
@@ -19,7 +23,5 @@ class Post < ApplicationRecord
     rejected: 2
   }
 
-  before_create do |post|
-    post.status = Post::STATUS[:new]
-  end
+
 end
