@@ -83,7 +83,6 @@ class Dashboard::PostsController < ApplicationController
     else
       redirect_back fallback_location:root_path, alert: "Reject post fail"
     end
-
   end
 
   # Chức năng search
@@ -96,7 +95,6 @@ class Dashboard::PostsController < ApplicationController
               .where(["lower(title) like ?","%#{post_title.downcase}%"])
               .order(updated_at: :desc)
     @posts = categories_id.empty? ? @posts : @posts.where("post_categories.category_id in (#{categories_id.join(',')})")
-
   end
 
   private

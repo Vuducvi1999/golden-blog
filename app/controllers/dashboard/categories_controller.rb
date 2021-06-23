@@ -1,4 +1,4 @@
-class Dashboard::CategoriesController < BaseController
+class Dashboard::CategoriesController < Dashboard::BaseController
   before_action :set_category, only: %i[ edit update destroy ]
 
   def index

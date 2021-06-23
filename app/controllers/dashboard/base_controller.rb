@@ -1,4 +1,4 @@
-class BaseController < ApplicationController
+class Dashboard::BaseController < ApplicationController
   before_action :check_admin_account
 
   protected 
