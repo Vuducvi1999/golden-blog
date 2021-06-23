@@ -16,6 +16,7 @@
 @import "./actiontext.scss";
 @import "./home.scss";
 @import "./posts.scss";
+@import "./dashboard.scss";
 
 .sign-in-with {
   position: relative;
@@ -76,8 +77,6 @@
   background-color: transparent !important;
 }
 
-
-
 .text-dark * {
   color: #212529 !important;
 }
@@ -114,15 +113,5 @@
     &:not(:placeholder-shown) ~ label {
       transform: scale(0.65) translateY(-2rem);
     }
-  }
-}
-
-
-
-.dashboard-your-posts {
-  display: grid;
-  grid-template-columns: 28% auto;
-  & .info-by-word-post-dashboard.post-preview .post-title {
-    margin-top: 1rem;
   }
 }

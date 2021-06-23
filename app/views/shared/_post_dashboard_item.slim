@@ -3,22 +3,21 @@
 - is_admin_manage ||= false
 - add_class_grid = is_admin_manage ? '' : 'dashboard-your-posts'
 - add_class_post_title = is_admin_manage ? 'mt-2' : 'post-title'
-- add_class_post_meta = is_admin_manage ? 'mb-2 post-meta fs-6' : 'post-meta'
+- add_class_post_meta = is_admin_manage ? 'mb-2 post-meta' : 'post-meta'
 
 .d-grid class="#{add_class_grid}"
   - if not is_admin_manage
-    .thumbnail-post-dashboard.d-flex.post-title
-      = link_to post_path(post) do
-        div style="background-image: url(#{url_for(post.thumbnail)});"
-          img src="#{url_for(post.thumbnail)}" style="visibility: hidden; width:100%"
+    .thumbnail-post-dashboard.d-flex style=" padding-bottom: 10%; "
+      = link_to post_path(post), class:"w-100" do
+        div style="background-image: url(#{url_for(post.thumbnail)}); padding-top: 70% ; width: 100%"
+          / img src="#{url_for(post.thumbnail)}" style="visibility: hidden; width:100%; "
   .info-by-word-post-dashboard.post-preview 
     = link_to post_path(post) do
-      h2 class="#{add_class_post_title}"
+      h2 class="#{add_class_post_title}" style="font-size: 1.7rem"
         | #{post.title}
       - if not is_admin_manage
-        h3.post-subtitle
+        h3.post-subtitle style="font-size: 1.3rem"
           | #{post.short_description}
-    p class="#{add_class_post_meta}"
-      |  Posted by #{post.user.username} 
-      |  on #{post.created_at.strftime("%B #{post.created_at.day.ordinalize}, %Y")}
+    p class="#{add_class_post_meta}" style="font-size: 0.9rem; margin-bottom: 1rem"
+      |  #{post.created_at.strftime("%m/%d/%Y, %H:%M:%S")}
 
