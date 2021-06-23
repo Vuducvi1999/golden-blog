@@ -89,12 +89,10 @@ class Dashboard::PostsController < ApplicationController
   def search
     post_title = params[:post_title] ? params[:post_title].split(' ').join("%") : ''
     categories_id = params[:categories_id] ? params[:categories_id].select{|i| not i.blank?} : []
-    @categories = Category.where(id: categories_id).pluck(:id, :name)
-
-    @posts = Post.joins(:post_categories) 
-              .where(["lower(title) like ?","%#{post_title.downcase}%"])
-              .order(updated_at: :desc)
-    @posts = categories_id.empty? ? @posts : @posts.where("post_categories.category_id in (#{categories_id.join(',')})")
+    
+    @categories = Category.search_by categories_id
+    @posts = Post.search_by post_title
+    @posts = categories_id.empty? ? @posts : @posts.filter_by_categories(categories_id)
   end
 
   private

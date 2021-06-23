@@ -23,5 +23,11 @@ class Post < ApplicationRecord
     rejected: 2
   }
 
+  scope :filter_by_categories, ->(categories_id){ where "post_categories.category_id in (#{categories_id.join(',')})" }
+
+  scope :search_by, ->(post_title){ joins(:post_categories)
+                                    .where(["lower(title) like ?","%#{post_title.downcase}%"])
+                                    .order(updated_at: :desc) }
+
 
 end
