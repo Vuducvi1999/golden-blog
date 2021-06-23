@@ -1,11 +1,11 @@
 class Dashboard::DashboardController < ApplicationController
-  before_action :set_post, only: %i[publish_post]
   def index
   end
 
   def manage_posts
-    @unpublished = Post.where(published: false)
-    @recently_published = Post.where(published: true)
+    @new_posts = Post.where(status: Post::STATUS[:new])
+    @approved_posts = Post.where(status: Post::STATUS[:approved])
+    @rejected_posts = Post.where(status: Post::STATUS[:rejected])
 
     respond_to do |format|
       format.html

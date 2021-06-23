@@ -1,9 +1,9 @@
 
 class Dashboard::PostsController < ApplicationController
   before_action :authenticate_user!, except: %i[show search]
-  before_action :set_post, only: %i[edit update destroy publish_post unpublish_post ]
-  before_action :check_post_published, only: %i[show]
-  before_action :check_admin_to_publish, only: %i[publish_post unpublish_post]
+  before_action :set_post, only: %i[edit update destroy approve_post reject_post ]
+  before_action :check_post_status, only: %i[show]
+  before_action :check_admin_to_change_status, only: %i[approve_post reject_post]
 
   # GET /posts or /posts.json
   def index
@@ -11,7 +11,7 @@ class Dashboard::PostsController < ApplicationController
   end
 
   # GET /posts/1 or /posts/1.json
-  def show    
+  def show
     respond_to do |format|
       unless @post.present?
         flash[:alert] = "Not found post"
@@ -80,31 +80,34 @@ class Dashboard::PostsController < ApplicationController
     end
   end
 
-  # Cho phép admin publish
-  def publish_post
-    @post.published = true
-    @post.published_at = DateTime.now 
+  # Cho phép admin approved
+  def approve_post
+    @post.status = Post::STATUS[:approved]
+    @post.status_change_at = DateTime.now 
 
     respond_to do |format|
       if @post.save 
         format.html { redirect_back fallback_location:root_path }
-        format.js { render partial:"dashboard/dashboard/publish_post.js.erb" }
+        format.js { render partial:"dashboard/dashboard/approve_post.js.erb" }
       else
-        redirect_back fallback_location: root_path
+        flash[:alert] = "Approve post fail"
+        format.html { redirect_back fallback_location:root_path }
       end
     end
   end
-  # Cho phép admin unpublish
-  def unpublish_post
-    @post.published = false
-    @post.published_at = nil 
+
+  # Cho phép admin rejected
+  def reject_post
+    @post.status = Post::STATUS[:rejected]
+    @post.status_change_at = DateTime.now
 
     respond_to do |format|
       if @post.save 
         format.html { redirect_back fallback_location:root_path }
-        format.js { render partial:"dashboard/dashboard/unpublish_post.js.erb" }
+        format.js { render partial:"dashboard/dashboard/reject_post.js.erb" }
       else
-        redirect_back fallback_location: root_path
+        flash[:alert] = "Reject post fail"
+        format.html { redirect_back fallback_location:root_path }
       end
     end
   end
@@ -137,35 +140,44 @@ class Dashboard::PostsController < ApplicationController
       params.require(:post).permit(:title,:content,:thumbnail,:short_description)
     end
     
-    # kiểm tra published và redirect nếu cần thiết
-    def check_post_published
+    # kiểm tra status và redirect nếu cần thiết
+    def check_post_status
       @post = Post.find_by id:params[:id]
 
-      if @post.published == false 
-        if current_user.present? == false
-          flash[:info] = "This post is being process by admin to publish!"
-          return redirect_back fallback_location:root_path
-        elsif current_user.role == User::ROLES[:admin]
-          return 
-        elsif current_user.id != @post.user.id 
-          flash[:info] = "This post is being process by admin to publish!"
-          return redirect_back fallback_location:root_path  
-        end
+      if @post.status == Post::STATUS[:new]
+        return condition_post_if_status_is 'new'
+      elsif @post.status == Post::STATUS[:rejected]
+        return condition_post_if_status_is 'rejected'
       end
     end
 
-    def message_and_redirect_if_post_unpublished
-      flash[:info] = "This post is being process by admin to publish!"
+    def condition_post_if_status_is status
+      if current_user.present? == false
+        return status=="new" ? message_and_redirect_if_post_is_new : message_and_redirect_if_post_is_rejected
+      elsif current_user.role == User::ROLES[:admin] || current_user.id == @post.user.id
+        return 
+      else
+        return status=="new" ? message_and_redirect_if_post_is_new : message_and_redirect_if_post_is_rejected
+      end
+    end
+
+    def message_and_redirect_if_post_is_new
+      flash[:info] = "This post is being process by admin to approve!"
+      return redirect_back fallback_location:root_path  
+    end
+    
+    def message_and_redirect_if_post_is_rejected
+      flash[:info] = "This post was rejected by admin!"
       return redirect_back fallback_location:root_path  
     end
 
     def message_and_redirect_if_user_not_admin
-      flash[:info] = "Only admin can publish post!"
+      flash[:info] = "Only admin can approve post!"
       return redirect_back fallback_location:root_path  
     end
 
-    # kiểm tra người publish, unpublish có phải là admin hay không
-    def check_admin_to_publish
+    # kiểm tra người change status có phải là admin hay không
+    def check_admin_to_change_status
       @post = Post.find_by id:params[:id]
       if not current_user.present? || current_user.role != User::ROLES[:admin]
         return message_and_redirect_if_user_not_admin

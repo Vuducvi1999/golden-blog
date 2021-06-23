@@ -15,8 +15,8 @@ Rails.application.routes.draw do
     resources :posts, except: %i[show] do
       resources :comments, except: %i[show index]
       member do
-        post 'publish_post'
-        post 'unpublish_post'
+        post 'approve_post'
+        post 'reject_post'
       end
       collection do
         get 'search'

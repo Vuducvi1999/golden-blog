@@ -11,7 +11,7 @@ module PostsHelper
     current_user.present? && current_user.id == @post.user.id
   end
 
-  def is_published
-    @post.published
+  def is_approved
+    @post.status == Post::STATUS[:approved]
   end
 end

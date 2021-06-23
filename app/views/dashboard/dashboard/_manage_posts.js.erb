@@ -1,25 +1,33 @@
-$('#wrap-unpublished-component').html(
-`<% unpublished_paginate(@unpublished).each do |post| %>
+$('#wrap-new-posts-component').html(
+`<% new_posts_paginate(@new_posts).each do |post| %>
   <div class="border ps-3">
     <%= j render partial:'shared/post_dashboard_item', locals: { post: post, is_admin_manage: true } %>
   </div>
 <%end %>`
 );
-
-$('#call-paginate-unpublished-ajax').html(
-`<%= j will_paginate unpublished_paginate(@unpublished), inner_window: 2, outer_window: 1,\
-:renderer => RemoteLinkPaginationHelper::LinkRenderer, param_name: "page_unpublished" %>`
+$('#call-paginate-new-posts-ajax').html(
+`<%= j will_paginate new_posts_paginate(@new_posts), inner_window: 2, outer_window: 1,\
+:renderer => RemoteLinkPaginationHelper::LinkRenderer, param_name: "page_new_posts" %>`
 );
-
-$('#wrap-recently_published-component').html(
-`<% recently_published_paginate(@recently_published).each do |post| %>
+$('#wrap-approved-posts-component').html(
+`<% approved_posts_paginate(@approved_posts).each do |post| %>
   <div class="border ps-3">
     <%= j render partial:'shared/post_dashboard_item', locals: { post: post, is_admin_manage: true } %>
   </div>
 <%end %>`
 );
-
-$('#call-paginate-recently_published-ajax').html(
-`<%= j will_paginate recently_published_paginate(@recently_published), inner_window: 2, outer_window: 1,\
-:renderer => RemoteLinkPaginationHelper::LinkRenderer, param_name: "page_recently_published" %>`
+$('#call-paginate-rejected-posts-ajax').html(
+`<%= j will_paginate approved_posts_paginate(@approved_posts), inner_window: 2, outer_window: 1,\
+:renderer => RemoteLinkPaginationHelper::LinkRenderer, param_name: "page_approved_posts" %>`
+);
+$('#wrap-rejected-posts-component').html(
+`<% rejected_posts_paginate(@rejected_posts).each do |post| %>
+  <div class="border ps-3">
+    <%= j render partial:'shared/post_dashboard_item', locals: { post: post, is_admin_manage: true } %>
+  </div>
+<%end %>`
+);
+$('#call-paginate-rejected-posts-ajax').html(
+`<%= j will_paginate rejected_posts_paginate(@rejected_posts), inner_window: 2, outer_window: 1,\
+:renderer => RemoteLinkPaginationHelper::LinkRenderer, param_name: "page_rejected_posts" %>`
 );

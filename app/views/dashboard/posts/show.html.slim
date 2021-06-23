@@ -18,11 +18,11 @@
           = link_to 'Delete', dashboard_post_path(@post), method:'delete', class:'btn btn-danger py-2 fs-5',data: {confirm: 'Are you sure?'}
       - elsif is_admin
         .d-flex.justify-content-between
-          - if @post.published == false
-            = link_to 'Publish', publish_post_dashboard_post_path(@post), method:'post', class:'btn btn-primary py-2 fs-5'
+          - if not is_approved
+            = link_to 'Approve', approve_post_dashboard_post_path(@post), method:'post', class:'btn btn-primary py-2 fs-5'
           - else
-            = link_to 'Unpublish', unpublish_post_dashboard_post_path(@post), method:'post', class:'btn btn-primary py-2 fs-5'
-      - if is_published
+            = link_to 'Reject', reject_post_dashboard_post_path(@post), method:'post', class:'btn btn-primary py-2 fs-5'
+      - if is_approved
         .post-comment-create
           - if current_user.present?
             = render partial: 'dashboard/comments/form'
@@ -45,5 +45,5 @@
             i.my-3 style="font-size:1.1rem" 
               | Haven't had comments! Be the first user comment.
       - elsif is_author
-        h5.mt-5 Waiting for admin to publish this post
+        h5.mt-5 Waiting for admin to approve this post
 

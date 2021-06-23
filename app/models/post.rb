@@ -13,7 +13,13 @@ class Post < ApplicationRecord
 
   has_many :comments, dependent: :destroy
 
+  STATUS = {
+    new: 0,
+    approved: 1,
+    rejected: 2
+  }
+
   before_create do |post|
-    post.published = false
+    post.status = Post::STATUS[:new]
   end
 end
