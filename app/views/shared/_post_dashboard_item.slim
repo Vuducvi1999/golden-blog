@@ -13,7 +13,7 @@
       = link_to post_path(post), class:"w-100" do
         div style="background-image: url(#{url_for(post.thumbnail)}); padding-top: 70% ; width: 100%"
           / img src="#{url_for(post.thumbnail)}" style="visibility: hidden; width:100%; "
-  - else  
+  - elsif not hide_image
     .thumbnail-post-dashboard.d-flex.p-0
       = link_to post_path(post), class:"w-100" do
         div style="background-image: url(#{url_for(post.thumbnail)}); padding-top: 100% ; width: 100%"

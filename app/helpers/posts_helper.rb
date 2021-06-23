@@ -14,4 +14,13 @@ module PostsHelper
   def is_approved
     @post.status == Post::STATUS[:approved]
   end
+
+  def is_new
+    @post.status == Post::STATUS[:new]
+  end
+
+  def is_rejected
+    @post.status == Post::STATUS[:new]
+  end
+
 end

@@ -16,12 +16,7 @@
         .d-flex.justify-content-between 
           = link_to 'Edit', edit_dashboard_post_path(@post), class:'btn btn-primary py-2 fs-5'
           = link_to 'Delete', dashboard_post_path(@post), method:'delete', class:'btn btn-danger py-2 fs-5',data: {confirm: 'Are you sure?'}
-      - elsif is_admin
-        .d-flex.justify-content-between
-          - if not is_approved
-            = link_to 'Approve', approve_post_dashboard_post_path(@post), method:'post', class:'btn btn-primary py-2 fs-5'
-          - else
-            = link_to 'Reject', reject_post_dashboard_post_path(@post), method:'post', class:'btn btn-primary py-2 fs-5'
+
       - if is_approved
         .post-comment-create
           - if current_user.present?

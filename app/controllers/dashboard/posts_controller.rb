@@ -128,7 +128,7 @@ class Dashboard::PostsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_post
-      @post = Post.find_by(id:params[:id]).includes(:categories)
+      @post = Post.find_by(id:params[:id])
       unless @post.present?
         flash[:alert] = "Post not found"
         redirect_back fallback_location: root_path
