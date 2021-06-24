@@ -1,0 +1,62 @@
+
+- banner_path = asset_path('blog-template/home-bg.jpg')
+- site_headings = {h1: "Edit #{resource_name.to_s.humanize}", subheading: ''}
+= render partial:'layouts/banner', locals:{banner_path:banner_path, site_headings:site_headings}
+
+
+.container
+  .row
+    .col-6.offset-3.mb-5
+      = form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|
+        = render "devise/shared/error_messages", resource: resource
+        .mb-3
+          i.fas.fa-exclamation.text-danger.me-1
+          = f.label :username, class:'mb-2'
+          br
+          = f.text_field :username, autofocus: true, autocomplete: "username",class:'form-control'
+        .mb-3
+          i.fas.fa-exclamation.text-danger.me-1
+          = f.label :email, class:'mb-2'
+          br
+          = f.email_field :email, autofocus: true, autocomplete: "email", class:'form-control'
+        - if devise_mapping.confirmable? && resource.pending_reconfirmation?
+          div
+            | Currently waiting confirmation for: 
+            = resource.unconfirmed_email
+        .mb-3
+          = f.label :password, class:'mb-2'
+          i[style="font-size: .7em"]
+            |  (leave blank if you don't want to change it)
+          br
+          = f.password_field :password, autocomplete: "new-password", class:'form-control'
+          - if @minimum_password_length
+
+        .mb-3
+          = f.label :password_confirmation, class:'mb-2'
+          br
+          = f.password_field :password_confirmation, autocomplete: "new-password", class:'form-control'
+        .mb-3
+          i.fas.fa-exclamation.text-danger.me-1
+          = f.label :current_password, class:'mb-2'
+          i[style="font-size: .7em"]
+            |  (we need your current password to confirm your changes)
+          br
+          = f.password_field :current_password, autocomplete: "current-password", class:'form-control'
+        .mb-3.row.align-items-center
+          .col-3            
+            = f.label :avatar, class:'btn w-100 fs-5', style:'cursor: pointer' do
+              i.far.fa-file-image
+              | Avatar
+            = f.file_field :avatar, class:'form-control focus-box-none d-none'
+          .col-3
+            - if current_user.avatar.present?
+                img.w-100.rounded src="#{url_for(current_user.avatar)}"
+            - else
+                img.w-100.rounded src="#{url_for(asset_path 'avatar-default.png')}"
+        .mb-3
+          = f.submit "Update", class:'btn btn-primary py-2 fs-5 w-100'
+      h3.my-4
+        | Unhappy?
+      .mb-3
+        = button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" },\
+        method: :delete, class:'btn btn-danger py-2 fs-5 w-100'

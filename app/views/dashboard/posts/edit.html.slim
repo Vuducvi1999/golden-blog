@@ -1,0 +1,12 @@
+
+.container.no-banner-styles
+  .row.my-5 
+    .col-2 
+    .col-8 
+      = link_to :back do 
+        i.fas.fa-long-arrow-alt-left 
+        |  Back 
+      h1.mb-3 Editing Post
+      = render 'form', post: @post 
+
+      

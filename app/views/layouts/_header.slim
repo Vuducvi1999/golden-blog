@@ -1,0 +1,54 @@
+- if current_user 
+  - add_classes = "user-layout"
+- else 
+  - add_classes = ''
+
+nav#mainNav.navbar.navbar-expand-lg.border-0 class='#{add_classes}'
+  .container.px-4.px-lg-5
+    = link_to root_path, class:'navbar-brand ' do
+      | GoldenOld Blog
+    button.navbar-toggler[type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"]
+      |  Menu 
+      i.fas.fa-bars
+    #navbarResponsive.collapse.navbar-collapse
+      ul.navbar-nav.ms-auto.py-4.py-lg-0  style="position: relative"
+        li.nav-item
+          a href='#collapse-search' class='nav-link px-lg-3 py-3 py-lg-4' data-bs-toggle="collapse"
+            | Search
+          div class="collapse content-collapse-search" id="collapse-search"
+            = form_with url: search_dashboard_posts_path, method:'get', class:'input-group p-relative' do |f|
+              = f.text_field :post_title, class:'form-control focus-box-none border-0'
+              button class="btn bg-white p-0 pe-1 focus-box-none dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"
+                | Categories
+              - count_item_to_select = Category.count < 5 ? Category.length : 5
+              = f.select :categories_id, Category.pluck(:name, :id), {},\
+                multiple:true, size: count_item_to_select,\
+                class:'form-select focus-box-none dropdown-menu categories-search-dropdown border-left-0 border-right-0'
+              = button_tag class:'btn btn-primary p-0 px-2 focus-box-none' do 
+                i class="fas fa-search"
+        li.nav-item
+          = link_to about_path, class:'nav-link px-lg-3 py-3 py-lg-4' do 
+            | About
+        li.nav-item
+          = link_to contact_path, class:'nav-link px-lg-3 py-3 py-lg-4' do 
+            | Contact
+        li.nav-item.dropdown
+          a#header-account-menu.dropdown-toggle.nav-link.px-lg-3.py-3.py-lg-4 href="#" data-bs-toggle="dropdown"
+            - if current_user.present?
+              |  #{current_user.username}
+            - else 
+              |  Hello guest 
+          - if current_user.present?
+            ul class="dropdown-menu bg-custom-transparent border-0 user-dropdown-menu " aria-labelledby="header-account-menu"
+              li
+                = link_to  "Dashboard", dashboard_path, class:'dropdown-item '
+              li 
+                = link_to  "Profile", edit_user_registration_path, class:'dropdown-item '
+              li
+                = link_to  "signout", destroy_user_session_path, method:'delete', class:'dropdown-item '
+          - else 
+            ul class="dropdown-menu bg-custom-transparent border-0 guest-dropdown-menu " aria-labelledby="header-account-menu"
+              li
+                = link_to  "Log in", new_user_session_path, class:'dropdown-item '
+              li 
+                = link_to  "Sign up", new_user_registration_path, class:'dropdown-item '
