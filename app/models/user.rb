@@ -14,6 +14,8 @@ class User < ApplicationRecord
 
   has_one_attached :avatar, dependent: :destroy
 
+  acts_as_voter
+
   ROLES = {
     :admin => 1,
     :user => 0

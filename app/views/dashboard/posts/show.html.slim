@@ -1,10 +1,28 @@
 
+
+script 
+  = render "dashboard/posts/show_post.js"
+
+
 = render partial: 'layouts/banner', locals:{banner_path: url_for(@post.thumbnail), post:@post }
 
-.container
-  .row.mb-5
+.container 
+  .row.mb-5 
     .col-2 
-    .col-8
+      #vote-component.d-flex.sticky-top.flex-column.align-items-end
+        = link_to like_dashboard_post_path(@post), method:'post', id:'like-vote', remote:true do
+          - if current_user.voted_up_on? @post
+            i class="fas fa-caret-up fs-1 text-success"
+          - else 
+            i class="fas fa-caret-up fs-1"
+        p#score-vote.m-0.fw-bold.font-monospace.pe-1 
+          | #{@post.weighted_score}
+        = link_to dislike_dashboard_post_path(@post), method:'post', id:'unlike-vote', remote:true do
+          - if current_user.voted_down_on? @post
+            i class="fas fa-caret-down fs-1 text-danger"
+          - else 
+            i class="fas fa-caret-down fs-1"
+    .col-8        
       - if current_user&.is_author_of? @post
         h5.mb-3.text-info Waiting for admin to approve this post
       .mb-3
@@ -28,6 +46,7 @@
               |  Please 
               = link_to "login", new_user_session_path, class:"text-decoration-none text-primary" 
               |  to comment.
+
         h5#count-number-comments.border-bottom.pb-2
           | #{@post.comments.length} comments
         #comments-list.list-comments-post

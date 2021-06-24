@@ -14,6 +14,8 @@ class Post < ApplicationRecord
   has_many :categories, through: :post_categories, dependent: :destroy
   has_many :comments, dependent: :destroy
 
+  acts_as_votable
+
   STATUS = {
     new: 0,
     approved: 1,

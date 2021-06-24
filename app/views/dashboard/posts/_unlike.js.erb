@@ -1,0 +1,3 @@
+$("#score-vote").text(`<%= @post.weighted_score%>`)
+$('#like-vote i').removeClass('text-success')
+$('#unlike-vote i').toggleClass('text-danger')

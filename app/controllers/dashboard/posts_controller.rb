@@ -1,7 +1,7 @@
 
 class Dashboard::PostsController < ApplicationController
   before_action :authenticate_user!, except: %i[show search]
-  before_action :set_post, only: %i[show edit update destroy approve_post reject_post ]
+  before_action :set_post, only: %i[show edit update destroy approve_post reject_post like dislike]
   before_action :check_post_status, only: %i[show]
   before_action :check_admin_to_change_status, only: %i[approve_post reject_post]
 
@@ -95,6 +95,34 @@ class Dashboard::PostsController < ApplicationController
     @categories = Category.search_by categories_id
     @posts = Post.search_by post_title
     @posts = categories_id.empty? ? @posts : @posts.filter_by_categories(categories_id)
+  end
+
+  # like
+  def like    
+    if current_user.liked? @post 
+      @post.unliked_by current_user
+      puts current_user.liked? @post 
+      puts "like"
+    else 
+      @post.liked_by current_user
+      puts current_user.liked? @post
+      puts "unlikes"
+    end
+    render partial:"dashboard/posts/like.js.erb"
+  end
+  
+  # unlike
+  def dislike
+    if current_user.disliked? @post 
+      @post.undisliked_by current_user
+      puts current_user.disliked? @post 
+      puts "undislike"
+    else 
+      @post.disliked_by current_user
+      puts current_user.disliked? @post
+      puts "dislike"
+    end
+    render partial:"dashboard/posts/unlike.js.erb"
   end
 
   private
