@@ -1,0 +1,13 @@
+
+- banner_path = asset_path('blog-template/home-bg.jpg')
+- site_headings = {h1: 'GoldenOwl Blog', subheading: 'Quality articles with famous writers'}
+= render partial:'layouts/banner', locals:{banner_path:banner_path, site_headings:site_headings}
+
+.container.mb-5
+  .row.gx-4.gx-lg-5.justify-content-center
+    .col-md-10.col-lg-8.col-xl-7
+      - @posts.each_with_index do |post, index|
+        .post-preview
+          = render partial: 'shared/post_item_list', locals:{post: post}
+        - if index != @posts.length - 1
+          hr.my-4

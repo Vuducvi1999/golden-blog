@@ -1,0 +1,35 @@
+
+
+- banner_path = asset_path('blog-template/home-bg.jpg')
+- site_headings = {h1: 'Sign up', subheading: 'Create an account for blogger'}
+= render partial:'layouts/banner', locals:{banner_path:banner_path, site_headings:site_headings}
+
+.container.mb-5
+  .row
+    .col-6.offset-3
+      = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+        = render "devise/shared/error_messages", resource: resource
+        .mb-3
+          = f.label :username, class:'mb-2'
+          br
+          = f.text_field :username, autofocus: true, autocomplete: "username",class:'form-control'
+        .mb-3
+          = f.label :email, class:'mb-2'
+          br
+          = f.email_field :email, autofocus: true, autocomplete: "email",class:'form-control'
+        .mb-3
+          = f.label :password, class:'mb-2'
+          - if @minimum_password_length
+            i[style="font-size: .7em"]
+              |  (
+              = @minimum_password_length
+              |  characters minimum)
+          br
+          = f.password_field :password, autocomplete: "new-password",class:'form-control'
+        .mb-3
+          = f.label :password_confirmation, class:'mb-2'
+          br
+          = f.password_field :password_confirmation, autocomplete: "new-password", class:'form-control'
+        .mb-3.d-grid.gap-1
+          = f.submit "Sign up", class:'btn btn-primary py-2 fs-5 btn-block'
+      = render "devise/shared/links"

@@ -1,0 +1,14 @@
+
+
+.container.no-banner-styles.min-height
+  .row.mb-5
+    .col-2 
+    .col-8 
+      h1 Dashboard
+      .d-flex
+        - if not is_admin
+          = link_to  "My posts", dashboard_posts_path, class:'btn btn-primary fs-5 py-2'
+          = link_to  "Add new Post", new_dashboard_post_path, class:'btn btn-primary fs-5 ms-2 py-2'
+        - if is_admin
+          = link_to  "Categories manage", dashboard_categories_path, class:'btn btn-primary fs-5 ms-2 py-2'
+          = link_to  "Posts manage", dashboard_manage_posts_path, class:'btn btn-primary fs-5 ms-2 py-2'

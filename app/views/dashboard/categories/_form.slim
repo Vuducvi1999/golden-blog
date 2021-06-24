@@ -1,0 +1,15 @@
+= form_with(model: [:dashboard, category]) do |form|
+  - if category.errors.any?
+    / #error_explanation
+    /   h2
+    /     = pluralize(category.errors.count, "error")
+    /     | prohibited this category from being saved:
+    /   ul
+    - category.errors.each do |error|
+      = render partial:'shared/toastr_error.slim', locals:{message: error.full_message}
+    
+  .mb-3.form-floating
+    = form.text_field :name, id:'category name', class:'form-control', placeholder: "Category"
+    = form.label 'Category name', for:'category name'
+  .mb-3
+    = form.submit 'Create', class:'btn btn-primary py-2 fs-5'

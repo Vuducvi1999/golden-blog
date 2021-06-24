@@ -1,0 +1,24 @@
+= form_with model: [:dashboard, post], class:'mt-4' do |form|
+  - if post.errors.any?
+    - post.errors.each do |error|
+      = render partial:'shared/toastr_error.slim', locals:{message: error.full_message}
+
+  .my-5.form-floating
+    = form.text_field :title, id:'title',class:'form-control title-create focus-box-none fs-3', placeholder:'Title'
+    = form.label 'Title', for:'title', class:'label-title-create p-0'
+  .mb-4.form-floating
+    = form.text_field :short_description,id:"short description", class:'form-control title-create short-des-create focus-box-none fs-5 fw-light', placeholder:'Short description'
+    = form.label 'Short Description', for:'short description', class:'label-short-des-create p-0'
+  .mb-4.row
+    = form.label :thumbnail, class:'col-2'
+    .col-10 
+      = form.file_field :thumbnail, class:'form-control focus-box-none', placeholder:'Thumbnail'
+  .mb-4.row 
+    = form.label :categories, class:'col-2'
+    .col-10
+      = form.select :categories_id, Category.pluck(:name, :id), {selected:post.categories.pluck(:id)}, \
+      multiple:true, size: 5, class:'form-select focus-box-none'
+  .mb-5
+    = form.rich_text_area :content,id:'content', cols:4, class:'trix-content form-control focus-box-none rich_text_content', placeholder:"Typing..."
+  .mb-3
+    = form.submit class:'btn btn-primary py-2 fs-5'

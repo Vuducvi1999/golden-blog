@@ -1,0 +1,11 @@
+.container.no-banner-styles.min-height
+  .row.mb-5
+    .col-2 
+    .col-8 
+      = link_to dashboard_categories_path, class:'mb-3 d-inline-block' do 
+        i.fas.fa-long-arrow-alt-left
+        |  Back
+      h1 New Category
+
+      = render 'form', category: @category
+      
