@@ -1,5 +1,7 @@
 
 
+<%current_rate_score = current_user.get_rate_with(@post).score.to_i%>
+<%not_rate_score = 5 - current_rate_score%>
 
 for (let i=1; i<=5;i++){
   $(`#score-${i}`).click(()=>{
@@ -9,11 +11,17 @@ for (let i=1; i<=5;i++){
   $(`#score-${i}`).hover(
     (over)=>{
       for(let j=1; j<=i; j++)
-        $(`#score-${i}`).addClass('text-warning')
+        $(`#score-${j}`).addClass('text-warning')
+      for(let j=i+1; j<= 5; j++)
+        $(`#score-${j}`).removeClass('text-warning')
     },
     (out)=>{
-      for (let j=1; j<=5;j++)
-        $(`#score-${j}`).removeClass('text-warning')      
+      for(let j=1; j<=<%=current_rate_score%>;j++)
+          $(`#score-${j}`).addClass('text-warning')      
+      for(let j=<%=current_rate_score%>+1; j<=5;j++)
+          $(`#score-${j}`).removeClass('text-warning')      
+
+      
     }
   )
 }
