@@ -9,8 +9,8 @@ class User < ApplicationRecord
          :omniauthable, omniauth_providers: [:google_oauth2, :facebook]
 
   has_many :posts, dependent: :destroy
-
   has_many :comments, dependent: :destroy
+  has_many :rates, dependent: :destroy
 
   has_one_attached :avatar, dependent: :destroy
 
@@ -23,6 +23,10 @@ class User < ApplicationRecord
 
   def is_admin?
     self.role == User::ROLES[:admin]
+  end
+
+  def get_rate_with post
+    self.rates.find_by(post_id: post.id)
   end
 
   def is_author_of? post

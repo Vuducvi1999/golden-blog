@@ -13,6 +13,7 @@ class Post < ApplicationRecord
   has_many :post_categories, dependent: :destroy
   has_many :categories, through: :post_categories, dependent: :destroy
   has_many :comments, dependent: :destroy
+  has_many :rates, dependent: :destroy
 
   acts_as_votable
 
@@ -26,8 +27,17 @@ class Post < ApplicationRecord
   scope :search_by, ->(post_title){ joins(:post_categories)
                                     .where(["lower(title) like ?","%#{post_title.downcase}%"])
                                     .order(updated_at: :desc) }
+  
   def is_approved?
     self.status == Post::STATUS[:approved]
+  end
+
+  def average_score
+    self.rates.average(:score)
+  end
+
+  def rate_by_user_with_score current_user, score 
+    self.rates.find_by(user_id: current_user.id).update(score: score)
   end
 
   def is_new?

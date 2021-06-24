@@ -1,7 +1,7 @@
 
 class Dashboard::PostsController < ApplicationController
   before_action :authenticate_user!, except: %i[show search]
-  before_action :set_post, only: %i[show edit update destroy approve_post reject_post like dislike]
+  before_action :set_post, only: %i[show edit update destroy approve_post reject_post like dislike rate]
   before_action :check_post_status, only: %i[show]
   before_action :check_admin_to_change_status, only: %i[approve_post reject_post]
 
@@ -97,7 +97,7 @@ class Dashboard::PostsController < ApplicationController
     @posts = categories_id.empty? ? @posts : @posts.filter_by_categories(categories_id)
   end
 
-  # like
+  # toogle like
   def like    
     if current_user.liked? @post 
       @post.unliked_by current_user
@@ -111,7 +111,7 @@ class Dashboard::PostsController < ApplicationController
     render partial:"dashboard/posts/like.js.erb"
   end
   
-  # unlike
+  # toogle unlike
   def dislike
     if current_user.disliked? @post 
       @post.undisliked_by current_user
@@ -123,6 +123,20 @@ class Dashboard::PostsController < ApplicationController
       puts "dislike"
     end
     render partial:"dashboard/posts/unlike.js.erb"
+  end
+  
+  # rate
+  def rate 
+    score = params[:score]
+    unless current_user.get_rate_with @post
+      @rate = @post.rates.build(score: score)
+      @rate.user = current_user 
+      @rate.save 
+    else
+      @post.rate_by_user_with_score current_user, score
+      @post.save
+    end
+    render partial:"dashboard/posts/rate.js.erb"
   end
 
   private

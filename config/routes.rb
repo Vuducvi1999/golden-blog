@@ -19,6 +19,7 @@ Rails.application.routes.draw do
         post 'reject_post'
         post 'like'
         post 'dislike'
+        post 'rate'
 
       end
       collection do

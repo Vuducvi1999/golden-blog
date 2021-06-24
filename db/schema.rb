@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_24_092143) do
+ActiveRecord::Schema.define(version: 2021_06_24_115444) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -98,6 +98,16 @@ ActiveRecord::Schema.define(version: 2021_06_24_092143) do
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
+  create_table "rates", force: :cascade do |t|
+    t.decimal "score", precision: 5, scale: 2
+    t.bigint "user_id", null: false
+    t.bigint "post_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["post_id"], name: "index_rates_on_post_id"
+    t.index ["user_id"], name: "index_rates_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "username"
     t.string "email", default: "", null: false
@@ -150,4 +160,6 @@ ActiveRecord::Schema.define(version: 2021_06_24_092143) do
   add_foreign_key "post_categories", "categories"
   add_foreign_key "post_categories", "posts"
   add_foreign_key "posts", "users"
+  add_foreign_key "rates", "posts"
+  add_foreign_key "rates", "users"
 end
