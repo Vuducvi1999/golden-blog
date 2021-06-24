@@ -10,6 +10,8 @@ class Dashboard::PostsController < ApplicationController
   end
 
   def show
+    @comment_paginate = @post.comments.paginate(page: params[:page], per_page: 10).order(updated_at: :desc)
+    
     respond_to do |format|
       format.html
       format.js {render partial:'dashboard/posts/show.js.erb'}

@@ -33,10 +33,10 @@
         #comments-list.list-comments-post
           - unless @post.comments.empty?
             #wrap-comments-component
-              - comment_paginate(@post.comments).each do |comment|
+              - @comment_paginate.each do |comment|
                 = render partial: 'dashboard/comments/comment_item', locals: {comment: comment}
             #call-paginate-ajax.d-flex.justify-content-center 
-              = will_paginate comment_paginate(@post.comments), inner_window: 2, outer_window: 1,\
+              = will_paginate @comment_paginate, inner_window: 2, outer_window: 1,\
                 :renderer => RemoteLinkPaginationHelper::LinkRenderer
           - else 
             i#message-no-comment.my-3 style="font-size:1.1rem" 

@@ -6,8 +6,14 @@ class Dashboard::CommentsController < ApplicationController
     @comment = @post.comments.build(comment_params)
     @comment.user = current_user
     
-    flash[:alert] = "Fail to add comment" unless @comment.save 
-    redirect_to @post
+     unless @comment.save 
+      flash[:alert] = "Fail to add comment"
+     end
+    
+    respond_to do |format|
+      format.html {redirect_to post_path(@post)}
+      format.js {render partial:'dashboard/comments/create.js.erb'}
+    end
   end
   
   def update    

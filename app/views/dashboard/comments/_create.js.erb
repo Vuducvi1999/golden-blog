@@ -1,3 +1,5 @@
 $("#comments-list").prepend("<%= j render partial:'comment_item', locals:{comment:@comment} %>")
 $("#count-number-comments").html("<%= @post.comments.length %> comments")
 $("#text-area-comment").val("")
+$("#message-no-comment").html('')
+
