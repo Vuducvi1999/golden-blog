@@ -1,0 +1,33 @@
+class Post < ApplicationRecord
+  validates :title, presence: true
+  validates :content, presence: true
+  validates :categories, presence: { message:"must be given please"}
+  validates :thumbnail, presence: { message:"must be given please"}
+
+  before_create do |post|
+    post.status = Post::STATUS[:new]
+  end
+  
+  has_rich_text :content
+  has_one_attached :thumbnail, dependent: :destroy
+  
+  belongs_to :user
+  has_many :post_categories, dependent: :destroy
+  has_many :categories, through: :post_categories, dependent: :destroy
+
+  has_many :comments, dependent: :destroy
+
+  STATUS = {
+    new: 0,
+    approved: 1,
+    rejected: 2
+  }
+
+  scope :filter_by_categories, ->(categories_id){ where "post_categories.category_id in (#{categories_id.join(',')})" }
+
+  scope :search_by, ->(post_title){ joins(:post_categories)
+                                    .where(["lower(title) like ?","%#{post_title.downcase}%"])
+                                    .order(updated_at: :desc) }
+
+
+end

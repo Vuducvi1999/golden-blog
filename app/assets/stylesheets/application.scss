@@ -13,6 +13,10 @@
  *= require_tree .
  *= require_self
  */
+@import "./actiontext.scss";
+@import "./home.scss";
+@import "./posts.scss";
+@import "./dashboard.scss";
 
 .sign-in-with {
   position: relative;
@@ -30,4 +34,89 @@
     width: 100%;
     z-index: -100;
   }
+}
+
+.title-create {
+  border: none !important;
+  border-bottom: 1px solid #dee2e6 !important;
+  padding: 0 !important;
+  font-size: 1.6rem !important;
+  font-weight: bolder !important;
+  &:focus {
+    border-bottom: 1px solid #80c2d0 !important;
+  }
+}
+
+.focus-box-none {
+  &:focus, &:active, &:visited {
+    box-shadow: none !important;
+  }  
+}
+
+.rich_text_content {
+  border: none !important;
+  padding: 0 !important;
+}
+
+.full-background-dashboard::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: -100;
+  background-color: #343a40;
+  min-width: 100%;
+}
+
+.bg-light-dark {
+  background-color: #343a40;
+}
+
+.bg-custom-transparent {
+  background-color: transparent !important;
+}
+
+.text-dark * {
+  color: #212529 !important;
+}
+
+.no-banner-styles {
+  margin-top: 7rem;
+}
+
+.min-height {
+  min-height: 100vh;
+  &.no-banner-styles {
+    min-height: calc(100vh - 7rem);
+  }
+}
+
+.form-floating {
+  & > input.title-create {
+    height: 2rem;
+  }
+
+  & > .form-control.title-create {
+    &:focus ~ label {
+      transform: scale(0.65) translateY(-2.5rem);
+    }
+    &:not(:placeholder-shown) ~ label {
+      transform: scale(0.65) translateY(-2.5rem);
+    }
+  }
+
+  & > .form-control.title-create.short-des-create {
+    &:focus ~ label {
+      transform: scale(0.65) translateY(-2rem);
+    }
+    &:not(:placeholder-shown) ~ label {
+      transform: scale(0.65) translateY(-2rem);
+    }
+  }
+}
+
+.message-emty-items {
+  color: rgb(129, 129, 129);
+  font-size: 1.1rem;
 }

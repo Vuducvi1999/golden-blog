@@ -1,0 +1,30 @@
+
+.container.no-banner-styles.min-height
+  .row.mb-5
+    .col-2 
+    .col-8 
+      - if @posts.empty?
+        .row.text-center.text-muted
+          .col-4.offset-4
+            img src="#{asset_path 'dashboard/newspaper.png'}" class="far fa-newspaper dashboard-post-image"
+          .col-6.offset-3 
+            p.m-0.fw-bold.fs-4 
+              | No blogs posted 
+            p.m-3 style='font-size: 1.1rem'
+              | You haven't posted any blogs yet, so we don't have anything to show you! Go 
+              = link_to  "create some", new_dashboard_post_path, class:'text-primary text-decoration-none'
+              | !
+
+      - else 
+        - @posts.each_with_index do |post, index|
+          - if index != @posts.length - 1
+            .border-bottom 
+              = render partial:'shared/post_dashboard_item', locals: { post:post }
+          - else 
+            = render partial:'shared/post_dashboard_item', locals: { post:post }
+        / tr
+        /   td= post.title
+        /   td= link_to 'Show', post_path(post)
+        /   td= link_to 'Edit', edit_dashboard_post_path(post)
+        /   td= link_to 'Destroy', dashboard_post_path(post), method: :delete, data: {confirm: 'Are you sure?'}
+      

@@ -1,0 +1,16 @@
+.my-3.d-grid style="grid-template-columns: 6% auto;" 
+  .image-user.me-3
+    - if comment.user.avatar.present?
+      - avatar = url_for(comment.user.avatar)
+    - else 
+      - avatar = asset_path 'avatar-default.png'
+    img.w-100 src="#{avatar}"
+  .info-comment
+    .d-flex
+      h6.m-0.me-2 
+        | #{comment.user.username}
+      p.m-0 style="font-size: .8rem"
+        i class="far fa-clock me-1"
+        | #{time_ago_in_words comment.created_at} ago
+    p.m-0.mt-3 style="white-space: pre-line;"
+      | #{comment.content}

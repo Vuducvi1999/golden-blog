@@ -1,0 +1,16 @@
+- banner_path = asset_path('blog-template/home-bg.jpg')
+- site_headings = {h1: 'Forgot your password?', subheading: ''}
+= render partial:'layouts/banner', locals:{banner_path:banner_path, site_headings:site_headings}
+
+.container
+  .row
+    .col-6.offset-3.mb-5
+      = form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f|
+        = render "devise/shared/error_messages", resource: resource
+        .mb-3
+          = f.label :email, class:'mb-2'
+          br
+          = f.email_field :email, autofocus: true, autocomplete: "email", class:'form-control'
+        .mb-3.d-grid.gap-1
+          = f.submit "Send instructions", class:'btn btn-primary py-2 fs-5 btn-block'
+      = render "devise/shared/links"

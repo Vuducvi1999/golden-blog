@@ -1,0 +1,30 @@
+
+
+- is_admin_manage ||= false
+- hide_image ||= false 
+- small_thumbnail ||= false 
+- add_class_grid = hide_image ? '' : (is_admin_manage ? 'dashboard-your-posts small-thumbnail-dashboard py-2' : 'dashboard-your-posts')
+- add_class_post_title = is_admin_manage ? 'mt-2 d-inline-block mb-0' : 'post-title d-inline-block mb-0'
+- add_class_post_meta = is_admin_manage ? 'mb-2 post-meta' : 'post-meta'
+
+.d-grid class="#{add_class_grid}"
+  - if not is_admin_manage
+    .thumbnail-post-dashboard.d-flex style=" padding-bottom: 10%; "
+      = link_to post_path(post), class:"w-100" do
+        div style="background-image: url(#{url_for(post.thumbnail)}); padding-top: 70% ; width: 100%"
+          / img src="#{url_for(post.thumbnail)}" style="visibility: hidden; width:100%; "
+  - elsif not hide_image
+    .thumbnail-post-dashboard.d-flex.p-0
+      = link_to post_path(post), class:"w-100" do
+        div style="background-image: url(#{url_for(post.thumbnail)}); padding-top: 100% ; width: 100%"
+  .info-by-word-post-dashboard.post-preview 
+    = link_to post_path(post) do
+      h2 class="#{add_class_post_title}" style="font-size: 1.7rem"
+        | #{post.title}
+      br
+      - if not is_admin_manage
+        h3.post-subtitle.d-inline-block style="font-size: 1.3rem"
+          | #{post.short_description}
+    p class="#{add_class_post_meta}" style="font-size: 0.9rem; margin-bottom: 1rem"
+      |  #{post.created_at.strftime("%m/%d/%Y, %H:%M:%S")}
+

@@ -1,0 +1,29 @@
+
+- banner_path = asset_path('blog-template/home-bg.jpg')
+- params_caregories = params[:categories_id]
+- site_headings = {h1: 'Search', subheading: params[:post_title] ? params[:post_title] : '' }
+= render partial:'layouts/banner', locals:{banner_path:banner_path, site_headings:site_headings}
+
+
+.container.mb-5
+  .row.gx-4.gx-lg-5.justify-content-center
+    .col-md-10.col-lg-8.col-xl-7
+      .d-flex.mb-5.align-items-baseline.font-monospace style="font-size: 1.2rem"
+        i class="fas fa-tags me-2"
+        - @categories.each do |item|
+              = link_to search_dashboard_posts_path(categories_id:[item[0]]), class:'me-2 badge bg-secondary badge-category fw-bold' do 
+                | #{item[1]}
+      -  if not @posts.empty?
+        - @posts.each_with_index do |post, index|
+          .post-preview
+            = render partial: 'shared/post_item_list', locals:{post: post}
+          - if index != @posts.length - 1
+            hr.my-4 
+      - else 
+        .col-8.offset-2.text-center.text-muted
+          img src="#{asset_path 'not-found-post'}"
+          p.m-0.fw-bold.fs-4
+            | Not found any post 
+          p.m-0.mt-2 style='font-size: 1.1rem'
+            | Sorry! We don't find any post by your key words. We suggest you to make sure title post or categories must be exist first.
+

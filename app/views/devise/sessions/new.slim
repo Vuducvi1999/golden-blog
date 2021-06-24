@@ -1,0 +1,28 @@
+
+- banner_path = asset_path('blog-template/home-bg.jpg')
+- site_headings = {h1: 'Log in', subheading: 'Manage your blogs'}
+= render partial:'layouts/banner', locals:{banner_path:banner_path, site_headings:site_headings}
+
+.container.mb-5
+  .row
+    .col-6.offset-3.mb-5
+      / = link_to :back, class:'mb-3 d-block' do
+      /   i.fas.fa-long-arrow-alt-left
+      /   |  Back 
+      = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+        .mb-3
+          = f.label :email, class:'mb-2'
+          br
+          = f.email_field :email, autofocus: true, autocomplete: "email",class:'form-control'
+        .mb-3
+          = f.label :password, class:'mb-2'
+          br
+          = f.password_field :password, autocomplete: "current-password",class:'form-control'
+        - if devise_mapping.rememberable?
+          .mb-3
+            = f.check_box :remember_me
+            |  
+            = f.label :remember_me
+        .mb-3.d-grid.gap-1
+          = f.submit "Log in", class:'btn btn-primary py-2 fs-5 btn-block'
+      = render "devise/shared/links"
