@@ -28,6 +28,17 @@ class Post < ApplicationRecord
   scope :search_by, ->(post_title){ joins(:post_categories)
                                     .where(["lower(title) like ?","%#{post_title.downcase}%"])
                                     .order(updated_at: :desc) }
+    
+  def is_approved?
+    self.status == Post::STATUS[:approved]
+  end
 
+  def is_new?
+    self.status == Post::STATUS[:new]
+  end
+
+  def is_rejected?
+    self.status == Post::STATUS[:new]
+  end
 
 end

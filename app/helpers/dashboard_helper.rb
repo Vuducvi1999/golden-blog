@@ -1,8 +1,5 @@
 module DashboardHelper
-  def is_admin
-    current_user.role == User::ROLES[:admin]
-  end
-
+  
   def new_posts_paginate posts
     posts.paginate(page: params[:page_new_posts], per_page: 10).order(updated_at: :desc)
   end

@@ -18,9 +18,9 @@ header.masthead[style="background-image: url(#{banner_path})"]
             span.meta.p-relative
               |  Posted by #{post.user.username} 
               |  on #{post.created_at.strftime("%B #{post.created_at.day.ordinalize}, %Y")}
-              - if is_admin
+              - if current_user&.is_admin?
                 .d-flex.justify-content-between.fst-normal style="position: absolute; top: 100%; margin-top: 1rem"
-                  - if is_new
+                  - if post.is_new?
                     #change-status-actions
                       = link_to approve_post_dashboard_post_path(@post), method:'post', remote: true, class:'focus-box-none btn text-success p-0 fs-5' do 
                         i class="fas fa-check me-1"
@@ -30,7 +30,7 @@ header.masthead[style="background-image: url(#{banner_path})"]
                         i class="fas fa-times me-1"
                         | Reject
                     p#result-change-status.fs-5.m-0.fw-bold.fs-4.fst-normal
-                  - elsif is_approved 
+                  - elsif @post.is_approved? 
                     p.fs-5.text-success.m-0.fw-bold.fs-4.fst-normal
                       | Approved
                   - else

@@ -5,7 +5,7 @@
   .row.mb-5
     .col-2 
     .col-8
-      - if is_author
+      - if current_user&.is_author_of? @post
         h5.mb-3.text-info Waiting for admin to approve this post
       .mb-3
         = @post.content.to_s.html_safe
@@ -14,12 +14,12 @@
         - @post.categories.pluck(:id,:name).each do |item|
             = link_to search_dashboard_posts_path(categories_id:[item[0]]), class:'me-2 badge bg-secondary badge-category fw-bold' do 
               | #{item[1]}
-      - if is_author
+      - if current_user&.is_author_of? @post
         .d-flex.justify-content-between 
           = link_to 'Edit', edit_dashboard_post_path(@post), class:'btn btn-primary py-2 fs-5'
           = link_to 'Delete', dashboard_post_path(@post), method:'delete', class:'btn btn-danger py-2 fs-5',data: {confirm: 'Are you sure?'}
 
-      - if is_approved
+      - if @post.is_approved?
         .post-comment-create
           - if current_user.present?
             = render partial: 'dashboard/comments/form'

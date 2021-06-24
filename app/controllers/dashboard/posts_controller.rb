@@ -113,16 +113,16 @@ class Dashboard::PostsController < ApplicationController
     def check_post_status
       @post = Post.find_by id:params[:id]
 
-      if is_new_post
+      if @post.is_new?
         return condition_post_if_status_is 'new'
-      elsif is_rejected_post
+      elsif @post.is_rejected?
         return condition_post_if_status_is 'rejected'
       end
     end
 
     def condition_post_if_status_is status
       # nếu người dùng đã đăng nhập và là tác giả hoặc admin thì tiếp tục process
-      return if current_user && (is_admin || is_author)
+      return if current_user&.is_admin? || current_user&.is_author_of?(@post)
       # nếu không thì redirect và alert
       return status=="new" ? message_and_redirect_if_post_is_new : message_and_redirect_if_post_is_rejected
     end
@@ -145,7 +145,7 @@ class Dashboard::PostsController < ApplicationController
     # kiểm tra người change status có phải là admin hay không
     def check_admin_to_change_status
       @post = Post.find_by id:params[:id]
-      return message_and_redirect_if_user_not_admin unless current_user || is_admin
+      return message_and_redirect_if_user_not_admin unless current_user || current_user.is_admin?
       return
     end
 end

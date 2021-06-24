@@ -19,6 +19,14 @@ class User < ApplicationRecord
     :user => 0
   }
 
+  def is_admin?
+    self.role == User::ROLES[:admin]
+  end
+
+  def is_author_of? post
+    self.id == post.user.id
+  end
+
   def self.from_omniauth(access_token)
     data = access_token.info
     user = User.where(email: data['email']).first
