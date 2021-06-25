@@ -13,8 +13,10 @@ header.masthead[style="background-image: url(#{banner_path})"]
             h1
               | #{post.title}
             - if post.short_description
-              h2.subheading
+              h2.subheading style="margin-bottom: 0.5rem"
                 | #{post.short_description}
+            #heading-rate style="margin-bottom: 0.5rem"
+              = render partial:"shared/rating_score_component", locals:{average_score: post.average_score}
             span.meta.p-relative
               |  Posted by #{post.user.username} 
               |  on #{post.created_at.strftime("%B #{post.created_at.day.ordinalize}, %Y")}
