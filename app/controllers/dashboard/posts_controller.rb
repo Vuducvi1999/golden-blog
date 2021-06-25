@@ -186,10 +186,9 @@ class Dashboard::PostsController < ApplicationController
       return redirect_back fallback_location:root_path  
     end
 
-    # kiểm tra người change status có phải là admin hay không
+    # kiểm tra người change status có phải là admin hay không 
     def check_admin_to_change_status
       @post = Post.find_by id:params[:id]
       return message_and_redirect_if_user_not_admin unless current_user || current_user.is_admin?
-      return
     end
 end

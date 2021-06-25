@@ -12,11 +12,13 @@
  *
  *= require_tree .
  *= require_self
+
  */
 @import "./actiontext.scss";
 @import "./home.scss";
 @import "./posts.scss";
 @import "./dashboard.scss";
+@import "social-share-button";
 
 .sign-in-with {
   position: relative;
@@ -48,9 +50,11 @@
 }
 
 .focus-box-none {
-  &:focus, &:active, &:visited {
+  &:focus,
+  &:active,
+  &:visited {
     box-shadow: none !important;
-  }  
+  }
 }
 
 .rich_text_content {
@@ -121,6 +125,6 @@
   font-size: 1.1rem;
 }
 
-.cursor-pointer{
+.cursor-pointer {
   cursor: pointer;
 }

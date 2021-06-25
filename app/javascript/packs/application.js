@@ -4,8 +4,8 @@
 // that code so it'll be compiled.
 
 
-//= require jquery.raty
-//= require ratyrate
+//= require social-share-button
+
 
 import Rails from "@rails/ujs"
 import Turbolinks from "turbolinks"
@@ -14,6 +14,7 @@ import "channels"
 import 'bootstrap'
 import '../stylesheets/application.scss'
 import "@fortawesome/fontawesome-free/css/all"
+import "./social-share-button.js.erb"
 
 global.toastr = require("toastr")
 

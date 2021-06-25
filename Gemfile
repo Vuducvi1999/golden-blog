@@ -64,3 +64,5 @@ gem "dotenv-rails"
 gem 'jquery-rails'
 gem 'will_paginate'
 gem 'acts_as_votable'
+gem 'social-share-button'
+# gem "coffee-loader", "^1.0.1"
