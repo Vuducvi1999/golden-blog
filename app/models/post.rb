@@ -45,7 +45,7 @@ class Post < ApplicationRecord
   end
 
   def is_rejected?
-    self.status == Post::STATUS[:new]
+    self.status == Post::STATUS[:rejected]
   end
 
   private
