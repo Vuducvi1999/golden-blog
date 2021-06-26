@@ -50,7 +50,7 @@ class Post < ApplicationRecord
 
   private
   def set_post_created_is_new
-    post.status = Post::STATUS[:new]
+    self.status = Post::STATUS[:new]
   end
 
 end
