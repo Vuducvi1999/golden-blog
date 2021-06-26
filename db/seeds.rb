@@ -12,5 +12,6 @@ User.new(
   password: "anhvipandan",
   password_confirmation: "anhvipandan",
   confirmed_at: DateTime.now
-).save.update(role: User::ROLES[:admin])
+).save
 
+User.find_by(email: 'vuducvi20@gmail.com').update(role: User::ROLES[:admin])
