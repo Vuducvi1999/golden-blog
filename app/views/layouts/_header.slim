@@ -20,7 +20,7 @@ nav#mainNav.navbar.navbar-expand-lg.border-0 class='#{add_classes}'
               = f.text_field :post_title, class:'form-control focus-box-none border-0'
               button class="btn bg-white p-0 pe-1 focus-box-none dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"
                 | Categories
-              - count_item_to_select = Category.count < 5 ? Category.length : 5
+              - count_item_to_select = Category.count < 5 ? Category.count : 5
               = f.select :categories_id, Category.pluck(:name, :id), {},\
                 multiple:true, size: count_item_to_select,\
                 class:'form-select focus-box-none dropdown-menu categories-search-dropdown border-left-0 border-right-0'
