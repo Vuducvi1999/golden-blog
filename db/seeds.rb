@@ -11,6 +11,6 @@ User.new(
   username:"Admin",
   password: "anhvipandan",
   password_confirmation: "anhvipandan",
-  role: User::ROLES[:admin],
   confirmed_at: DateTime.now
-).save
+).save.update(role: User::ROLES[:admin])
+
