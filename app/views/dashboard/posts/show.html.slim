@@ -23,8 +23,10 @@ script
           - else 
             i class="fas fa-caret-down fs-1"
     .col-8        
-      - if current_user&.is_author_of? @post
+      - if current_user&.is_author_of?(@post) && @post.is_new?
         h5.mb-3.text-info Waiting for admin to approve this post
+      - if current_user&.is_author_of?(@post) && @post.is_rejected?
+        h5.mb-3.text-info This post was rejected by admin, contact for more infomation
       .mb-3
         = @post.content.to_s.html_safe
       .d-flex.mb-4.align-items-baseline.font-monospace style="font-size: 1rem"
