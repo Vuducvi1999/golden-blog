@@ -4,7 +4,7 @@ class Dashboard::BaseController < ApplicationController
   protected 
   # Check is admin access
   def check_admin_account
-    if current_user.role != User::ROLES[:admin]
+    if current_user.admin?
       flash[:alert]= "Only admin can access"
       return redirect_back fallback_location: root_path
     end

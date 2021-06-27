@@ -14,4 +14,4 @@ User.new(
   confirmed_at: DateTime.now
 ).save
 
-User.find_by(email: 'vuducvi20@gmail.com').update(role: User::ROLES[:admin])
+User.find_by(email: 'vuducvi20@gmail.com').admin!

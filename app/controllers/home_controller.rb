@@ -1,7 +1,7 @@
 class HomeController < ApplicationController
   skip_before_action :authenticate_user!
   def index
-    @posts = Post.where(status: Post::STATUS[:approved]) 
+    @posts = Post.approved
   end
 
   def contact

@@ -1,6 +1,6 @@
 class User < ApplicationRecord
 
-  before_create :set_role_user, :set_username
+  before_create :set_username
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
@@ -16,14 +16,10 @@ class User < ApplicationRecord
 
   acts_as_voter
 
-  ROLES = {
-    :admin => 1,
-    :user => 0
+  enum role: {
+    :user => 0,
+    :admin => 1
   }
-
-  def is_admin?
-    self.role == User::ROLES[:admin]
-  end
 
   def get_rate_with post
     self.rates.find_by(post_id: post.id)
@@ -49,11 +45,7 @@ class User < ApplicationRecord
     user
   end
 
-  private 
-  def set_role_user 
-    self.role = ROLES[:user]
-  end
-  
+  private
   def set_username
     if User.find_by(username: self.username).present?
       self.username = self.email.split("@")[0]

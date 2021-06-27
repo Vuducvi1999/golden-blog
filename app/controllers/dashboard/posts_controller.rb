@@ -59,7 +59,7 @@ class Dashboard::PostsController < ApplicationController
 
   # Cho phép admin approved
   def approve_post
-    @post.status = Post::STATUS[:approved]
+    @post.approved!
     @post.status_change_at = DateTime.now 
     
     if @post.save 
@@ -74,7 +74,7 @@ class Dashboard::PostsController < ApplicationController
 
   # Cho phép admin rejected
   def reject_post
-    @post.status = Post::STATUS[:rejected]
+    @post.rejected!
     @post.status_change_at = DateTime.now
 
     if @post.save 
@@ -157,16 +157,16 @@ class Dashboard::PostsController < ApplicationController
     def check_post_status
       @post = Post.find_by id:params[:id]
 
-      if @post.is_new?
+      if @post.new_created?
         return condition_post_if_status_is 'new'
-      elsif @post.is_rejected?
+      elsif @post.rejected?
         return condition_post_if_status_is 'rejected'
       end
     end
 
     def condition_post_if_status_is status
       # nếu người dùng đã đăng nhập và là tác giả hoặc admin thì tiếp tục process
-      return if current_user&.is_admin? || current_user&.is_author_of?(@post)
+      return if current_user&.admin? || current_user&.is_author_of?(@post)
       # nếu không thì redirect và alert
       return status=="new" ? message_and_redirect_if_post_is_new : message_and_redirect_if_post_is_rejected
     end
@@ -189,6 +189,6 @@ class Dashboard::PostsController < ApplicationController
     # kiểm tra người change status có phải là admin hay không 
     def check_admin_to_change_status
       @post = Post.find_by id:params[:id]
-      return message_and_redirect_if_user_not_admin unless current_user || current_user.is_admin?
+      return message_and_redirect_if_user_not_admin unless current_user || current_user.admin?
     end
 end
