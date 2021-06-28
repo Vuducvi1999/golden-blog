@@ -7,10 +7,10 @@ class Dashboard::DashboardController < Dashboard::BaseController
 
   def manage_posts
     posts_group = Post.all.order(updated_at: :desc).group_by(&:status)
-    
-    new_posts = posts_group.new_created ||= []
-    approved_posts = posts_group.approved ||= []
-    rejected_posts = posts_group.rejected ||= []
+
+    new_posts = posts_group['new_created'] ||= []
+    approved_posts = posts_group['approved'] ||= []
+    rejected_posts = posts_group['rejected'] ||= []
 
 
     @new_posts_paginate = new_posts.paginate(page: params[:page_new_posts], per_page: 10)

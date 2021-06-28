@@ -23,10 +23,11 @@ script
           - else 
             i class="fas fa-caret-down fs-1"
     .col-8  
-      p.mb-3.text-center.border.border-danger.py-2 style="font-size:1.3rem"     
-        - if current_user&.is_author_of?(@post) && @post.new_created?
+      - if current_user&.is_author_of?(@post) && @post.new_created?
+        p.mb-3.text-center.border.border-danger.py-2 style="font-size:1.3rem"     
           |  Waiting for admin to approve this post
-        - if current_user&.is_author_of?(@post) && @post.rejected?
+      - if current_user&.is_author_of?(@post) && @post.rejected?
+        p.mb-3.text-center.border.border-danger.py-2 style="font-size:1.3rem"     
           |  This post was rejected by admin, 
           = link_to  "contact", contact_path, class:'text-primary'
           |  for more infomation

@@ -16,8 +16,9 @@
   .mb-4.row 
     = form.label :categories, class:'col-2'
     .col-10
+      - count_item_to_select = Category.count < 5 ? Category.count : 5
       = form.select :categories_id, Category.pluck(:name, :id), {selected:post.categories.pluck(:id)}, \
-      multiple:true, size: 5, class:'form-select focus-box-none'
+      multiple:true, size: count_item_to_select, class:'form-select focus-box-none'
   .mb-5
     = form.rich_text_area :content,id:'content', cols:4, class:'trix-content form-control focus-box-none rich_text_content', placeholder:"Typing..."
   .mb-3
