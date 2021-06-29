@@ -1,7 +1,7 @@
 
 
 script 
-  = render "dashboard/posts/show_post.js"
+  = render "dashboard/posts/show_post.js.erb"
 
 
 = render partial: 'layouts/banner', locals:{banner_path: url_for(@post.thumbnail), post:@post }
@@ -44,13 +44,15 @@ script
           = link_to 'Delete', dashboard_post_path(@post), method:'delete', class:'btn btn-danger py-2 fs-5',data: {confirm: 'Are you sure?'}
 
       - if @post.approved?
-        = render partial: 'shared/share_button.html.slim'
+        #facebook-share
+          div class="fb-like" data-href="#{url_for(only_path:false)}" data-width="" data-layout="button_count" data-action="like" data-size="small" data-share="true"
+          div id="fb-root"
+          script[async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v11.0&appId=2600681456895279&autoLogAppEvents=1" nonce="RXz2KPsY"]
 
-        .fb-like data-href="#{url_for(only_path: false)}" data-width="" data-layout="button_count" data-action="like" data-size="small" data-share="true"
-
+        
         #rate-component
           = render partial:"dashboard/posts/rate_form"
-        .post-comment-create
+        .post-comment-create 
           - if current_user.present?
             = render partial: 'dashboard/comments/form'
           - else 
