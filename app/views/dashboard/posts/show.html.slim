@@ -46,8 +46,6 @@ script
       - if @post.approved?
         = render partial: 'shared/share_button.html.slim'
 
-        div id="fb-root"
-        script[async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v11.0&appId=2600681456895279&autoLogAppEvents=1" nonce="4r5WzOs1"]
         .fb-like data-href="#{url_for(only_path: false)}" data-width="" data-layout="standard" data-action="like" data-size="small" data-share="true"
 
         #rate-component
