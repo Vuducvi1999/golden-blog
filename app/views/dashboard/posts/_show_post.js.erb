@@ -6,8 +6,8 @@ $( document ).on('turbolinks:load', function() {
     top: `${headerHeight}px`
   })
 
-
-  console.log('good')
+  $('#facebook-share').html("<%= j render(partial:'shared/share_button')%>")
 })
+
 
 
