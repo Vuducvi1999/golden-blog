@@ -36,8 +36,8 @@ class Dashboard::PostsController < ApplicationController
       if params[:post_facebook] == '1' && session[:access_token].blank?
         flash[:notice] = "You must login by facebook account to also post on facebook"
       else
-        # graph = Koala::Facebook::API.new session[:access_token]
-        # graph.put_wall_post(@post.content) if params[:post][:post_facebook] == 1
+        graph = Koala::Facebook::API.new session[:access_token]
+        graph.put_wall_post(@post.content) if params[:post][:post_facebook] == 1
       end
       redirect_to @post, notice: "Post was successfully created." 
     else
@@ -55,8 +55,8 @@ class Dashboard::PostsController < ApplicationController
       if params[:post_facebook] == '1' && session[:access_token].blank?
         flash[:notice] = "You must login by facebook account to also post on facebook"
       else
-        # graph = Koala::Facebook::API.new session[:access_token]
-        # graph.put_wall_post(@post.content) if params[:post][:post_facebook] == 1
+        graph = Koala::Facebook::API.new session[:access_token]
+        graph.put_wall_post(@post.content) if params[:post][:post_facebook] == 1
       end
       redirect_to @post, notice: "Post was successfully updated."
     else
