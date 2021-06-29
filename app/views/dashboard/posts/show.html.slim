@@ -46,7 +46,7 @@ script
       - if @post.approved?
         = render partial: 'shared/share_button.html.slim'
 
-        .fb-like data-href="#{url_for(only_path: false)}" data-width="" data-layout="standard" data-action="like" data-size="small" data-share="true"
+        .fb-like data-href="#{url_for(only_path: false)}" data-width="" data-layout="button_count" data-action="like" data-size="small" data-share="true"
 
         #rate-component
           = render partial:"dashboard/posts/rate_form"
