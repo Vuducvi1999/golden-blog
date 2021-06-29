@@ -83,4 +83,4 @@ test:
 #
 production:
   <<: *default
-  database: blog_app_development
+  database: blog_app_production

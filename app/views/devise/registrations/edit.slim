@@ -10,7 +10,6 @@
       = form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|
         = render "devise/shared/error_messages", resource: resource
         .mb-3
-          i.fas.fa-exclamation.text-danger.me-1
           = f.label :username, class:'mb-2'
           br
           = f.text_field :username, autofocus: true, autocomplete: "username",class:'form-control'

@@ -15,7 +15,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   protected
   def after_inactive_sign_up_path_for(resource)
-    flash[:info] = "Username has already exist so we change it into #{resource.email.split("@")[0]}. But you can edit again in profile!"
+    if User.find_by(username: resource.username).confirmed_at
+      flash[:info] = "Username has already exist so we change it into #{resource.email.split("@")[0]}. But you can edit again in profile!"
+    end
     root_path
   end
   
