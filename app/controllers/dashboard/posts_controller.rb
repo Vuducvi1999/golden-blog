@@ -33,6 +33,12 @@ class Dashboard::PostsController < ApplicationController
     @post.categories = categories 
     
     if @post.save
+      if params[:post_facebook] == '1' && session[:access_token].blank?
+        flash[:notice] = "You must login by facebook account to also post on facebook"
+      else
+        # graph = Koala::Facebook::API.new session[:access_token]
+        # graph.put_wall_post(@post.content) if params[:post][:post_facebook] == 1
+      end
       redirect_to @post, notice: "Post was successfully created." 
     else
       render :new, status: :unprocessable_entity 
@@ -46,6 +52,12 @@ class Dashboard::PostsController < ApplicationController
     @post.categories = categories
 
     if @post.update(post_params)
+      if params[:post_facebook] == '1' && session[:access_token].blank?
+        flash[:notice] = "You must login by facebook account to also post on facebook"
+      else
+        # graph = Koala::Facebook::API.new session[:access_token]
+        # graph.put_wall_post(@post.content) if params[:post][:post_facebook] == 1
+      end
       redirect_to @post, notice: "Post was successfully updated."
     else
       render :edit, status: :unprocessable_entity 

@@ -1,0 +1,14 @@
+let url = "<%= url_for(only_path: false) %>"
+
+let api_url = `https://graph.facebook.com/?id=${url}&fields=og_object{engagement}`+
+`&access_token=2600681456895279|b72d7f2e2bc62cc06415b3e09097b5fa`
+
+$.ajax({
+  url: api_url,
+  type:'get',
+  success: (res) => {
+    count = res.og_object.engagement.count;
+    text = res.og_object.engagement.social_sentence;
+    $('#facebook-share').html(`<h3> ${count} Shares </h3>`)
+  }
+})

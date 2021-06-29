@@ -1,5 +1,4 @@
 class User < ApplicationRecord
-
   before_create :set_username
 
   # Include default devise modules. Others available are:
@@ -33,7 +32,7 @@ class User < ApplicationRecord
     data = access_token.info
     user = User.where(email: data['email']).first
 
-    # Uncomment the section below if you want users to be created if they don't exist
+    # Uncomment the section below if you want users to be created if they don't exist 
     unless user
         user = User.create(
           username: data['name'],
@@ -42,7 +41,12 @@ class User < ApplicationRecord
         )
     end
     user.confirmed_at = DateTime.now
+    # user.access_token = access_token.credentials.token
     user
+  end
+
+  def facebook
+    @facebook ||= Koala::Facebook::API.new(oauth_token)
   end
 
   private

@@ -4,7 +4,7 @@
   .row.mb-5
     .col-2 
     .col-8 
-      h1 Dashboard
+      h1 Dashboard 
       .d-flex
         - unless current_user&.admin?
           = link_to  "My posts", dashboard_posts_path, class:'btn btn-primary fs-5 py-2'

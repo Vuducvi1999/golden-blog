@@ -23,6 +23,12 @@ script
           - else 
             i class="fas fa-caret-down fs-1"
     .col-8  
+      .fb-share-button[data-href="#{url_for(only_path: false)}" data-layout="button_count" data-size="small"]
+        a.fb-xfbml-parse-ignore[target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=#{url_for(only_path: false)}&amp;src=sdkpreparse"]
+          
+      script[async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v11.0" nonce="Bmlb2Jif"]
+      
+      = render partial: 'shared/share_button.html.slim'
       - if current_user&.is_author_of?(@post) && @post.new_created?
         p.mb-3.text-center.border.border-danger.py-2 style="font-size:1.3rem"     
           |  Waiting for admin to approve this post
