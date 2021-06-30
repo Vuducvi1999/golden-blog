@@ -14,7 +14,7 @@ class Dashboard::PostsController < ApplicationController
     
     respond_to do |format|
       format.html
-      format.js {render partial:'dashboard/posts/show.js.erb'}
+      format.js {render partial:'dashboard/posts/js_erb/show.js.erb'}
     end
   end
 
@@ -77,7 +77,7 @@ class Dashboard::PostsController < ApplicationController
     if @post.save 
       respond_to do |format|
         format.html
-        format.js { render partial:"dashboard/posts/approve_post.js.erb" }
+        format.js { render partial:"dashboard/posts/js_erb/approve_post.js.erb" }
       end
     else
       redirect_back fallback_location:root_path, alert: "Approve post fail"
@@ -92,7 +92,7 @@ class Dashboard::PostsController < ApplicationController
     if @post.save 
       respond_to do |format|
         format.html
-        format.js { render partial:"dashboard/posts/reject_post.js.erb" }
+        format.js { render partial:"dashboard/posts/js_erb/reject_post.js.erb" }
       end
     else
       redirect_back fallback_location:root_path, alert: "Reject post fail"
@@ -120,7 +120,7 @@ class Dashboard::PostsController < ApplicationController
       puts current_user.liked? @post
       puts "unlikes"
     end
-    render partial:"dashboard/posts/like.js.erb"
+    render partial:"dashboard/posts/js_erb/like.js.erb"
   end
   
   # toogle unlike
@@ -134,7 +134,7 @@ class Dashboard::PostsController < ApplicationController
       puts current_user.disliked? @post
       puts "dislike"
     end
-    render partial:"dashboard/posts/unlike.js.erb"
+    render partial:"dashboard/posts/js_erb/unlike.js.erb"
   end
   
   # rate
@@ -148,7 +148,7 @@ class Dashboard::PostsController < ApplicationController
       @post.rate_by_user_with_score current_user, score
       @post.save
     end
-    render partial:"dashboard/posts/rate.js.erb"
+    render partial:"dashboard/posts/js_erb/rate.js.erb"
   end
 
   private
