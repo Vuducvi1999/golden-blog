@@ -33,7 +33,7 @@ class Dashboard::PostsController < ApplicationController
     @post.categories = categories 
     
     if @post.save
-      if params[:post_facebook] == '1' && session[:access_token].blank?
+      unless params[:post_facebook]
         flash[:notice] = "You must login by facebook account to also post on facebook"
       else
         graph = Koala::Facebook::API.new session[:access_token]
@@ -52,7 +52,7 @@ class Dashboard::PostsController < ApplicationController
     @post.categories = categories
 
     if @post.update(post_params)
-      if params[:post_facebook] == '1' && session[:access_token].blank?
+      unless params[:post_facebook]
         flash[:notice] = "You must login by facebook account to also post on facebook"
       else
         graph = Koala::Facebook::API.new session[:access_token]

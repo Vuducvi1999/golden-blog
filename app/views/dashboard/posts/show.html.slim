@@ -42,8 +42,8 @@
           = link_to 'Delete', dashboard_post_path(@post), method:'delete', class:'btn btn-danger py-2 fs-5',data: {confirm: 'Are you sure?'}
 
       - if @post.approved?
-        #facebook-share 
-        
+        #facebook-share.mb-3
+
         #rate-component
           = render partial:"dashboard/posts/rate_form"
         .post-comment-create 
