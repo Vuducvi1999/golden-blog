@@ -41,12 +41,12 @@ class User < ApplicationRecord
         )
     end
     user.confirmed_at = DateTime.now
-    # user.access_token = access_token.credentials.token
+    user.access_token = access_token.credentials.token
     user
   end
 
   def facebook
-    @facebook ||= Koala::Facebook::API.new(oauth_token)
+    @facebook ||= Koala::Facebook::API.new(access_token)
   end
 
   private
