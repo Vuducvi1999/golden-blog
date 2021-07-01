@@ -5,6 +5,10 @@ class Dashboard::PostsController < ApplicationController
   before_action :check_post_status, only: %i[show]
   before_action :check_admin_to_change_status, only: %i[approve_post reject_post]
 
+  
+  include Rails.application.routes.url_helpers
+  
+
   def index
     @posts = current_user.posts.order("updated_at desc")
   end
@@ -35,8 +39,15 @@ class Dashboard::PostsController < ApplicationController
     if @post.save
       if params[:post_facebook]
         graph = Koala::Facebook::API.new ENV["FACEBOOK_ACCESS_TOKEN"]
-        graph.put_wall_post(@post.content)
+
+        object = graph.put_object(ENV["FACEBOOK_ID_PAGE"], 'feed', {
+          message: @post.text_content,
+          link: post_url(@post)
+        })
+
+        @post.post_facebook_id = object['id']
       end
+
       redirect_to @post, notice: "Post was successfully created." 
     else
       render :new, status: :unprocessable_entity 
@@ -49,11 +60,14 @@ class Dashboard::PostsController < ApplicationController
     categories = Category.where(id:categories_id)
     @post.categories = categories
 
+    if params[:post_facebook]
+      graph = Koala::Facebook::API.new ENV["FACEBOOK_ACCESS_TOKEN"]
+      graph.put_object(@post.post_facebook_id, '', {
+        message: @post.text_content
+      })
+    end
+
     if @post.update(post_params)
-      if params[:post_facebook]
-        graph = Koala::Facebook::API.new session[:access_token]
-        graph.put_wall_post(@post.content)
-      end
       redirect_to @post, notice: "Post was successfully updated."
     else
       render :edit, status: :unprocessable_entity 

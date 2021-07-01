@@ -4,10 +4,6 @@
 
 = render partial: 'layouts/banner', locals:{banner_path: url_for(@post.thumbnail), post:@post }
 
-meta property="og:title" content="#{@post.title}"
-meta property="og:image" content="#{root_url + url_for(@post.thumbnail)}"
-meta property="og:description" content="#{@post.short_description}" 
-
 .container 
   .row.mb-5 
     .col-2 

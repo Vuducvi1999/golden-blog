@@ -21,7 +21,7 @@
       multiple:true, size: count_item_to_select, class:'form-select focus-box-none'
   .mb-5
     = form.rich_text_area :content, id:'content', cols:4, class:'trix-content form-control focus-box-none rich_text_content', placeholder:"Typing..."
-  - if session[:access_token]
+  - if @post.new_record? || @post.post_facebook_id 
     .mb-5 
       = check_box_tag 'post_facebook'
       = form.label "Post on Facebook?", for:'post_facebook', class:'ms-1'

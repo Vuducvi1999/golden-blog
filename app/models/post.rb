@@ -42,4 +42,27 @@ class Post < ApplicationRecord
     time > 0 ? time : 1
   end
 
+  def text_content
+    body = self.content.body.html_safe
+    
+    text = ""
+    document = Nokogiri::HTML.parse(body)
+    document.css('br').each {|e| e.replace "\n" }
+
+    document.css('a').each do |e| 
+      e.content += " (#{e['href']}) "
+      puts e['href']
+    end
+
+    document.css('div,pre').each do |e| 
+      e.content += "\n"
+    end
+    
+    document.css('li').each do |e| 
+      e.content = "- #{e.content} \n"
+    end
+
+    document.text
+  end
+
 end
