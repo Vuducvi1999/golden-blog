@@ -42,7 +42,7 @@ class Dashboard::PostsController < ApplicationController
 
         object = graph.put_object(ENV["FACEBOOK_ID_PAGE"], 'feed', {
           message: @post.text_content,
-          link: post_url(@post)
+          link: url_for(post_url(@post))
         })
 
         @post.post_facebook_id = object['id']
