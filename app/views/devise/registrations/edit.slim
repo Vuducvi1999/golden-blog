@@ -48,10 +48,7 @@
               | Avatar
             = f.file_field :avatar, class:'form-control focus-box-none d-none'
           .col-3
-            - if current_user.avatar.present?
-                img.w-100.rounded src="#{url_for(current_user.avatar)}"
-            - else
-                img.w-100.rounded src="#{url_for(asset_path 'avatar-default.png')}"
+            img.w-100.rounded src="#{url_for(current_user.get_avatar)}"
         .mb-3
           = f.submit "Update", class:'btn btn-primary py-2 fs-5 w-100'
       h3.my-4

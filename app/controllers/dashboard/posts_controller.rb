@@ -33,10 +33,8 @@ class Dashboard::PostsController < ApplicationController
     @post.categories = categories 
     
     if @post.save
-      unless params[:post_facebook]
-        flash[:notice] = "You must login by facebook account to also post on facebook"
-      else
-        graph = Koala::Facebook::API.new session[:access_token]
+      if params[:post_facebook]
+        graph = Koala::Facebook::API.new ENV["FACEBOOK_ACCESS_TOKEN"]
         graph.put_wall_post(@post.content)
       end
       redirect_to @post, notice: "Post was successfully created." 
@@ -52,9 +50,7 @@ class Dashboard::PostsController < ApplicationController
     @post.categories = categories
 
     if @post.update(post_params)
-      unless params[:post_facebook]
-        flash[:notice] = "You must login by facebook account to also post on facebook"
-      else
+      if params[:post_facebook]
         graph = Koala::Facebook::API.new session[:access_token]
         graph.put_wall_post(@post.content)
       end

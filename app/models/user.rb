@@ -1,3 +1,5 @@
+
+
 class User < ApplicationRecord
   before_create :set_username
 
@@ -42,7 +44,11 @@ class User < ApplicationRecord
     end
     user.confirmed_at = DateTime.now
     user.access_token = access_token.credentials.token
-    user
+    user 
+  end
+
+  def get_avatar 
+    avatar.present? ? self.avatar : ActionController::Base.helpers.asset_path('avatar-default.png')
   end
 
   def facebook

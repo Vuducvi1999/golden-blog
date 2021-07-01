@@ -1,11 +1,35 @@
 
 .post-preview
+  .post-info-user
+    div
+      img.w-100 src="#{url_for post.user.get_avatar}"
+    div.post-meta.m-0 style="line-height: 1.2"
+      p.post-username.m-0
+        |  #{post.user.username} 
+      p.post-created.text-muted.m-0
+        |  #{post.created_at.strftime("%B #{post.created_at.day}, %Y")} (#{time_ago_in_words(post.created_at)} ago)
   = link_to post_path(post) do
-    h2.post-title
+    h2.post-title.mt-2
       | #{post.title}
-    h3.post-subtitle style="margin-bottom: 0"
+    h3.post-subtitle.mb-0
       | #{post.short_description}
   = render partial: "shared/rating_score_component", locals:{average_score: post.average_score}
-  p.post-meta
-    |  Posted by #{post.user.username} 
-    |  on #{post.created_at.strftime("%B #{post.created_at.day.ordinalize}, %Y")}
+  .d-flex.mt-2.align-items-center  
+    - post.categories.pluck(:id, :name).each do |item|
+      = link_to search_dashboard_posts_path(categories_id:[item[0]]),\
+      class:'me-1 badge bg-secondary badge-category fw-bold font-monospace', style:'font-size:0.9rem' do 
+        | #{item[1]}
+  .d-flex.mt-2.align-items-center 
+    .d-flex 
+      .d-flex.me-3 
+        i class="fas fa-caret-up"
+        p.m-0.mx-1 style="font-size: 0.9rem"
+          | #{post.weighted_score}
+        i class="fas fa-caret-down"
+      .d-flex 
+        i class="far fa-comment-dots me-2"
+        p.m-0 style="font-size: 0.9rem"
+          | #{post.comments.count}
+    p.m-0.ms-auto style='font-size:0.7rem'
+      | #{post.reading_time} min read
+

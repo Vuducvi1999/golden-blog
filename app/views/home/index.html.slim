@@ -4,10 +4,35 @@
 = render partial:'layouts/banner', locals:{banner_path:banner_path, site_headings:site_headings}
 
 .container.mb-5
-  .row.gx-4.gx-lg-5.justify-content-center
-    .col-md-10.col-lg-8.col-xl-7
-      - @posts.each_with_index do |post, index|
-        .post-preview
-          = render partial: 'shared/post_item_list', locals:{post: post}
-        - if index != @posts.length - 1
-          hr.my-4
+  .row.gx-4.gx-lg-5
+    .col-3 
+      ul.nav.flex-column.nav-pills
+        li.nav-item
+          a.nav-link.px-2.active[aria-current="page" href="#"]
+            img.me-2 src="https://img.icons8.com/ios/50/000000/new.png" style='width: 28px'
+            | New Posts 
+        li.nav-item
+          a.nav-link.px-2[href="#"]
+            img.me-2 src="https://img.icons8.com/ios/50/000000/rating.png" style='width: 28px'
+            | Top rating 
+        li.nav-item
+          a.nav-link.px-2[href="#"]
+            img.me-2 src="https://img.icons8.com/ios/50/000000/reading.png" style='width: 28px'
+            | Most reading 
+      h5.my-3 Categories 
+      div 
+        - Category.pluck(:id, :name).each do |item|
+          = link_to search_dashboard_posts_path(categories_id:[item[0]]),\
+          class:'me-1 badge bg-secondary badge-category fw-bold font-monospace', style:'font-size:0.9rem' do 
+            | #{item[1]}
+    .col-7 
+      - unless @posts.empty?
+        - @posts.each_with_index do |post, index|
+          .post-preview
+            = render partial: 'shared/post_item_list', locals:{post: post}
+          - if index != @posts.length - 1
+            hr.my-4
+      - else 
+        p.text-muted 
+          | No Posts
+

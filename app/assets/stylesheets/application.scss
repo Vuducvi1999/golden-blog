@@ -128,3 +128,31 @@
 .cursor-pointer {
   cursor: pointer;
 }
+
+.post-title {
+  font-size: 1.8rem !important;
+}
+
+.post-subtitle {
+  font-size: 1.3rem !important;
+}
+
+.post-meta {
+  font-size: 1rem !important;
+}
+
+.post-info-user {
+  display: flex;
+  align-items: center;
+  & > div:first-child {
+    width: 2rem;
+    margin-right: 10px;
+  }
+  & .post-username{
+    font-weight: bold;
+  }
+
+  & .post-created{
+    font-size: 0.9rem;
+  }
+}

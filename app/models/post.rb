@@ -27,11 +27,19 @@ class Post < ApplicationRecord
                                     .order(updated_at: :desc) }
 
   def average_score
-    self.rates.average(:score)
+    result = self.rates.average(:score)
+    result ||= 0
   end
 
   def rate_by_user_with_score current_user, score 
     self.rates.find_by(user_id: current_user.id).update(score: score)
+  end
+  
+  def reading_time
+    words_per_minute = 150
+    text = ActionController::Base.helpers.strip_tags(self.content.body.to_s)
+    time = text.split.length / words_per_minute
+    time > 0 ? time : 1
   end
 
 end

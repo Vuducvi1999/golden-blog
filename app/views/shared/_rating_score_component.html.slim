@@ -1,7 +1,14 @@
-- current_score = average_score.to_i
-- left_score = 5 - current_score
+- average_score = average_score.round(1)
+- current_score = average_score.round
+- if current_score == average_score && average_score != 0 
+  - half_score = 1
+- else
+  - half_score = 0
+- left_score = 5 - current_score - half_score
 
 - current_score.times do |i|
-  i class="fas fa-star text-warning" style="font-size:0.8rem"
+  i class="fas fa-star text-warning" style="font-size:0.7rem"
+- half_score.times do |i| 
+  i class="fas fa-star-half-alt text-warning" style="font-size:0.7rem"
 - left_score.times do |i|
-  i class="far fa-star" style="font-size:0.8rem"
+  i class="far fa-star" style="font-size:0.7rem"
