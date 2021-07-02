@@ -35,18 +35,18 @@ class Dashboard::PostsController < ApplicationController
     categories_id = params[:post][:categories_id].select{|item| item.present?}
     categories = Category.where(id:categories_id)
     @post.categories = categories 
-
-    if params[:post_facebook]
-      
-      object = Graph.put_object(ENV["FACEBOOK_ID_PAGE"], 'feed', {
-        message: @post.text_content,
-        link: post_url(@post)
-      })
-
-      @post.post_facebook_id = object['id']
-    end
     
     if @post.save
+      if params[:post_facebook]
+      
+        object = Graph.put_object(ENV["FACEBOOK_ID_PAGE"], 'feed', {
+          message: @post.text_content,
+          link: post_url(@post)
+        })
+        
+        @post.update post_facebook_id: object['id']
+
+      end
       redirect_to @post, notice: "Post was successfully created." 
     else
       render :new, status: :unprocessable_entity 
