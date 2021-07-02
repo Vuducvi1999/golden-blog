@@ -76,7 +76,7 @@ class Dashboard::PostsController < ApplicationController
     @post.approved!
     @post.status_change_at = DateTime.now 
 
-    if @post.post_facebook
+    if @post.post_facebook?
       object = Graph.put_object(ENV["FACEBOOK_ID_PAGE"], 'feed', {
         message: @post.text_content,
         link: post_url(@post)
