@@ -75,8 +75,6 @@ class Dashboard::PostsController < ApplicationController
   def approve_post
     @post.approved!
     @post.status_change_at = DateTime.now 
-
-
     
     if @post.save 
       respond_to do |format|
@@ -84,7 +82,7 @@ class Dashboard::PostsController < ApplicationController
         format.js { render partial:"dashboard/posts/js_erb/approve_post.js.erb" }
       end
       if @post.post_facebook?
-        object = Graph.put_object(ENV["FACEBOOK_ID_PAGE"], 'feed', {
+        object = Graph.put_object('me', 'feed', {
           message: @post.text_content,
           link: post_url(@post)
         })
