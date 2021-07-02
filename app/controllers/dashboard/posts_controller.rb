@@ -35,6 +35,7 @@ class Dashboard::PostsController < ApplicationController
     categories_id = params[:post][:categories_id].select{|item| item.present?}
     categories = Category.where(id:categories_id)
     @post.categories = categories 
+    @post.post_facebook? = true
     
     if @post.save      
       redirect_to @post, notice: "Post was successfully created." 
