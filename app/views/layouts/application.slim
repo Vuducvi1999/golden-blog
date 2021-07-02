@@ -14,10 +14,9 @@ html
     - if @post.present? && @post.persisted? 
       meta property="og:url" content="#{post_url(@post)}"
       meta property="og:type" content="website"
-      meta property="fb:app_id" content="938810353637206"
       meta property="og:title" content="#{@post.title}"
+      meta property="og:image" content="#{root_url[0...-1] + url_for(@post.thumbnail)}"
       meta property="og:description" content="#{@post.short_description}" 
-    meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png"
 
     <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css" />
