@@ -38,15 +38,13 @@ class Dashboard::PostsController < ApplicationController
     
     if @post.save
       if params[:post_facebook]
-      
         object = Graph.put_object(ENV["FACEBOOK_ID_PAGE"], 'feed', {
           message: @post.text_content,
           link: post_url(@post)
         })
-        
         @post.update post_facebook_id: object['id']
-
       end
+
       redirect_to @post, notice: "Post was successfully created." 
     else
       render :new, status: :unprocessable_entity 
@@ -60,7 +58,6 @@ class Dashboard::PostsController < ApplicationController
     @post.categories = categories
 
     if params[:post_facebook]
-
       Graph.put_object(@post.post_facebook_id, '', {
         message: @post.text_content
       })
