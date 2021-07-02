@@ -76,18 +76,19 @@ class Dashboard::PostsController < ApplicationController
     @post.approved!
     @post.status_change_at = DateTime.now 
 
-    if @post.post_facebook?
-      object = Graph.put_object(ENV["FACEBOOK_ID_PAGE"], 'feed', {
-        message: @post.text_content,
-        link: post_url(@post)
-      })
-      @post.post_facebook_id = object['id']
-    end
+
     
     if @post.save 
       respond_to do |format|
         format.html
         format.js { render partial:"dashboard/posts/js_erb/approve_post.js.erb" }
+      end
+      if @post.post_facebook?
+        object = Graph.put_object(ENV["FACEBOOK_ID_PAGE"], 'feed', {
+          message: @post.text_content,
+          link: post_url(@post)
+        })
+        @post.update post_facebook_id: object['id']
       end
     else
       redirect_back fallback_location:root_path, alert: "Approve post fail"
