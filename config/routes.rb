@@ -17,6 +17,10 @@ Rails.application.routes.draw do
       member do
         post 'approve_post'
         post 'reject_post'
+        post 'like'
+        post 'dislike'
+        post 'rate'
+
       end
       collection do
         get 'search'

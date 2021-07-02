@@ -1,25 +1,45 @@
 
+
+script 
+  = render "dashboard/posts/show_post.js"
+
+
 = render partial: 'layouts/banner', locals:{banner_path: url_for(@post.thumbnail), post:@post }
 
-.container
-  .row.mb-5
+.container 
+  .row.mb-5 
     .col-2 
-    .col-8
-      - if is_author
+      #vote-component.d-flex.sticky-top.flex-column.align-items-end
+        = link_to like_dashboard_post_path(@post), method:'post', id:'like-vote', remote:true do
+          - if current_user&.voted_up_on? @post
+            i class="fas fa-caret-up fs-1 text-success"
+          - else 
+            i class="fas fa-caret-up fs-1"
+        p#score-vote.m-0.fw-bold.font-monospace.pe-1 
+          | #{@post.weighted_score}
+        = link_to dislike_dashboard_post_path(@post), method:'post', id:'unlike-vote', remote:true do
+          - if current_user&.voted_down_on? @post
+            i class="fas fa-caret-down fs-1 text-danger"
+          - else 
+            i class="fas fa-caret-down fs-1"
+    .col-8        
+      - if current_user&.is_author_of? @post
         h5.mb-3.text-info Waiting for admin to approve this post
       .mb-3
         = @post.content.to_s.html_safe
-      .d-flex.mb-5.align-items-baseline.font-monospace style="font-size: 1rem"
+      .d-flex.mb-4.align-items-baseline.font-monospace style="font-size: 1rem"
         i class="fas fa-tags me-2"
         - @post.categories.pluck(:id,:name).each do |item|
             = link_to search_dashboard_posts_path(categories_id:[item[0]]), class:'me-2 badge bg-secondary badge-category fw-bold' do 
               | #{item[1]}
-      - if is_author
+      - if current_user&.is_author_of? @post
         .d-flex.justify-content-between 
           = link_to 'Edit', edit_dashboard_post_path(@post), class:'btn btn-primary py-2 fs-5'
           = link_to 'Delete', dashboard_post_path(@post), method:'delete', class:'btn btn-danger py-2 fs-5',data: {confirm: 'Are you sure?'}
 
-      - if is_approved
+      - if @post.is_approved?
+        #rate-component
+          = render partial:"dashboard/posts/rate_form"
         .post-comment-create
           - if current_user.present?
             = render partial: 'dashboard/comments/form'
@@ -28,15 +48,16 @@
               |  Please 
               = link_to "login", new_user_session_path, class:"text-decoration-none text-primary" 
               |  to comment.
+
         h5#count-number-comments.border-bottom.pb-2
           | #{@post.comments.length} comments
         #comments-list.list-comments-post
           - unless @post.comments.empty?
             #wrap-comments-component
-              - comment_paginate(@post.comments).each do |comment|
+              - @comment_paginate.each do |comment|
                 = render partial: 'dashboard/comments/comment_item', locals: {comment: comment}
             #call-paginate-ajax.d-flex.justify-content-center 
-              = will_paginate comment_paginate(@post.comments), inner_window: 2, outer_window: 1,\
+              = will_paginate @comment_paginate, inner_window: 2, outer_window: 1,\
                 :renderer => RemoteLinkPaginationHelper::LinkRenderer
           - else 
             i#message-no-comment.my-3 style="font-size:1.1rem" 

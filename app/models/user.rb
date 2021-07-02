@@ -9,15 +9,29 @@ class User < ApplicationRecord
          :omniauthable, omniauth_providers: [:google_oauth2, :facebook]
 
   has_many :posts, dependent: :destroy
-
   has_many :comments, dependent: :destroy
+  has_many :rates, dependent: :destroy
 
   has_one_attached :avatar, dependent: :destroy
+
+  acts_as_voter
 
   ROLES = {
     :admin => 1,
     :user => 0
   }
+
+  def is_admin?
+    self.role == User::ROLES[:admin]
+  end
+
+  def get_rate_with post
+    self.rates.find_by(post_id: post.id)
+  end
+
+  def is_author_of? post
+    self.id == post.user.id
+  end
 
   def self.from_omniauth(access_token)
     data = access_token.info

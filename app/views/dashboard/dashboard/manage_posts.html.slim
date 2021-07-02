@@ -4,26 +4,26 @@
   .row.mb-5
     .col-12.mb-5 
       h5.mb-4.text-uppercase New posts
-      - if not @new_posts.empty?
+      - if not @new_posts_paginate.empty?
         #wrap-new-posts-component  
-          - new_posts_paginate(@new_posts).each do |post|
+          - @new_posts_paginate.each do |post|
             .border.ps-3
               = render partial:'shared/post_dashboard_item', locals: { post: post, is_admin_manage: true, small_thumbnail: true }
         #call-paginate-new-posts-ajax.mt-3.d-flex.justify-content-center
-          = will_paginate new_posts_paginate(@new_posts), inner_window: 2, outer_window: 1,\
+          = will_paginate @new_posts_paginate, inner_window: 2, outer_window: 1,\
             :renderer => RemoteLinkPaginationHelper::LinkRenderer, param_name: "page_new_posts"
       - else  
         p.message-emty-items.m-0
           | No items
     .col-6  
       h5.mb-4.text-uppercase Approved posts
-      - if not @approved_posts.empty?
+      - if not @approved_posts_paginate.empty?
         #wrap-approved-posts-component  
-          - approved_posts_paginate(@approved_posts).each do |post|
+          - @approved_posts_paginate.each do |post|
             .border.ps-3
               = render partial:'shared/post_dashboard_item', locals: { post: post, is_admin_manage: true, hide_image: true }
         #call-paginate-approved-posts-ajax.mt-3.d-flex.justify-content-center
-          = will_paginate approved_posts_paginate(@approved_posts), inner_window: 2, outer_window: 1,\
+          = will_paginate @approved_posts_paginate, inner_window: 2, outer_window: 1,\
             :renderer => RemoteLinkPaginationHelper::LinkRenderer, param_name: 'page_approved_posts'
       - else  
         p.message-emty-items.m-0
@@ -31,13 +31,13 @@
 
     .col-6 
       h5.mb-4.text-uppercase Rejected posts
-      - if not @rejected_posts.empty?
+      - if not @rejected_posts_paginate.empty?
         #wrap-rejected-posts-component  
-          - rejected_posts_paginate(@rejected_posts).each do |post|
+          - @rejected_posts_paginate.each do |post|
             .border.ps-3
               = render partial:'shared/post_dashboard_item', locals: { post: post, is_admin_manage: true, hide_image: true }
         #call-paginate-rejected-posts-ajax.mt-3.d-flex.justify-content-center
-          = will_paginate rejected_posts_paginate(@rejected_posts), inner_window: 2, outer_window: 1,\
+          = will_paginate @rejected_posts_paginate, inner_window: 2, outer_window: 1,\
             :renderer => RemoteLinkPaginationHelper::LinkRenderer, param_name: 'page_rejected_posts'
       - else  
         p.message-emty-items.m-0
