@@ -14,6 +14,7 @@ html
     - if @post.present? && @post.persisted? 
       meta property="og:url" content="#{post_url(@post)}"
       meta property="og:type" content="website"
+      meta property="fb:app_id" content="938810353637206"
       meta property="og:title" content="#{@post.title}"
       meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png"
       meta property="og:description" content="#{@post.short_description}" 
