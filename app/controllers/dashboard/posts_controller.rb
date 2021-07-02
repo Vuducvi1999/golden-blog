@@ -35,9 +35,9 @@ class Dashboard::PostsController < ApplicationController
     categories_id = params[:post][:categories_id].select{|item| item.present?}
     categories = Category.where(id:categories_id)
     @post.categories = categories 
-    @post.post_facebook? = true
     
     if @post.save      
+      @post.update post_facebook?: true
       redirect_to @post, notice: "Post was successfully created." 
     else
       render :new, status: :unprocessable_entity 
@@ -50,7 +50,7 @@ class Dashboard::PostsController < ApplicationController
     categories = Category.where(id:categories_id)
     @post.categories = categories
 
-    unless @post.post_facebook_id.empty?
+    unless @post.approved? && @post.post_facebook_id.empty?
       Graph.put_object(@post.post_facebook_id, '', {
         message: @post.text_content
       })
