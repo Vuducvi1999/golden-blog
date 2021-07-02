@@ -38,11 +38,30 @@ class Dashboard::PostsController < ApplicationController
     
     if @post.save
       if params[:post_facebook]
-        graph = Koala::Facebook::API.new ENV["FACEBOOK_ACCESS_TOKEN"]
-
-        object = graph.put_object(ENV["FACEBOOK_ID_PAGE"], 'feed', {
-          message: @post.text_content,
-          link: url_for(post_url(@post))
+        
+        puts url_for(post_url(@post))
+        puts url_for(post_url(@post))
+        puts url_for(post_url(@post))
+        puts url_for(post_url(@post))
+        puts url_for(post_url(@post))
+        puts url_for(post_url(@post))
+        puts url_for(post_url(@post))
+        puts url_for(post_url(@post))
+        puts url_for(post_url(@post))
+        puts url_for(post_url(@post))
+        puts url_for(post_url(@post))
+        puts url_for(post_url(@post))
+        puts url_for(post_url(@post))
+        puts url_for(post_url(@post))
+        puts url_for(post_url(@post))
+        puts url_for(post_url(@post))
+        puts url_for(post_url(@post))
+        puts url_for(post_url(@post))
+        puts url_for(post_url(@post))
+        puts url_for(post_url(@post))
+        puts url_for(post_url(@post))
+        object = Graph.put_object(ENV["FACEBOOK_ID_PAGE"], 'feed', {
+          message: @post.text_content
         })
 
         @post.post_facebook_id = object['id']
@@ -61,8 +80,8 @@ class Dashboard::PostsController < ApplicationController
     @post.categories = categories
 
     if params[:post_facebook]
-      graph = Koala::Facebook::API.new ENV["FACEBOOK_ACCESS_TOKEN"]
-      graph.put_object(@post.post_facebook_id, '', {
+
+      Graph.put_object(@post.post_facebook_id, '', {
         message: @post.text_content
       })
     end
