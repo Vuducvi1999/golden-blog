@@ -36,15 +36,7 @@ class Dashboard::PostsController < ApplicationController
     categories = Category.where(id:categories_id)
     @post.categories = categories 
     
-    if @post.save
-      if params[:post_facebook]
-        object = Graph.put_object(ENV["FACEBOOK_ID_PAGE"], 'feed', {
-          message: @post.text_content,
-          link: post_url(@post)
-        })
-        @post.update post_facebook_id: object['id']
-      end
-
+    if @post.save      
       redirect_to @post, notice: "Post was successfully created." 
     else
       render :new, status: :unprocessable_entity 
@@ -57,7 +49,7 @@ class Dashboard::PostsController < ApplicationController
     categories = Category.where(id:categories_id)
     @post.categories = categories
 
-    if params[:post_facebook]
+    unless @post.post_facebook_id.empty?
       Graph.put_object(@post.post_facebook_id, '', {
         message: @post.text_content
       })
@@ -71,6 +63,9 @@ class Dashboard::PostsController < ApplicationController
   end
   
   def destroy
+    unless @post.post_facebook_id.empty?
+      Graph.delete_object @post.post_facebook_id
+    end
     @post.destroy
     redirect_to dashboard_posts_path, notice: "Post was successfully destroyed." 
   end
@@ -79,6 +74,14 @@ class Dashboard::PostsController < ApplicationController
   def approve_post
     @post.approved!
     @post.status_change_at = DateTime.now 
+
+    if @post.post_facebook
+      object = Graph.put_object(ENV["FACEBOOK_ID_PAGE"], 'feed', {
+        message: @post.text_content,
+        link: post_url(@post)
+      })
+      @post.post_facebook_id = object['id']
+    end
     
     if @post.save 
       respond_to do |format|
@@ -93,7 +96,7 @@ class Dashboard::PostsController < ApplicationController
   # Cho phép admin rejected
   def reject_post
     @post.rejected!
-    @post.status_change_at = DateTime.now
+    @post.status_change_at = DateTime.now 
 
     if @post.save 
       respond_to do |format|
