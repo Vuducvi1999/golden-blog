@@ -50,7 +50,7 @@ class Dashboard::PostsController < ApplicationController
     categories = Category.where(id:categories_id)
     @post.categories = categories
 
-    unless @post.new_created? && @post.rejected? && @post.post_facebook_id.empty?
+    unless not @post.approved? && @post.post_facebook_id.empty?
       Graph.put_object(@post.post_facebook_id, '', {
         message: @post.text_content
       })
@@ -83,6 +83,7 @@ class Dashboard::PostsController < ApplicationController
         format.html
         format.js { render partial:"dashboard/posts/js_erb/approve_post.js.erb" }
       end
+
       if @post.post_facebook?
         object = Graph.put_object('me', 'feed', {
           message: @post.text_content,
