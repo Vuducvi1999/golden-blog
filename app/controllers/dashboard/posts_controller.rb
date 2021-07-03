@@ -50,13 +50,13 @@ class Dashboard::PostsController < ApplicationController
     categories = Category.where(id:categories_id)
     @post.categories = categories
 
-    if @post.post_facebook_id
-      Graph.put_object(@post.post_facebook_id, '', {
-        message: @post.text_content
-      })
-    end
-
     if @post.update(post_params)
+      if @post.approved? && @post.post_facebook_id != ''
+        Graph.put_object(@post.post_facebook_id, '', {
+          message: @post.text_content
+          })
+        end
+      
       redirect_to @post, notice: "Post was successfully updated."
     else
       render :edit, status: :unprocessable_entity 
