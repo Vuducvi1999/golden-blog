@@ -50,7 +50,7 @@ class Dashboard::PostsController < ApplicationController
     categories = Category.where(id:categories_id)
     @post.categories = categories
 
-    unless @post.post_facebook_id.empty?
+    if @post.approved? && @post.post_facebook_id != ''
       Graph.put_object(@post.post_facebook_id, '', {
         message: @post.text_content
       })
