@@ -37,7 +37,7 @@ class Dashboard::PostsController < ApplicationController
     @post.categories = categories 
     
     if @post.save      
-      @post.update post_facebook?: true
+      @post.update(post_facebook?: true) if params[:post_facebook]
       redirect_to @post, notice: "Post was successfully created." 
     else
       render :new, status: :unprocessable_entity 
