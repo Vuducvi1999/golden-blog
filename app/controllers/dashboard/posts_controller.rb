@@ -50,6 +50,15 @@ class Dashboard::PostsController < ApplicationController
     categories = Category.where(id:categories_id)
     @post.categories = categories
 
+    puts "@post.approved?: #{@post.approved?}"
+    puts "@post.approved?: #{@post.approved?}"
+    puts "@post.approved?: #{@post.approved?}"
+    puts "@post.approved?: #{@post.approved?}"
+    puts "@post.post_facebook_id != '': #{@post.post_facebook_id != ''}"
+    puts "@post.post_facebook_id != '': #{@post.post_facebook_id != ''}"
+    puts "@post.post_facebook_id != '': #{@post.post_facebook_id != ''}"
+    puts "@post.post_facebook_id != '': #{@post.post_facebook_id != ''}"
+
     if @post.approved? && @post.post_facebook_id != ''
       Graph.put_object(@post.post_facebook_id, '', {
         message: @post.text_content
