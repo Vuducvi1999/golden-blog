@@ -73,6 +73,8 @@ class Dashboard::PostsController < ApplicationController
 
   # Cho phép admin approved
   def approve_post
+    return redirect_back fallback_location:root_path if @post.approved?
+
     @post.approved!
     @post.status_change_at = DateTime.now 
     
