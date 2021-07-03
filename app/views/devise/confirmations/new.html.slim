@@ -1,5 +1,8 @@
 
 
+- content_for :head do 
+  title Confirmation instructions 
+
 - banner_path = asset_path('blog-template/home-bg.jpg')
 - site_headings = {h1: "Confirmation instructions", subheading: "Didn't receive confirmation instructions?"}
 = render partial:'layouts/banner', locals:{banner_path:banner_path, site_headings:site_headings}

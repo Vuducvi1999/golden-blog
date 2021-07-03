@@ -4,6 +4,8 @@
 - site_headings = {h1: "Resend unlock instructions", subheading: "Didn't receive unlock instructions?"}
 = render partial:'layouts/banner', locals:{banner_path:banner_path, site_headings:site_headings}
 
+- content_for :head do 
+  title Resend unlock instructions
 
 .container
   .row

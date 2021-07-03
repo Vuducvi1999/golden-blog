@@ -3,6 +3,8 @@
 - site_headings = {h1: "Edit #{resource_name.to_s.humanize}", subheading: ''}
 = render partial:'layouts/banner', locals:{banner_path:banner_path, site_headings:site_headings}
 
+- content_for :head do 
+  title Profile 
 
 .container
   .row

@@ -3,6 +3,9 @@
 - site_headings = {h1: 'GoldenOwl Blog', subheading: 'Quality articles with famous writers'}
 = render partial:'layouts/banner', locals:{banner_path:banner_path, site_headings:site_headings}
 
+- content_for :head do 
+  title Home  
+
 .container.mb-5
   .row.gx-4.gx-lg-5
     .col-3 
@@ -33,6 +36,6 @@
           - if index != @posts.length - 1
             hr.my-4
       - else 
-        p.text-muted 
+        p.text-muted.m-0.text-center
           | No Posts
 

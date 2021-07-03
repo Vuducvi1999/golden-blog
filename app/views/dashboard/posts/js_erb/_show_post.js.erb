@@ -2,9 +2,22 @@
 $( document ).on('turbolinks:load', function() {
   let headerHeight = $('#mainNav').innerHeight();
 
-  $("#vote-component").css({
-    top: `${headerHeight}px`
+  var lastScrollTop = 0;
+
+  $(window).scroll(function(event){
+    var st = $(this).scrollTop();
+    if (st > lastScrollTop){
+      $("#vote-component").css({
+        top: `0px`
+      })
+    } else {
+      $("#vote-component").css({
+        top: `${headerHeight}px`
+      })
+    }
+    lastScrollTop = st;
   })
+
 
   $('#facebook-share').html("<%= j render(partial:'shared/share_button')%>")
 

@@ -4,6 +4,10 @@
 - site_headings = {h1:'Contact admin', subheading:'Have questions? I have answers'}
 = render partial:"layouts/banner", locals: {banner_path:banner_path, site_headings:site_headings }
 
+- content_for :head do 
+  title Contact  
+
+
 main
   .container.px-4.px-lg-5
     .row.gx-4.gx-lg-5.justify-content-center

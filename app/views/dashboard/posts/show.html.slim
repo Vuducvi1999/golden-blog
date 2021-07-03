@@ -5,6 +5,7 @@
 = render partial: 'layouts/banner', locals:{banner_path: url_for(@post.thumbnail), post:@post }
 
 - content_for :head do 
+  title #{@post.title} 
   meta property="og:url" content="#{post_url(@post)}"
   meta property="og:type" content="article"
   meta property="og:title" content="#{@post.title}"
@@ -29,7 +30,7 @@
             i class="fas fa-caret-down fs-1"
     .col-8  
       - if current_user&.is_author_of?(@post) && @post.new_created?
-        p.mb-3.text-center.border.border-danger.py-2 style="font-size:1.3rem"     
+        p.mb-3.text-center.border.border-danger.m-0.py-2 style="font-size:1.3rem"     
           |  Waiting for admin to approve this post
       - if current_user&.is_author_of?(@post) && @post.rejected?
         p.mb-3.text-center.border.border-danger.py-2 style="font-size:1.3rem"     

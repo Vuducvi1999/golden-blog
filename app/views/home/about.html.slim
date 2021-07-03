@@ -4,6 +4,9 @@
 - site_headings = {h1:'About this page', subheading:'A fancy page for multilple blogger with many categories'}
 = render partial:"layouts/banner", locals: {banner_path:banner_path, site_headings:site_headings }
 
+- content_for :head do 
+  title About 
+
 main.mb-4
   .container.px-4.px-lg-5
     .row.gx-4.gx-lg-5.justify-content-center

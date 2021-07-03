@@ -4,6 +4,8 @@
 - site_headings = {h1: 'Search', subheading: params[:post_title] ? params[:post_title] : '' }
 = render partial:'layouts/banner', locals:{banner_path:banner_path, site_headings:site_headings}
 
+- content_for :head do 
+  title Search  
 
 .container.mb-5
   .row.gx-4.gx-lg-5.justify-content-center
