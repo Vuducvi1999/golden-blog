@@ -68,7 +68,8 @@ class Dashboard::PostsController < ApplicationController
     @post.categories = categories
 
     if @post.update(post_params)
-      if @post.approved? && @post.post_facebook_id != ''
+      # if @post.approved? && @post.post_facebook_id != ''
+      if @post.post_facebook_id != ''
         Graph.put_object(@post.post_facebook_id, '', {
           message: @post.text_content
           })
