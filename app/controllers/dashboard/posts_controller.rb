@@ -38,6 +38,13 @@ class Dashboard::PostsController < ApplicationController
     
     if @post.save      
       @post.update(post_facebook?: true) if params[:post_facebook]
+      if @post.post_facebook?
+        object = Graph.put_object('me', 'feed', {
+          message: @post.text_content,
+          link: post_url(@post)
+        })
+        @post.update post_facebook_id: object['id']
+      end
       redirect_to @post, notice: "Post was successfully created." 
     else
       render :new, status: :unprocessable_entity 
@@ -84,13 +91,13 @@ class Dashboard::PostsController < ApplicationController
         format.js { render partial:"dashboard/posts/js_erb/approve_post.js.erb" }
       end
 
-      if @post.post_facebook?
-        object = Graph.put_object('me', 'feed', {
-          message: @post.text_content,
-          link: post_url(@post)
-        })
-        @post.update post_facebook_id: object['id']
-      end
+      # if @post.post_facebook?
+      #   object = Graph.put_object('me', 'feed', {
+      #     message: @post.text_content,
+      #     link: post_url(@post)
+      #   })
+      #   @post.update post_facebook_id: object['id']
+      # end
     else
       redirect_back fallback_location:root_path, alert: "Approve post fail"
     end
