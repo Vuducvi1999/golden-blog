@@ -48,10 +48,11 @@ class Dashboard::PostsController < ApplicationController
         puts post_url(@post)
         puts post_url(@post)
         puts post_url(@post)
-        puts post_url(@post)
-        puts post_url(@post)
-        puts post_url(@post)
         
+        puts post_url(@post)
+        puts post_url(@post)
+        puts post_url(@post)
+
         @post.update post_facebook_id: object['id']
       end
       redirect_to @post, notice: "Post was successfully created." 

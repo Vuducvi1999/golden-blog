@@ -6,10 +6,10 @@
 
 - content_for :head do 
   title #{@post.title} 
-  meta property="og:url" content="#{post_url(@post)}"
-  meta property="og:type" content="article"
-  meta property="og:title" content="#{@post.title}"
-  meta property="og:description" content="#{@post.short_description}" 
+  / meta property="og:url" content="#{post_url(@post)}"
+  / meta property="og:type" content="article"
+  / meta property="og:title" content="#{@post.title}"
+  / meta property="og:description" content="#{@post.short_description}" 
   meta property="og:image" content="#{root_url[0...-1] + url_for(@post.thumbnail)}"
 
 .container 
