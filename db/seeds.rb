@@ -12,6 +12,5 @@ User.new(
   password: "anhvipandan",
   password_confirmation: "anhvipandan",
   confirmed_at: DateTime.now
+  role: 1
 ).save
-
-User.find_by(email: 'vuducvi20@gmail.com').admin!
