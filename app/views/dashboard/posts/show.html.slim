@@ -49,8 +49,19 @@
           = link_to 'Edit', edit_dashboard_post_path(@post), class:'btn btn-primary py-2 fs-5 me-3'
           = link_to 'Delete', dashboard_post_path(@post), method:'delete', class:'btn btn-danger py-2 fs-5',data: {confirm: 'Are you sure?'}
 
-      - if @post.approved?
-        #facebook-share.mb-3
+      - if @post.approved?        
+        div class="fb-share-button mb-3 d-flex" data-href="#{url_for(only_path:false)}" data-layout="button_count" data-size="small"
+        script
+          | (function(d, s, id) {
+          | var js, fjs = d.getElementsByTagName(s)[0];
+          | if (d.getElementById(id)) return;
+          | js = d.createElement(s); js.id = id;
+          | js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
+          | fjs.parentNode.insertBefore(js, fjs);
+          | }(document, 'script', 'facebook-jssdk'));
+          | if(FB){
+          |   FB.XFBML.parse();
+          | }
 
         #rate-component
           = render partial:"dashboard/posts/rate_form"
