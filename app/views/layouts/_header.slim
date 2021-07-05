@@ -32,6 +32,9 @@ nav#mainNav.navbar.navbar-expand-lg.border-0 class='#{add_classes}'
         li.nav-item
           = link_to contact_path, class:'nav-link px-lg-3 py-3 py-lg-4' do 
             | Contact
+        li.nav-item
+          = link_to privacy_path, class:'nav-link px-lg-3 py-3 py-lg-4' do 
+            | Privacy
         li.nav-item.dropdown
           a#header-account-menu.dropdown-toggle.nav-link.px-lg-3.py-3.py-lg-4 href="#" data-bs-toggle="dropdown"
             - if current_user.present?
