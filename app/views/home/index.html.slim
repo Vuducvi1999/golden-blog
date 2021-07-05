@@ -11,15 +11,16 @@
     .col-3 
       ul.nav.flex-column.nav-pills
         li.nav-item
-          a.nav-link.px-2.active[aria-current="page" href="#"]
+          / a.nav-link.px-2.active[aria-current="page" href="#"]
+          = link_to root_path(filter: 'new_posts'), class:'nav-link px-2' do
             img.me-2 src="https://img.icons8.com/ios/50/000000/new.png" style='width: 28px'
             | New Posts 
         li.nav-item
-          a.nav-link.px-2[href="#"]
+          = link_to root_path(filter: 'top_rating'), class:'nav-link px-2' do
             img.me-2 src="https://img.icons8.com/ios/50/000000/rating.png" style='width: 28px'
             | Top rating 
         li.nav-item
-          a.nav-link.px-2[href="#"]
+          = link_to root_path(filter: 'most_reading'), class:'nav-link px-2' do
             img.me-2 src="https://img.icons8.com/ios/50/000000/reading.png" style='width: 28px'
             | Most reading 
       h5.my-3 Categories 

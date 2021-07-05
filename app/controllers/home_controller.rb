@@ -1,7 +1,15 @@
 class HomeController < ApplicationController
   skip_before_action :authenticate_user!
-  def index
-    @posts = Post.approved
+  def index 
+    filter = (params[:filter] ||= 'new_posts')
+    case filter 
+    when 'new_posts'
+      @posts = Post.new_posts
+    when 'top_rating'
+      @posts = Post.top_rating
+    when 'most_reading'
+      @posts = Post.most_reading
+    end
   end
 
   def contact

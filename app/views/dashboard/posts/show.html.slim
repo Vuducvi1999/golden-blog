@@ -12,22 +12,32 @@
   meta property="og:description" content="#{@post.short_description}" 
   meta property="og:image" content="#{root_url[0...-1] + url_for(@post.thumbnail)}"
 
+
 .container 
   .row.mb-5 
     .col-2 
       #vote-component.d-flex.sticky-top.flex-column.align-items-end
-        = link_to like_dashboard_post_path(@post), method:'post', id:'like-vote', remote:true do
-          - if current_user&.voted_up_on? @post
-            i class="fas fa-caret-up fs-1 text-success"
-          - else 
-            i class="fas fa-caret-up fs-1"
-        p#score-vote.m-0.fw-bold.font-monospace.pe-1 
-          | #{@post.weighted_score}
-        = link_to dislike_dashboard_post_path(@post), method:'post', id:'unlike-vote', remote:true do
-          - if current_user&.voted_down_on? @post
-            i class="fas fa-caret-down fs-1 text-danger"
-          - else 
-            i class="fas fa-caret-down fs-1"
+        div
+          = link_to like_dashboard_post_path(@post), method:'post', id:'like-vote', remote:true do
+            - if current_user&.voted_up_on? @post
+              i class="fas fa-caret-up fs-1 text-success"
+            - else 
+              i class="fas fa-caret-up fs-1"
+          p#score-vote.m-0.fw-bold.font-monospace.text-center
+            | #{@post.weighted_score}
+          = link_to dislike_dashboard_post_path(@post), method:'post', id:'unlike-vote', remote:true do
+            - if current_user&.voted_down_on? @post
+              i class="fas fa-caret-down fs-1 text-danger"
+            - else 
+              i class="fas fa-caret-down fs-1"
+        .flex-column.align-items-end.my-3 
+          i.fas.fa-eye
+          p#read_count_post.m-0.fw-bold.font-monospace.text-center
+            | #{@post.read_count}
+        .flex-column.align-items-end.my-3 
+          i.far.fa-comment-dots
+          p#comments_count_post.m-0.fw-bold.font-monospace.text-center
+            | #{@post.comments.count}
     .col-8  
       - if current_user&.is_author_of?(@post) && @post.new_created?
         p.mb-3.text-center.border.border-danger.m-0.py-2 style="font-size:1.3rem"     

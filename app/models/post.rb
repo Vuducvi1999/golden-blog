@@ -21,10 +21,32 @@ class Post < ApplicationRecord
     rejected: 2
   }
 
-  scope :filter_by_categories, ->(categories_id){ where "post_categories.category_id in (#{categories_id.join(',')})" }
-  scope :search_by, ->(post_title){ joins(:post_categories)
-                                    .where(["lower(title) like ?","%#{post_title.downcase}%"])
-                                    .order(updated_at: :desc) }
+  scope :filter_by_categories, ->(categories_id){
+    where "post_categories.category_id in (#{categories_id.join(',')})"
+  }
+  scope :search_by, ->(post_title){
+    approved
+    .joins(:post_categories)
+    .where(["lower(title) like ?","%#{post_title.downcase}%"])
+    .order(updated_at: :desc) 
+  }
+  scope :new_posts, ->{
+    approved
+    .includes(:post_categories)
+    .order(updated_at: :desc)
+  }
+  scope :top_rating, ->{
+    approved
+    .includes(:post_categories)
+    .order(updated_at: :desc)
+    .sort_by {|post| post.average_score}.reverse
+  }
+  scope :most_reading, ->{
+    approved
+    .includes(:post_categories)
+    .order(updated_at: :desc)
+    .order(read_count: :desc)
+  }
 
   def average_score
     result = self.rates.average(:score)

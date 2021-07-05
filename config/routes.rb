@@ -22,7 +22,7 @@ Rails.application.routes.draw do
         post 'like'
         post 'dislike'
         post 'rate'
-
+        post 'read_count'
       end
       collection do
         get 'search'

@@ -1,9 +1,10 @@
 
 class Dashboard::PostsController < ApplicationController
   before_action :authenticate_user!, except: %i[show search]
-  before_action :set_post, only: %i[show edit update destroy approve_post reject_post like dislike rate]
+  before_action :set_post, only: %i[show edit update destroy approve_post reject_post like dislike rate read_count]
   before_action :check_post_status, only: %i[show]
   before_action :check_admin_to_change_status, only: %i[approve_post reject_post]
+  skip_before_action :verify_authenticity_token, :authenticate_user!, only: %i[read_count]
 
   
   include Rails.application.routes.url_helpers
@@ -15,7 +16,7 @@ class Dashboard::PostsController < ApplicationController
 
   def show
     @comment_paginate = @post.comments.paginate(page: params[:page], per_page: 10).order(updated_at: :desc)
-    
+
     respond_to do |format|
       format.html
       format.js {render partial:'dashboard/posts/js_erb/show.js.erb'}
@@ -128,6 +129,22 @@ class Dashboard::PostsController < ApplicationController
     @categories = Category.search_by categories_id
     @posts = Post.search_by post_title
     @posts = categories_id.empty? ? @posts : @posts.filter_by_categories(categories_id)
+  end
+
+  # update read count
+  def read_count
+    @post.update(read_count: @post.read_count + 1)
+    puts 'read count update'
+    puts 'read count update'
+    puts 'read count update'
+    puts 'read count update'
+    puts 'read count update'
+    puts 'read count update'
+    puts 'read count update'
+    puts 'read count update'
+    puts 'read count update'
+    puts 'read count update'
+    puts 'read count update'
   end
 
   # toogle like

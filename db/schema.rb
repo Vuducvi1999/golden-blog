@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_03_140743) do
+ActiveRecord::Schema.define(version: 2021_07_05_041200) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -97,6 +97,7 @@ ActiveRecord::Schema.define(version: 2021_07_03_140743) do
     t.float "cached_weighted_average", default: 0.0
     t.string "post_facebook_id", default: ""
     t.boolean "post_facebook?", default: false
+    t.integer "read_count", default: 0
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
