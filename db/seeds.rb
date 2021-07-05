@@ -11,6 +11,6 @@ User.new(
   username:"Admin",
   password: "anhvipandan",
   password_confirmation: "anhvipandan",
-  confirmed_at: DateTime.now
+  confirmed_at: DateTime.now,
   role: 1
 ).save
