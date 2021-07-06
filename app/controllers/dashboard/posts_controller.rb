@@ -47,6 +47,7 @@ class Dashboard::PostsController < ApplicationController
 
         @post.update post_facebook_id: object['id']
       end
+      @post.approve!
       redirect_to @post, notice: "Post was successfully created." 
     else
       render :new, status: :unprocessable_entity 
@@ -134,17 +135,6 @@ class Dashboard::PostsController < ApplicationController
   # update read count
   def read_count
     @post.update(read_count: @post.read_count + 1)
-    puts 'read count update'
-    puts 'read count update'
-    puts 'read count update'
-    puts 'read count update'
-    puts 'read count update'
-    puts 'read count update'
-    puts 'read count update'
-    puts 'read count update'
-    puts 'read count update'
-    puts 'read count update'
-    puts 'read count update'
   end
 
   # toogle like
