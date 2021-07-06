@@ -1,5 +1,6 @@
 class HomeController < ApplicationController
   skip_before_action :authenticate_user!
+
   def index 
     filter = (params[:filter] ||= 'new_posts')
     case filter 
@@ -10,6 +11,12 @@ class HomeController < ApplicationController
     when 'most_reading'
       @posts = Post.most_reading
     end
+    
+    respond_to do |format|
+      format.html 
+      format.js { render partial:"home/index.js.erb" }
+    end
+    
   end
 
   def contact

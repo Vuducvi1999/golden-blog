@@ -28,24 +28,23 @@ class Post < ApplicationRecord
     approved
     .joins(:post_categories)
     .where(["lower(title) like ?","%#{post_title.downcase}%"])
-    .order(updated_at: :desc) 
+    .order('created_at DESC') 
   }
   scope :new_posts, ->{
-    approved
+    all.approved
     .includes(:post_categories)
-    .order(updated_at: :desc)
+    .order('created_at DESC')
   }
   scope :top_rating, ->{
-    approved
+    all.approved
     .includes(:post_categories)
-    .order(updated_at: :desc)
     .sort_by {|post| post.average_score}.reverse
+    # .sort_by {|post| post.created_at}.reverse
   }
   scope :most_reading, ->{
-    approved
+    all.approved
     .includes(:post_categories)
-    .order(updated_at: :desc)
-    .order(read_count: :desc)
+    .order('read_count DESC, created_at DESC')
   }
 
   def average_score

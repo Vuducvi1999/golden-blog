@@ -148,7 +148,7 @@ class Dashboard::PostsController < ApplicationController
       puts current_user.liked? @post
       puts "unlikes"
     end
-    render partial:"dashboard/posts/js_erb/like.js.erb"
+    render partial:"dashboard/posts/js_erb/like.js.erb" 
   end
   
   # toogle unlike
