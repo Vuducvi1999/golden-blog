@@ -1,0 +1,5 @@
+- if resource.errors.any?
+  #error_explanation
+    ul.list-unstyled
+      - resource.errors.full_messages.each do |message|
+        = toastr_custom_message(message)
