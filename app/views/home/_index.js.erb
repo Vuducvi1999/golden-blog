@@ -1,19 +1,16 @@
-
-
-
 $('#posts-home').html(
-  `<%unless @posts.empty?%>
-    <%@posts.each_with_index do |post, index|%>
-      <div class='post-preview'>
-        <%=j render partial: 'shared/post_item_list', locals:{post: post}%>
-      </div>
-      <%if index != @posts.length - 1%>
-        <hr class='my-4'>
-      <%end%>
-    <%end %>
-  <%else%>
-    <p class='text-muted m-0 text-center'>
-      No Posts
-    </p>
-  <%end %>`
+`<%unless @posts.empty?%>
+  <%@posts.each_with_index do |post, index|%>
+    <div class='post-preview'>
+      <%=j render partial: 'shared/post_homepage_item', locals:{post: post}%>
+    </div>
+    <%if index != @posts.length - 1%>
+      <hr class='my-4'>
+    <%end%>
+  <%end %>
+<%else%>
+  <p class='text-muted m-0 text-center'>
+    No Posts
+  </p>
+<%end %>`
 )

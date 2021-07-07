@@ -70,7 +70,6 @@ ul.dropdown-menu {
   margin-top: 0.5rem !important;
 }
 
-
 .content-collapse-search {
   position: absolute;
   top: 100%;
@@ -91,3 +90,37 @@ ul.dropdown-menu {
   padding: 0;
   overflow-y: auto;
 }
+
+.close-model-btn {
+  font-size: 0.7rem;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+.input-group-search {
+  display: flex;
+  border: 1px solid rgb(172, 172, 172);
+  border-radius: 1000px;
+
+  & .search-input {
+    display: block;
+    outline: none;
+    border: none;
+    padding: 0 !important;
+    height: 2rem;
+    font-size: 1.3rem;
+    flex-grow: 1;
+    border-radius: 0 1000px 1000px 0;
+  }
+  & .icon-input {
+    color: rgb(168, 167, 167);
+  }
+}
+
+.item-check-search {
+  padding: .5rem 3rem !important;
+  &:hover{
+    background: #ddf7ff;
+  }
+}
+

@@ -2,11 +2,13 @@ class HomeController < ApplicationController
   skip_before_action :authenticate_user!
 
   def index 
-    post = Post.all.approved.includes(:post_categories)  
-    @new_posts = post.new_posts 
-    @top_rating = post.top_rating 
-    @most_reading = post.most_reading
-    
+    post_all = Post.all.approved.includes(:post_categories, :comments, :rates, :visits)  
+    @new_posts = post_all.new_posts 
+    @top_rating = post_all.top_rating 
+    @most_reading = post_all.most_reading
+    @weekly_hostest = post_all.weekly_hostest
+    @monthly_hostest = post_all.monthly_hostest
+    @yearly_hostest = post_all.yearly_hostest
   end
 
   def contact

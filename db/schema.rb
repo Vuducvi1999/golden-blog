@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_05_041200) do
+ActiveRecord::Schema.define(version: 2021_07_07_030712) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -97,7 +97,6 @@ ActiveRecord::Schema.define(version: 2021_07_05_041200) do
     t.float "cached_weighted_average", default: 0.0
     t.string "post_facebook_id", default: ""
     t.boolean "post_facebook?", default: false
-    t.integer "read_count", default: 0
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
@@ -141,6 +140,13 @@ ActiveRecord::Schema.define(version: 2021_07_05_041200) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  create_table "visits", force: :cascade do |t|
+    t.bigint "post_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["post_id"], name: "index_visits_on_post_id"
+  end
+
   create_table "votes", force: :cascade do |t|
     t.string "votable_type"
     t.bigint "votable_id"
@@ -166,4 +172,5 @@ ActiveRecord::Schema.define(version: 2021_07_05_041200) do
   add_foreign_key "posts", "users"
   add_foreign_key "rates", "posts"
   add_foreign_key "rates", "users"
+  add_foreign_key "visits", "posts"
 end

@@ -83,7 +83,7 @@ class Dashboard::PostsController < ApplicationController
         format.html
         format.js { render partial:"dashboard/posts/js_erb/approve_post.js.erb" }
       end
-      
+
       if @post.post_facebook?
         object = Graph.put_object('me', 'feed', {
           message: @post.text_content,
@@ -124,12 +124,12 @@ class Dashboard::PostsController < ApplicationController
 
   # update read count
   def read_count
-    @post.update(read_count: @post.read_count + 1)
+    @post.visits.create
   end
 
   # toogle like
-  def like    
-    if current_user.liked? @post 
+  def like 
+    if current_user.liked? @post
       @post.unliked_by current_user
       puts current_user.liked? @post 
       puts "like"

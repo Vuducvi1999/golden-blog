@@ -12,6 +12,7 @@ class Post < ApplicationRecord
   has_many :categories, through: :post_categories, dependent: :destroy
   has_many :comments, dependent: :destroy
   has_many :rates, dependent: :destroy
+  has_many :visits, dependent: :destroy
 
   acts_as_votable 
 
@@ -34,16 +35,45 @@ class Post < ApplicationRecord
     order('created_at DESC')
   }
   scope :top_rating, ->{
-    sort_by {|post| post.average_score}.reverse
-    .sort_by {|post| post.created_at}.reverse
+    sort_by {|post| post.average_score}.reverse 
+    .sort_by {|post| post.created_at}.reverse 
   }
   scope :most_reading, ->{
-    order('read_count DESC, created_at DESC')
+    sort_by {|post| post.read_count }.reverse 
+    .sort_by {|post| post.created_at}.reverse 
+  }
+  scope :weekly_hostest, ->{
+    where(visits: {created_at: DateTime.now.beginning_of_week..DateTime.now.end_of_week})
+    .sort_by {|post| post.weekly_read_count }.reverse 
+  }
+  scope :monthly_hostest, ->{
+    where(visits: {created_at: DateTime.now.beginning_of_month..DateTime.now.end_of_month}) 
+    .sort_by {|post| post.monthly_read_count }.reverse 
+  }
+  scope :yearly_hostest, ->{
+    where(visits: {created_at: DateTime.now.beginning_of_year..DateTime.now.end_of_year}) 
+    .sort_by {|post| post.yearly_read_count }.reverse 
   }
 
   def average_score
     result = self.rates.average(:score)
     result ||= 0
+  end 
+
+  def read_count
+    self.visits.count
+  end
+  
+  def weekly_read_count
+    self.visits.where(created_at: DateTime.now.beginning_of_week..DateTime.now.end_of_week).count
+  end
+  
+  def monthly_read_count
+    self.visits.where(created_at: DateTime.now.beginning_of_month..DateTime.now.end_of_month).count
+  end
+
+  def yearly_read_count
+    self.visits.where(created_at: DateTime.now.beginning_of_year..DateTime.now.end_of_year).count
   end
 
   def rate_by_user_with_score current_user, score 
