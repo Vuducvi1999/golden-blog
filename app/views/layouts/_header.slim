@@ -45,7 +45,6 @@ nav#mainNav.navbar.navbar-expand-lg.border-0 class='#{add_classes}'
               li 
                 = link_to  "Sign up", new_user_registration_path, class:'dropdown-item '
 
-
 = form_with url: search_dashboard_posts_path, method:'get', class:'modal content-collapse-search ', id:'search-modal' do |f|
   .modal-dialog.modal-dialog-scrollable.modal-lg 
     .modal-content.rounded-0
@@ -67,13 +66,13 @@ nav#mainNav.navbar.navbar-expand-lg.border-0 class='#{add_classes}'
           | Cancel 
         = button_tag type:'submit', class:'btn btn-primary rounded focus-box-none py-2', onclick:"$('#search-modal').submit()" do 
           | Search
-      script
-        | function categoryItemClick(e) {
-        |   e.children[0].checked = !e.children[0].checked;
-        |   let checkbox = e.children[0];
-        |   if(checkbox.checked)
-        |     e.classList.add('bg-lightblue');
-        |   else
-        |     e.classList.remove('bg-lightblue');
-        | }
-        
+script
+  | function categoryItemClick(e) {
+  |   e.children[0].checked = !e.children[0].checked;
+  |   let checkbox = e.children[0];
+  |   if(checkbox.checked)
+  |     e.classList.add('bg-lightblue');
+  |   else
+  |     e.classList.remove('bg-lightblue');
+  | }
+      
