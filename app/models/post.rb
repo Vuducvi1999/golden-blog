@@ -13,7 +13,7 @@ class Post < ApplicationRecord
   has_many :comments, dependent: :destroy
   has_many :rates, dependent: :destroy
 
-  acts_as_votable
+  acts_as_votable 
 
   enum status: {
     new_created: 0,
@@ -31,20 +31,14 @@ class Post < ApplicationRecord
     .order('created_at DESC') 
   }
   scope :new_posts, ->{
-    all.approved
-    .includes(:post_categories)
-    .order('created_at DESC')
+    order('created_at DESC')
   }
   scope :top_rating, ->{
-    all.approved
-    .includes(:post_categories)
-    .sort_by {|post| post.average_score}.reverse
-    # .sort_by {|post| post.created_at}.reverse
+    sort_by {|post| post.average_score}.reverse
+    .sort_by {|post| post.created_at}.reverse
   }
   scope :most_reading, ->{
-    all.approved
-    .includes(:post_categories)
-    .order('read_count DESC, created_at DESC')
+    order('read_count DESC, created_at DESC')
   }
 
   def average_score

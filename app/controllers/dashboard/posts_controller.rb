@@ -39,15 +39,7 @@ class Dashboard::PostsController < ApplicationController
     
     if @post.save      
       @post.update(post_facebook?: true) if params[:post_facebook]
-      if @post.post_facebook?
-        object = Graph.put_object('me', 'feed', {
-          message: @post.text_content,
-          link: post_url(@post)
-        })
 
-        @post.update post_facebook_id: object['id']
-      end
-      @post.approved!
       redirect_to @post, notice: "Post was successfully created." 
     else
       render :new, status: :unprocessable_entity 
@@ -61,12 +53,11 @@ class Dashboard::PostsController < ApplicationController
     @post.categories = categories
 
     if @post.update(post_params)
-      # if @post.approved? && @post.post_facebook_id != ''
-      if @post.post_facebook_id != ''
+      if @post.approved? && @post.post_facebook_id != ''
         Graph.put_object(@post.post_facebook_id, '', {
           message: @post.text_content
-          })
-        end
+        })
+      end
       
       redirect_to @post, notice: "Post was successfully updated."
     else
@@ -84,8 +75,6 @@ class Dashboard::PostsController < ApplicationController
 
   # Cho phép admin approved
   def approve_post
-    return redirect_back fallback_location:root_path if @post.approved?
-
     @post.approved!
     @post.status_change_at = DateTime.now 
     
@@ -94,14 +83,15 @@ class Dashboard::PostsController < ApplicationController
         format.html
         format.js { render partial:"dashboard/posts/js_erb/approve_post.js.erb" }
       end
+      
+      if @post.post_facebook?
+        object = Graph.put_object('me', 'feed', {
+          message: @post.text_content,
+          link: post_url(@post)
+        })
 
-      # if @post.post_facebook?
-      #   object = Graph.put_object('me', 'feed', {
-      #     message: @post.text_content,
-      #     link: post_url(@post)
-      #   })
-      #   @post.update post_facebook_id: object['id']
-      # end
+        @post.update post_facebook_id: object['id']
+      end
     else
       redirect_back fallback_location:root_path, alert: "Approve post fail"
     end

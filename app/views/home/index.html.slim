@@ -4,7 +4,73 @@
 = render partial:'layouts/banner', locals:{banner_path:banner_path, site_headings:site_headings}
 
 - content_for :head do 
-  title Home  
+  title Home 
+  
+
+.container.mb-5
+  .row.gx-4.gx-lg-5
+    .col-3 
+      ul.nav.flex-column.nav-pills
+        li.nav-item [data-bs-target="#pills-1"] 
+          .active.cursor-pointer.d-block.nav-link.px-2[data-bs-toggle="pill" data-bs-target="#pills-new-posts"]
+            img.me-2 src="https://img.icons8.com/ios/50/000000/new.png" style='width: 28px'
+            | New Posts 
+        li.nav-item [data-bs-target="#pills-2"]
+          .cursor-pointer.d-block.nav-link.px-2[data-bs-toggle="pill" data-bs-target="#pills-top-rating"]
+            img.me-2 src="https://img.icons8.com/ios/50/000000/rating.png" style='width: 28px'
+            | Top rating 
+        li.nav-item [data-bs-target="#pills-3"] 
+          .cursor-pointer.d-block.nav-link.px-2[data-bs-toggle="pill" data-bs-target="#pills-most-reading"]
+            img.me-2 src="https://img.icons8.com/ios/50/000000/reading.png" style='width: 28px'
+            | Most reading
+      h5.my-3 Categories 
+      div 
+        - Category.pluck(:id, :name).each do |item|
+          = link_to search_dashboard_posts_path(categories_id:[item[0]]),\
+          class:'me-1 badge bg-secondary badge-category fw-bold font-monospace', style:'font-size:0.9rem' do 
+            | #{item[1]} 
+    #posts-home.col-6.tab-content
+      - if @new_posts.empty?
+        p.text-muted.m-0.text-center
+          | No Posts
+      #pills-new-posts.tab-pane.fade.show.active 
+        - @new_posts.each_with_index do |post, index|
+          .post-preview
+            = render partial: 'shared/post_item_list', locals:{post: post}
+          - if index != @new_posts.length - 1
+            hr.my-4
+
+      #pills-top-rating.tab-pane.fade
+        - @top_rating.each_with_index do |post, index|
+          .post-preview
+            = render partial: 'shared/post_item_list', locals:{post: post}
+          - if index != @top_rating.length - 1
+            hr.my-4
+
+      #pills-most-reading.tab-pane.fade
+        - @most_reading.each_with_index do |post, index|
+          .post-preview
+            = render partial: 'shared/post_item_list', locals:{post: post}
+          - if index != @most_reading.length - 1
+            hr.my-4
+    .col-3 
+      h5.mb-3 Hostest Posts 
+      ul.nav.d-flex.mb-3
+        li.btn.p-0.py-1.focus-box-none.flex-grow-1.hostest-posts.active [data-bs-toggle="pill" data-bs-target="#pills-daily-hostest"]
+          | Daily  
+        li.btn.p-0.py-1.focus-box-none.flex-grow-1.hostest-posts [data-bs-toggle="pill" data-bs-target="#pills-weekly-hostest"]
+          | Weekly  
+        li.btn.p-0.py-1.focus-box-none.flex-grow-1.hostest-posts [data-bs-toggle="pill" data-bs-target="#pills-monthly-hostest"]
+          | Mothly  
+      .tab-content 
+        #pills-daily-hostest.tab-pane.fade.active.show 
+          | Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus beatae tenetur vero illo doloremque odit adipisci rerum consequatur reprehenderit corrupti.
+        #pills-weekly-hostest.tab-pane.fade
+          | Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio esse deserunt culpa sit excepturi maxime, quod possimus ut adipisci ex.
+        #pills-monthly-hostest.tab-pane.fade
+          | Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptate excepturi officia eum tempora maxime beatae vel officiis incidunt iusto maiores!
+
+
 
 script 
   | $(document).on('turbolinks:load',()=>{
@@ -13,42 +79,11 @@ script
   |       Array.from($('.nav.nav-pills .nav-item .nav-link')).forEach(item=>item.classList.remove('active'));
   |       item.classList.add('active');
   |     }
-  |   })
+  |   });
+  |   Array.from($('.hostest-posts')).forEach(item=>{
+  |     item.onclick = ()=> {
+  |       Array.from($('.hostest-posts')).forEach(item=>item.classList.remove('active'));
+  |       item.classList.add('active');
+  |     }
+  |   });
   | })
-
-.container.mb-5
-  .row.gx-4.gx-lg-5
-    .col-3 
-      ul.nav.flex-column.nav-pills
-        li.nav-item 
-          = link_to root_path(filter: 'new_posts'), \
-          class:"nav-link px-2 #{params[:filter]=='new_posts' ? 'active': ''}", remote:true do
-            img.me-2 src="https://img.icons8.com/ios/50/000000/new.png" style='width: 28px'
-            | New Posts 
-        li.nav-item
-          = link_to root_path(filter: 'top_rating'), \
-          class:"nav-link px-2 #{params[:filter]=='top_rating' ? 'active': ''}", remote:true do
-            img.me-2 src="https://img.icons8.com/ios/50/000000/rating.png" style='width: 28px'
-            | Top rating 
-        li.nav-item
-          = link_to root_path(filter: 'most_reading'), \
-          class:"nav-link px-2 #{params[:filter]=='most_reading' ? 'active': ''}", remote:true do
-            img.me-2 src="https://img.icons8.com/ios/50/000000/reading.png" style='width: 28px'
-            | Most reading 
-      h5.my-3 Categories 
-      div 
-        - Category.pluck(:id, :name).each do |item|
-          = link_to search_dashboard_posts_path(categories_id:[item[0]]),\
-          class:'me-1 badge bg-secondary badge-category fw-bold font-monospace', style:'font-size:0.9rem' do 
-            | #{item[1]}
-    #posts-home.col-7 
-      - unless @posts.empty?
-        - @posts.each_with_index do |post, index|
-          .post-preview
-            = render partial: 'shared/post_item_list', locals:{post: post}
-          - if index != @posts.length - 1
-            hr.my-4
-      - else 
-        p.text-muted.m-0.text-center
-          | No Posts
-

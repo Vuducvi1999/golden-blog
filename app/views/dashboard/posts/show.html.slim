@@ -45,7 +45,7 @@
       - if current_user&.is_author_of?(@post) && @post.rejected?
         p.mb-3.text-center.border.border-danger.py-2 style="font-size:1.3rem"     
           |  This post was rejected by admin, 
-          = link_to  "contact", contact_path, class:'text-primary'
+          = link_to  "contact", contact_path, class:'text-primary'     
           |  for more infomation
       .mb-3
         = @post.content.to_s.html_safe

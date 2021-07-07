@@ -2,20 +2,10 @@ class HomeController < ApplicationController
   skip_before_action :authenticate_user!
 
   def index 
-    filter = (params[:filter] ||= 'new_posts')
-    case filter 
-    when 'new_posts'
-      @posts = Post.new_posts
-    when 'top_rating'
-      @posts = Post.top_rating
-    when 'most_reading'
-      @posts = Post.most_reading
-    end
-    
-    respond_to do |format|
-      format.html 
-      format.js { render partial:"home/index.js.erb" }
-    end
+    post = Post.all.approved.includes(:post_categories)  
+    @new_posts = post.new_posts 
+    @top_rating = post.top_rating 
+    @most_reading = post.most_reading
     
   end
 
