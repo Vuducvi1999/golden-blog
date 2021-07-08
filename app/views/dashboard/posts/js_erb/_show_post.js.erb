@@ -6,11 +6,11 @@ $( document ).on('turbolinks:load', function() {
     var st = $(this).scrollTop();
     if (st > lastScrollTop){
       $("#vote-component").css({
-        top: `0px`
+        top: `1rem`
       })
     } else {
       $("#vote-component").css({
-        top: `${headerHeight}px`
+        top: `calc(${headerHeight}px + 1rem)`
       })
     }
     lastScrollTop = st;
