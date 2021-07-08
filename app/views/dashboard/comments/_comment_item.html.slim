@@ -1,4 +1,4 @@
-.my-3.d-grid style="grid-template-columns: 6% auto;" 
+.my-3.d-grid style="grid-template-columns: 6% auto;" id="comment_id_#{comment.id}" 
   .image-user.me-3
     - if comment.user.avatar.present?
       - avatar = url_for(comment.user.avatar)
@@ -6,11 +6,26 @@
       - avatar = asset_path 'avatar-default.png'
     img.w-100 src="#{avatar}"
   .info-comment
-    .d-flex
-      h6.m-0.me-2 
-        | #{comment.user.username}
-      p.m-0 style="font-size: .8rem"
+    .d-flex.align-items-center 
+      span.me-2.fw-bold.fs-6 
+        | #{comment.user.username} 
+      p.m-0 style="font-size: .8rem; color:rgba(0,0,0,.4)"
         i class="far fa-clock me-1"
         | #{time_ago_in_words comment.created_at} ago
-    p.m-0.mt-3 style="white-space: pre-line;"
-      | #{comment.content}
+      - if current_user.present? && current_user.id == comment.user.id
+        i#dropdownMenuLink.fas.fa-ellipsis-h.cursor-pointer.fs-6.text-secondary.me-2.ms-auto data-bs-toggle="dropdown"
+        ul.dropdown-menu.dropdown-menu-end aria-labelledby="dropdownMenuLink"
+          li.dropdown-item.fs-6 
+            span.d-block.cursor-pointer id="edit_click_id_#{comment.id}" Edit 
+          li.dropdown-item.fs-6 
+            = link_to 'Delete', dashboard_post_comment_path(@post, comment), method:'delete', remote:true, class:'d-block'
+    p.m-0 style="white-space: pre-line;" id="comment_content_#{comment.id}"
+      | #{comment.content} 
+    = form_with model: [:dashboard, @post, comment], method:'patch', local:false, class:'d-none mt-2' do |f|
+      = f.text_area :content, rows:3, class:'form-control focus-box-none' 
+      .d-flex.justify-content-end.mt-2 
+        span class='btn btn-secondary py-2 px-2 fs-6 me-2' id="cancel_id_#{comment.id}" Cancel 
+        = f.submit "Change", class:'btn btn-success py-2 px-2 fs-6'
+
+script 
+  = render partial:'dashboard/comments/js_erb/comment_item.js', locals:{comment: comment}

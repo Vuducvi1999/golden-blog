@@ -1,7 +1,7 @@
 = form_with model: [:dashboard, post], class:'mt-4' do |form|
   - if post.errors.any?
     - post.errors.each do |error|
-      = render partial:'shared/toastr_error.slim', locals:{message: error.full_message}
+      = toastr_custom_message(error.full_message)
 
   .my-5.form-floating
     = form.text_field :title, id:'title',class:'form-control title-create focus-box-none fs-3', placeholder:'Title'

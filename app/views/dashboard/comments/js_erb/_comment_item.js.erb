@@ -1,0 +1,12 @@
+
+
+
+var toggleStyleCommentEdit = ()=>{
+  $(`#comment_content_<%=comment.id%>`).toggleClass('d-none')
+  .next().toggleClass('d-none').toggleClass('d-block')
+}
+
+$(`#edit_click_id_<%=comment.id%>`).click(toggleStyleCommentEdit)
+
+$(`#cancel_id_<%=comment.id%>`).click(toggleStyleCommentEdit)
+
