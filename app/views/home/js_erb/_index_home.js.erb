@@ -1,0 +1,46 @@
+
+
+
+
+
+$(document).on('ready turbolinks:load',()=>{
+
+  Array.from($('.nav.nav-pills .nav-item .nav-link')).forEach(item=>{
+    item.onclick = ()=> {
+      Array.from($('.nav.nav-pills .nav-item .nav-link')).forEach(item=>item.classList.remove('active'));
+      item.classList.add('active');
+    }
+  });
+  Array.from($('.hostest-posts')).forEach(item=>{
+    item.onclick = ()=> {
+      Array.from($('.hostest-posts')).forEach(item=>item.classList.remove('active'));
+      item.classList.add('active');
+    }
+  });
+
+  let headerHeight = $('#mainNav').innerHeight();
+  var lastScrollTop = 0;
+
+  $(window).scroll(function(event){
+    var st = $(this).scrollTop();
+    if (st > lastScrollTop){
+      $("#filter-sidebar").css({
+        top: `1rem`,
+        transition: `ease 0.2s`
+      })
+      $("#hostest-post-sidebar").css({
+        top: `1rem`,
+        transition: `ease 0.2s`
+      })
+    } else {
+      $("#filter-sidebar").css({
+        top: `calc(${headerHeight}px + 1rem)`
+      })
+      $("#hostest-post-sidebar").css({
+        top: `calc(${headerHeight}px + 1rem)`
+      })
+      console.log('test')
+    }
+    lastScrollTop = st;
+  })
+})

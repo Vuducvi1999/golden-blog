@@ -1,4 +1,4 @@
-.my-3.d-grid style="grid-template-columns: 6% auto;" id="comment_id_#{comment.id}" 
+.my-3.d-grid style="grid-template-columns: 6% auto; font-family: sans-serif;" id="comment_id_#{comment.id}" 
   .image-user.me-3
     - if comment.user.avatar.present?
       - avatar = url_for(comment.user.avatar)
@@ -19,7 +19,7 @@
             span.d-block.cursor-pointer id="edit_click_id_#{comment.id}" Edit 
           li.dropdown-item.fs-6 
             = link_to 'Delete', dashboard_post_comment_path(@post, comment), method:'delete', remote:true, class:'d-block'
-    p.m-0 style="white-space: pre-line;" id="comment_content_#{comment.id}"
+    p.m-0 style="white-space: pre-line; " id="comment_content_#{comment.id}"
       | #{comment.content} 
     = form_with model: [:dashboard, @post, comment], method:'patch', local:false, class:'d-none mt-2' do |f|
       = f.text_area :content, rows:3, class:'form-control focus-box-none' 

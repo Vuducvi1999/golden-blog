@@ -21,6 +21,8 @@ class Post < ApplicationRecord
     approved: 1,
     rejected: 2
   }
+  
+  scope :all_includes, -> { approved.includes(:post_categories, :comments, :rates, :visits) }
 
   scope :filter_by_categories, ->(categories_id){
     where "post_categories.category_id in (#{categories_id.join(',')})"
@@ -57,7 +59,7 @@ class Post < ApplicationRecord
 
   def average_score
     result = self.rates.average(:score)
-    result ||= 0
+    result ||= 0 
   end 
 
   def read_count
@@ -78,6 +80,17 @@ class Post < ApplicationRecord
 
   def rate_by_user_with_score current_user, score 
     self.rates.find_by(user_id: current_user.id).update(score: score)
+  end
+
+  def related_posts
+    post_categories = self.categories.pluck(:id)
+
+    related_by_categories = Post.all_includes
+    .where(post_categories: {category_id: post_categories}).limit(5)
+    
+    sort_by_reading = related_by_categories.sort_by {|post| post.read_count }
+    sort_by_categories = sort_by_reading.sort_by {|post| post.categories.pluck(:id).intersection(post_categories).count }
+    sort_by_categories.reverse
   end
   
   def reading_time
