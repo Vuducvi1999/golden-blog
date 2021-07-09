@@ -6,7 +6,7 @@
     /     | prohibited this category from being saved:
     /   ul
     - category.errors.each do |error|
-      = render partial:'shared/toastr_error.slim', locals:{message: error.full_message}
+      = toastr_custom_message(error.full_message)
     
   .mb-3.form-floating
     = form.text_field :name, id:'category name', class:'form-control', placeholder: "Category"

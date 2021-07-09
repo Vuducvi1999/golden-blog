@@ -1,0 +1,29 @@
+
+<% if current_user&.get_rate_with(@post) %>
+  <%current_score = current_user&.get_rate_with(@post).score.to_i%>
+<%else %>
+  <%current_score = 0%>
+<% end %>
+
+for (let i=1; i<=5;i++){
+  $(`#score-${i}`).click(()=>{
+    $(`#score-field`).val(i)
+    $(`#submit-rating`).click()
+    
+  })
+  $(`#score-${i}`).hover(
+    (over)=>{
+      for(let j=1; j<=i; j++)
+        $(`#score-${j}`).addClass('fas fa-star text-warning')
+      for(let j=i+1; j<= 5; j++)
+        $(`#score-${j}`).removeClass('fas fa-star text-warning').addClass('far fa-star')
+    },
+    (out)=>{
+      for(let j=1; j<=<%=current_score%>;j++)
+          $(`#score-${j}`).addClass('fas fa-star text-warning')
+      for(let j=<%=current_score%>+1; j<=5;j++)
+          $(`#score-${j}`).removeClass('fas fa-star text-warning').addClass('far fa-star')
+    }
+  )
+}
+

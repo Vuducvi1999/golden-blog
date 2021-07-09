@@ -1,0 +1,38 @@
+$( document ).on('turbolinks:load', function() {
+  let headerHeight = $('#mainNav').innerHeight();
+  var lastScrollTop = 0;
+
+  $(window).scroll(function(event){
+    var st = $(this).scrollTop();
+    if (st > lastScrollTop){
+      $("#vote-component").css({
+        top: `1rem`
+      })
+    } else {
+      $("#vote-component").css({
+        top: `calc(${headerHeight}px + 1rem)`
+      })
+    }
+    lastScrollTop = st;
+  })
+  
+  let listPostReaded = JSON.parse(sessionStorage.getItem('post_readed')) || [];
+
+  if( !listPostReaded.includes(<%= @post.id %>) ) {
+    fetch('<%= read_count_dashboard_post_path(@post)%>',{
+      method: 'POST'
+    })
+    .then(()=> {
+        $('#read_count_post').text(<%= @post.read_count + 1 %>);
+    })
+    .catch((e)=> {
+      console.log(e);
+    })
+
+    listPostReaded.push(<%= @post.id %>);
+    sessionStorage.setItem('post_readed', JSON.stringify(listPostReaded));
+  }
+  
+})
+
+

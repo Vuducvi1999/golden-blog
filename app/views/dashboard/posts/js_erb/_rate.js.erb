@@ -1,0 +1,2 @@
+$(`#rate-component`).html(`<%= j render partial:"dashboard/posts/rate_form"%>`)
+$('#heading-rate').html(`<%=j render partial:"shared/rating_score_component", locals:{average_score: @post.average_score}%>`)

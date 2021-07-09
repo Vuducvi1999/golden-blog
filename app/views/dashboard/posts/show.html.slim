@@ -1,30 +1,52 @@
 
 
-script 
-  = render "dashboard/posts/show_post.js"
 
 
 = render partial: 'layouts/banner', locals:{banner_path: url_for(@post.thumbnail), post:@post }
 
+- content_for :head do 
+  title #{@post.title} 
+  meta property="og:url" content="#{post_url(@post)}"
+  meta property="og:type" content="article"
+  meta property="og:title" content="#{@post.title}"
+  meta property="og:description" content="#{@post.short_description}" 
+  meta property="og:image" content="#{root_url[0...-1] + url_for(@post.thumbnail)}"
+
+
 .container 
   .row.mb-5 
     .col-2 
-      #vote-component.d-flex.sticky-top.flex-column.align-items-end
-        = link_to like_dashboard_post_path(@post), method:'post', id:'like-vote', remote:true do
-          - if current_user&.voted_up_on? @post
-            i class="fas fa-caret-up fs-1 text-success"
-          - else 
-            i class="fas fa-caret-up fs-1"
-        p#score-vote.m-0.fw-bold.font-monospace.pe-1 
-          | #{@post.weighted_score}
-        = link_to dislike_dashboard_post_path(@post), method:'post', id:'unlike-vote', remote:true do
-          - if current_user&.voted_down_on? @post
-            i class="fas fa-caret-down fs-1 text-danger"
-          - else 
-            i class="fas fa-caret-down fs-1"
-    .col-8        
-      - if current_user&.is_author_of? @post
-        h5.mb-3.text-info Waiting for admin to approve this post
+      #vote-component.d-flex.sticky-top.flex-column.align-items-end style='transition: ease 0.2s'
+        div
+          = link_to like_dashboard_post_path(@post), method:'post', id:'like-vote', remote:true do
+            - if current_user&.voted_up_on? @post
+              i class="fas fa-caret-up fs-1 text-success"
+            - else 
+              i class="fas fa-caret-up fs-1"
+          p#score-vote.m-0.fw-bold.font-monospace.text-center
+            | #{@post.weighted_score}
+          = link_to dislike_dashboard_post_path(@post), method:'post', id:'unlike-vote', remote:true do
+            - if current_user&.voted_down_on? @post
+              i class="fas fa-caret-down fs-1 text-danger"
+            - else 
+              i class="fas fa-caret-down fs-1"
+        .flex-column.align-items-end.my-3 
+          i.fas.fa-eye
+          p#read_count_post.m-0.fw-bold.font-monospace.text-center
+            | #{@post.read_count}
+        .flex-column.align-items-end.my-3 
+          i.far.fa-comment-dots
+          p#comments_count_post.m-0.fw-bold.font-monospace.text-center
+            | #{@post.comments.count}
+    .col-8  
+      - if current_user&.is_author_of?(@post) && @post.new_created?
+        p.mb-3.text-center.border.border-danger.m-0.py-2 style="font-size:1.3rem"     
+          |  Waiting for admin to approve this post
+      - if current_user&.is_author_of?(@post) && @post.rejected?
+        p.mb-3.text-center.border.border-danger.py-2 style="font-size:1.3rem"     
+          |  This post was rejected by admin, 
+          = link_to  "contact", contact_path, class:'text-primary'     
+          |  for more infomation
       .mb-3
         = @post.content.to_s.html_safe
       .d-flex.mb-4.align-items-baseline.font-monospace style="font-size: 1rem"
@@ -33,14 +55,25 @@ script
             = link_to search_dashboard_posts_path(categories_id:[item[0]]), class:'me-2 badge bg-secondary badge-category fw-bold' do 
               | #{item[1]}
       - if current_user&.is_author_of? @post
-        .d-flex.justify-content-between 
-          = link_to 'Edit', edit_dashboard_post_path(@post), class:'btn btn-primary py-2 fs-5'
+        .d-flex.mb-4
+          = link_to 'Edit', edit_dashboard_post_path(@post), class:'btn btn-primary py-2 fs-5 me-3'
           = link_to 'Delete', dashboard_post_path(@post), method:'delete', class:'btn btn-danger py-2 fs-5',data: {confirm: 'Are you sure?'}
 
-      - if @post.is_approved?
+      - if @post.approved? 
+        #share-facebook-btn.text-light.h5.p-2.ps-0.mb-3.d-inline-block.bg-facebook.cursor-pointer 
+          i class="fab fa-facebook-f border-end border-light px-3 py-1 me-2" 
+          | Share 
+        script 
+          | document.getElementById('share-facebook-btn').onclick = function() {
+          |  FB.ui({
+          |    display: 'popup',
+          |    method: 'share',
+          |    href: "#{url_for(only_path:false)}",
+          |  }, function(response){});
+          | }
         #rate-component
           = render partial:"dashboard/posts/rate_form"
-        .post-comment-create
+        .post-comment-create 
           - if current_user.present?
             = render partial: 'dashboard/comments/form'
           - else 
@@ -64,3 +97,5 @@ script
               | Haven't had comments! Be the first user comment.
 
 
+script 
+  = render "dashboard/posts/js_erb/show_post.js.erb"

@@ -13,14 +13,16 @@ header.masthead[style="background-image: url(#{banner_path})"]
             h1
               | #{post.title}
             - if post.short_description
-              h2.subheading
+              h2.subheading style="margin-bottom: 0.5rem"
                 | #{post.short_description}
+            #heading-rate style="margin-bottom: 0.5rem"
+              = render partial:"shared/rating_score_component", locals:{average_score: post.average_score}
             span.meta.p-relative
               |  Posted by #{post.user.username} 
               |  on #{post.created_at.strftime("%B #{post.created_at.day.ordinalize}, %Y")}
-              - if current_user&.is_admin?
+              - if current_user&.admin?
                 .d-flex.justify-content-between.fst-normal style="position: absolute; top: 100%; margin-top: 1rem"
-                  - if post.is_new?
+                  - if post.new_created?
                     #change-status-actions
                       = link_to approve_post_dashboard_post_path(@post), method:'post', remote: true, class:'focus-box-none btn text-success p-0 fs-5' do 
                         i class="fas fa-check me-1"
@@ -30,7 +32,7 @@ header.masthead[style="background-image: url(#{banner_path})"]
                         i class="fas fa-times me-1"
                         | Reject
                     p#result-change-status.fs-5.m-0.fw-bold.fs-4.fst-normal
-                  - elsif @post.is_approved? 
+                  - elsif @post.approved? 
                     p.fs-5.text-success.m-0.fw-bold.fs-4.fst-normal
                       | Approved
                   - else

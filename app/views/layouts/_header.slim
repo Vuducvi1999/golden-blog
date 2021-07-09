@@ -13,25 +13,17 @@ nav#mainNav.navbar.navbar-expand-lg.border-0 class='#{add_classes}'
     #navbarResponsive.collapse.navbar-collapse
       ul.navbar-nav.ms-auto.py-4.py-lg-0  style="position: relative"
         li.nav-item
-          a href='#collapse-search' class='nav-link px-lg-3 py-3 py-lg-4' data-bs-toggle="collapse"
+          a class='nav-link px-lg-3 py-3 py-lg-4 cursor-pointer' data-bs-toggle="modal" data-bs-target="#search-modal"
             | Search
-          div class="collapse content-collapse-search" id="collapse-search"
-            = form_with url: search_dashboard_posts_path, method:'get', class:'input-group p-relative' do |f|
-              = f.text_field :post_title, class:'form-control focus-box-none border-0'
-              button class="btn bg-white p-0 pe-1 focus-box-none dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"
-                | Categories
-              - count_item_to_select = Category.count < 5 ? Category.length : 5
-              = f.select :categories_id, Category.pluck(:name, :id), {},\
-                multiple:true, size: count_item_to_select,\
-                class:'form-select focus-box-none dropdown-menu categories-search-dropdown border-left-0 border-right-0'
-              = button_tag class:'btn btn-primary p-0 px-2 focus-box-none' do 
-                i class="fas fa-search"
         li.nav-item
           = link_to about_path, class:'nav-link px-lg-3 py-3 py-lg-4' do 
             | About
         li.nav-item
           = link_to contact_path, class:'nav-link px-lg-3 py-3 py-lg-4' do 
             | Contact
+        li.nav-item
+          = link_to privacy_path, class:'nav-link px-lg-3 py-3 py-lg-4' do 
+            | Privacy
         li.nav-item.dropdown
           a#header-account-menu.dropdown-toggle.nav-link.px-lg-3.py-3.py-lg-4 href="#" data-bs-toggle="dropdown"
             - if current_user.present?
@@ -52,3 +44,35 @@ nav#mainNav.navbar.navbar-expand-lg.border-0 class='#{add_classes}'
                 = link_to  "Log in", new_user_session_path, class:'dropdown-item '
               li 
                 = link_to  "Sign up", new_user_registration_path, class:'dropdown-item '
+
+= form_with url: search_dashboard_posts_path, method:'get', class:'modal content-collapse-search ', id:'search-modal' do |f|
+  .modal-dialog.modal-dialog-scrollable.modal-lg 
+    .modal-content.rounded-0
+      .modal-header.d-block.border-0 style="padding: 2rem 3rem" 
+          .d-flex.align-items-center.mb-3 
+            h5.modal-title Pick a title to search 
+            .btn-close.close-model-btn data-bs-dismiss="modal" aria-label="Close"
+          .input-group-search.mt-4.py-2.px-3 
+            label.icon-input.d-flex.align-items-center.pe-3 for='search-title'
+              i class="fas fa-search" 
+            = f.text_field :post_title, class:'search-input', id: 'search-title', placeholder:'Title...'
+      .modal-body.p-0.fs-6   
+        - Category.pluck(:name, :id).each do |item|
+          .form-check-label.flex-grow-1.cursor-pointer.item-check-search.d-flex.align-items-center onclick="categoryItemClick(this)"
+            = check_box_tag 'categories_id[]', item[1], false, class:'form-check-input focus-box-none m-0 me-2', id: "categories_id_#{item[1]}"
+            | #{item[0]}
+      .modal-footer 
+        = button_tag class:'btn btn-secondary rounded focus-box-none py-2', data:{bs_dismiss:"modal"} do 
+          | Cancel 
+        = button_tag type:'submit', class:'btn btn-primary rounded focus-box-none py-2', onclick:"$('#search-modal').submit()" do 
+          | Search
+script
+  | function categoryItemClick(e) {
+  |   e.children[0].checked = !e.children[0].checked;
+  |   let checkbox = e.children[0];
+  |   if(checkbox.checked)
+  |     e.classList.add('bg-lightblue');
+  |   else
+  |     e.classList.remove('bg-lightblue');
+  | }
+      

@@ -3,6 +3,9 @@
 - site_headings = {h1: 'Log in', subheading: 'Manage your blogs'}
 = render partial:'layouts/banner', locals:{banner_path:banner_path, site_headings:site_headings}
 
+- content_for :head do 
+  title Log in
+
 .container.mb-5
   .row
     .col-6.offset-3.mb-5

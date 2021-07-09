@@ -1,0 +1,21 @@
+
+.post-preview
+  = link_to post_path(post) do
+    h5.mt-2
+      | #{post.title}
+  p.m-0.fs-6 
+    | #{post.short_description}
+  .d-flex.mt-2.align-items-center 
+    .d-flex
+      .d-flex.me-3 
+        i class="fas fa-eye me-2"
+        p.m-0 style="font-size: 0.9rem"
+          - if type=='weekly'
+            | #{post.weekly_read_count} 
+          - elsif type=='monthly'
+            | #{post.monthly_read_count} 
+          - else 
+            | #{post.read_count} 
+    p.m-0.ms-auto style='font-size:0.7rem' 
+      | #{post.reading_time} min read 
+

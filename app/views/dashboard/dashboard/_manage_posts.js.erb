@@ -1,3 +1,19 @@
+
+
+
+
+window.addEventListener( 'pageshow', function ( event ) {
+  console.log('ok')
+  var historyPage = event.persisted || ( typeof window.performance != 'undefined' && window.performance.navigation.type === 2 );
+  if ( historyPage ) {
+    window.location.reload();
+  }
+});
+
+
+
+
+
 $('#wrap-new-posts-component').html(
 `<% @new_posts_paginate.each do |post| %>
   <div class="border ps-3">

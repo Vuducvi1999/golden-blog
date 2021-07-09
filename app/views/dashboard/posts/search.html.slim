@@ -4,6 +4,8 @@
 - site_headings = {h1: 'Search', subheading: params[:post_title] ? params[:post_title] : '' }
 = render partial:'layouts/banner', locals:{banner_path:banner_path, site_headings:site_headings}
 
+- content_for :head do 
+  title Search  
 
 .container.mb-5
   .row.gx-4.gx-lg-5.justify-content-center
@@ -16,7 +18,7 @@
       -  if not @posts.empty?
         - @posts.each_with_index do |post, index|
           .post-preview
-            = render partial: 'shared/post_item_list', locals:{post: post}
+            = render partial: 'shared/post_homepage_item', locals:{post: post}
           - if index != @posts.length - 1
             hr.my-4 
       - else 
@@ -26,4 +28,3 @@
             | Not found any post 
           p.m-0.mt-2 style='font-size: 1.1rem'
             | Sorry! We don't find any post by your key words. We suggest you to make sure title post or categories must be exist first.
-

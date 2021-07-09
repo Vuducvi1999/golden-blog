@@ -2,10 +2,12 @@ Rails.application.routes.draw do
   root 'home#index'
   get "contact" => 'home#contact'
   get "about" => 'home#about'
+  get "privacy" => 'home#privacy'
   
   devise_for :users, controllers: { confirmations: 'users/confirmations',
   omniauth_callbacks: 'users/omniauth_callbacks',
-  registrations: 'users/registrations' }
+  registrations: 'users/registrations',
+  sessions: 'users/sessions' }
   
   
   namespace :dashboard do
@@ -20,7 +22,7 @@ Rails.application.routes.draw do
         post 'like'
         post 'dislike'
         post 'rate'
-
+        post 'read_count'
       end
       collection do
         get 'search'

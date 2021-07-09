@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_24_115444) do
+ActiveRecord::Schema.define(version: 2021_07_07_030712) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -86,7 +86,7 @@ ActiveRecord::Schema.define(version: 2021_06_24_115444) do
     t.string "short_description"
     t.boolean "published"
     t.datetime "published_at"
-    t.integer "status"
+    t.integer "status", default: 0, null: false
     t.datetime "status_change_at"
     t.integer "cached_votes_total", default: 0
     t.integer "cached_votes_score", default: 0
@@ -95,6 +95,8 @@ ActiveRecord::Schema.define(version: 2021_06_24_115444) do
     t.integer "cached_weighted_score", default: 0
     t.integer "cached_weighted_total", default: 0
     t.float "cached_weighted_average", default: 0.0
+    t.string "post_facebook_id", default: ""
+    t.boolean "post_facebook?", default: false
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
@@ -129,12 +131,20 @@ ActiveRecord::Schema.define(version: 2021_06_24_115444) do
     t.datetime "locked_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "role"
+    t.integer "role", default: 0, null: false
+    t.string "access_token", default: ""
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true
+  end
+
+  create_table "visits", force: :cascade do |t|
+    t.bigint "post_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["post_id"], name: "index_visits_on_post_id"
   end
 
   create_table "votes", force: :cascade do |t|
@@ -162,4 +172,5 @@ ActiveRecord::Schema.define(version: 2021_06_24_115444) do
   add_foreign_key "posts", "users"
   add_foreign_key "rates", "posts"
   add_foreign_key "rates", "users"
+  add_foreign_key "visits", "posts"
 end

@@ -1,5 +1,5 @@
 .pagination {
-  font-size: .9rem;
+  font-size: 0.9rem;
 }
 
 .pagination > * {
@@ -27,9 +27,20 @@
   color: #c0c0c0;
 }
 
-.badge-category{
-  &:hover{
+.badge-category {
+  &:hover {
     background: #0085a1 !important;
     color: white;
+  }
+}
+
+.hostest-posts {
+  &:hover {
+    background: #0085a1;
+    color: #fff !important;
+  }
+  &.active {
+    background: #0085a1;
+    color: #fff !important;
   }
 }

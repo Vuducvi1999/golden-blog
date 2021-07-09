@@ -3,8 +3,6 @@ class Post < ApplicationRecord
   validates :content, presence: true
   validates :categories, presence: { message:"must be given please"}
   validates :thumbnail, presence: { message:"must be given please"}
-
-  before_create :set_post_created_is_new
   
   has_rich_text :content
   has_one_attached :thumbnail, dependent: :destroy
@@ -14,43 +12,102 @@ class Post < ApplicationRecord
   has_many :categories, through: :post_categories, dependent: :destroy
   has_many :comments, dependent: :destroy
   has_many :rates, dependent: :destroy
+  has_many :visits, dependent: :destroy
 
-  acts_as_votable
+  acts_as_votable 
 
-  STATUS = {
-    new: 0,
+  enum status: {
+    new_created: 0,
     approved: 1,
     rejected: 2
   }
 
-  scope :filter_by_categories, ->(categories_id){ where "post_categories.category_id in (#{categories_id.join(',')})" }
-  scope :search_by, ->(post_title){ joins(:post_categories)
-                                    .where(["lower(title) like ?","%#{post_title.downcase}%"])
-                                    .order(updated_at: :desc) }
-  
-  def is_approved?
-    self.status == Post::STATUS[:approved]
-  end
+  scope :filter_by_categories, ->(categories_id){
+    where "post_categories.category_id in (#{categories_id.join(',')})"
+  }
+  scope :search_by, ->(post_title){
+    approved
+    .joins(:post_categories)
+    .where(["lower(title) like ?","%#{post_title.downcase}%"])
+    .order('created_at DESC') 
+  }
+  scope :new_posts, ->{
+    order('created_at DESC')
+  }
+  scope :top_rating, ->{
+    sort_by {|post| post.average_score}.reverse 
+    .sort_by {|post| post.created_at}.reverse 
+  }
+  scope :most_reading, ->{
+    sort_by {|post| post.read_count }.reverse 
+    .sort_by {|post| post.created_at}.reverse 
+  }
+  scope :weekly_hostest, ->{
+    where(visits: {created_at: DateTime.now.beginning_of_week..DateTime.now.end_of_week})
+    .sort_by {|post| post.weekly_read_count }.reverse 
+  }
+  scope :monthly_hostest, ->{
+    where(visits: {created_at: DateTime.now.beginning_of_month..DateTime.now.end_of_month}) 
+    .sort_by {|post| post.monthly_read_count }.reverse 
+  }
+  scope :yearly_hostest, ->{
+    where(visits: {created_at: DateTime.now.beginning_of_year..DateTime.now.end_of_year}) 
+    .sort_by {|post| post.yearly_read_count }.reverse 
+  }
 
   def average_score
-    self.rates.average(:score)
+    result = self.rates.average(:score)
+    result ||= 0
+  end 
+
+  def read_count
+    self.visits.count
+  end
+  
+  def weekly_read_count
+    self.visits.where(created_at: DateTime.now.beginning_of_week..DateTime.now.end_of_week).count
+  end
+  
+  def monthly_read_count
+    self.visits.where(created_at: DateTime.now.beginning_of_month..DateTime.now.end_of_month).count
+  end
+
+  def yearly_read_count
+    self.visits.where(created_at: DateTime.now.beginning_of_year..DateTime.now.end_of_year).count
   end
 
   def rate_by_user_with_score current_user, score 
     self.rates.find_by(user_id: current_user.id).update(score: score)
   end
-
-  def is_new?
-    self.status == Post::STATUS[:new]
+  
+  def reading_time
+    words_per_minute = 150
+    text = ActionController::Base.helpers.strip_tags(self.content.body.to_s)
+    time = text.split.length / words_per_minute
+    time > 0 ? time : 1
   end
 
-  def is_rejected?
-    self.status == Post::STATUS[:new]
-  end
+  def text_content
+    body = self.content.body.html_safe
+    
+    text = ""
+    document = Nokogiri::HTML.parse(body)
+    document.css('br').each {|e| e.replace "\n" }
 
-  private
-  def set_post_created_is_new
-    post.status = Post::STATUS[:new]
+    document.css('a').each do |e| 
+      e.content += " (#{e['href']}) "
+      puts e['href']
+    end
+
+    document.css('div,pre').each do |e| 
+      e.content += "\n"
+    end
+    
+    document.css('li').each do |e| 
+      e.content = "- #{e.content} \n"
+    end
+
+    document.text
   end
 
 end

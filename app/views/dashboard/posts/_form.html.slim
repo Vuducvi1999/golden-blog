@@ -1,7 +1,7 @@
 = form_with model: [:dashboard, post], class:'mt-4' do |form|
   - if post.errors.any?
     - post.errors.each do |error|
-      = render partial:'shared/toastr_error.slim', locals:{message: error.full_message}
+      = toastr_custom_message(error.full_message)
 
   .my-5.form-floating
     = form.text_field :title, id:'title',class:'form-control title-create focus-box-none fs-3', placeholder:'Title'
@@ -16,9 +16,14 @@
   .mb-4.row 
     = form.label :categories, class:'col-2'
     .col-10
+      - count_item_to_select = Category.count < 5 ? Category.count : 5
       = form.select :categories_id, Category.pluck(:name, :id), {selected:post.categories.pluck(:id)}, \
-      multiple:true, size: 5, class:'form-select focus-box-none'
+      multiple:true, size: count_item_to_select, class:'form-select focus-box-none'
   .mb-5
-    = form.rich_text_area :content,id:'content', cols:4, class:'trix-content form-control focus-box-none rich_text_content', placeholder:"Typing..."
+    = form.rich_text_area :content, id:'content', cols:4, class:'trix-content form-control focus-box-none rich_text_content', placeholder:"Typing..."
+  - if @post.new_record?
+    .mb-5 
+      = check_box_tag 'post_facebook'
+      = form.label "Post on Facebook?", for:'post_facebook', class:'ms-1'
   .mb-3
     = form.submit class:'btn btn-primary py-2 fs-5'

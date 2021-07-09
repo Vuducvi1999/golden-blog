@@ -1,29 +1,26 @@
 class Dashboard::CommentsController < ApplicationController
-  before_action :set_comment, only: %i[update destroy]
   before_action :set_post 
+  before_action :set_comment, only: %i[update destroy]
   
   def create
     @comment = @post.comments.build(comment_params)
     @comment.user = current_user
     
-     unless @comment.save 
-      flash[:alert] = "Fail to add comment"
-     end
-    
-    respond_to do |format|
-      format.html {redirect_to post_path(@post)}
-      format.js {render partial:'dashboard/comments/create.js.erb'}
+    unless @comment.save 
+    flash[:alert] = "Fail to add comment"
     end
+
+    render partial:'dashboard/comments/create.js.erb'
   end
   
   def update    
     flash[:alert] = "Fail to update comment" unless @comment.update(comment_params)
-    redirect_to post_path(@post)
+    render partial:'dashboard/comments/update.js.erb'
   end
   
   def destroy
     @comment.destroy 
-    redirect_to post_path(@post)
+    render partial:'dashboard/comments/destroy.js.erb', locals: {comment: @comment}
   end
 
   private

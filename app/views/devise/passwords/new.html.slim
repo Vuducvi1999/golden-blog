@@ -2,6 +2,9 @@
 - site_headings = {h1: 'Forgot your password?', subheading: ''}
 = render partial:'layouts/banner', locals:{banner_path:banner_path, site_headings:site_headings}
 
+- content_for :head do 
+  title Forgot password 
+
 .container
   .row
     .col-6.offset-3.mb-5

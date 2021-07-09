@@ -4,6 +4,9 @@
 - site_headings = {h1:'About this page', subheading:'A fancy page for multilple blogger with many categories'}
 = render partial:"layouts/banner", locals: {banner_path:banner_path, site_headings:site_headings }
 
+- content_for :head do 
+  title About 
+
 main.mb-4
   .container.px-4.px-lg-5
     .row.gx-4.gx-lg-5.justify-content-center
@@ -14,3 +17,6 @@ main.mb-4
           | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius praesentium recusandae illo eaque architecto error, repellendus iusto reprehenderit, doloribus, minus sunt. Numquam at quae voluptatum in officia voluptas voluptatibus, minus!
         p
           | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut consequuntur magnam, excepturi aliquid ex itaque esse est vero natus quae optio aperiam soluta voluptatibus corporis atque iste neque sit tempora!
+
+
+

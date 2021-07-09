@@ -1,9 +1,14 @@
 
 class Dashboard::PostsController < ApplicationController
   before_action :authenticate_user!, except: %i[show search]
-  before_action :set_post, only: %i[show edit update destroy approve_post reject_post like dislike rate]
+  before_action :set_post, only: %i[show edit update destroy approve_post reject_post like dislike rate read_count]
   before_action :check_post_status, only: %i[show]
   before_action :check_admin_to_change_status, only: %i[approve_post reject_post]
+  skip_before_action :verify_authenticity_token, :authenticate_user!, only: %i[read_count]
+
+  
+  include Rails.application.routes.url_helpers
+  
 
   def index
     @posts = current_user.posts.order("updated_at desc")
@@ -11,10 +16,10 @@ class Dashboard::PostsController < ApplicationController
 
   def show
     @comment_paginate = @post.comments.paginate(page: params[:page], per_page: 10).order(updated_at: :desc)
-    
+
     respond_to do |format|
       format.html
-      format.js {render partial:'dashboard/posts/show.js.erb'}
+      format.js {render partial:'dashboard/posts/js_erb/show.js.erb'}
     end
   end
 
@@ -32,7 +37,9 @@ class Dashboard::PostsController < ApplicationController
     categories = Category.where(id:categories_id)
     @post.categories = categories 
     
-    if @post.save
+    if @post.save      
+      @post.update(post_facebook?: true) if params[:post_facebook]
+
       redirect_to @post, notice: "Post was successfully created." 
     else
       render :new, status: :unprocessable_entity 
@@ -46,6 +53,12 @@ class Dashboard::PostsController < ApplicationController
     @post.categories = categories
 
     if @post.update(post_params)
+      if @post.approved? && @post.post_facebook_id != ''
+        Graph.put_object(@post.post_facebook_id, '', {
+          message: @post.text_content
+        })
+      end
+      
       redirect_to @post, notice: "Post was successfully updated."
     else
       render :edit, status: :unprocessable_entity 
@@ -53,19 +66,31 @@ class Dashboard::PostsController < ApplicationController
   end
   
   def destroy
+    unless @post.post_facebook_id.empty?
+      Graph.delete_object @post.post_facebook_id
+    end
     @post.destroy
     redirect_to dashboard_posts_path, notice: "Post was successfully destroyed." 
   end
 
   # Cho phép admin approved
   def approve_post
-    @post.status = Post::STATUS[:approved]
+    @post.approved!
     @post.status_change_at = DateTime.now 
     
     if @post.save 
       respond_to do |format|
         format.html
-        format.js { render partial:"dashboard/posts/approve_post.js.erb" }
+        format.js { render partial:"dashboard/posts/js_erb/approve_post.js.erb" }
+      end
+
+      if @post.post_facebook?
+        object = Graph.put_object('me', 'feed', {
+          message: @post.text_content,
+          link: post_url(@post)
+        })
+
+        @post.update post_facebook_id: object['id']
       end
     else
       redirect_back fallback_location:root_path, alert: "Approve post fail"
@@ -74,13 +99,13 @@ class Dashboard::PostsController < ApplicationController
 
   # Cho phép admin rejected
   def reject_post
-    @post.status = Post::STATUS[:rejected]
-    @post.status_change_at = DateTime.now
+    @post.rejected!
+    @post.status_change_at = DateTime.now 
 
     if @post.save 
       respond_to do |format|
         format.html
-        format.js { render partial:"dashboard/posts/reject_post.js.erb" }
+        format.js { render partial:"dashboard/posts/js_erb/reject_post.js.erb" }
       end
     else
       redirect_back fallback_location:root_path, alert: "Reject post fail"
@@ -97,9 +122,14 @@ class Dashboard::PostsController < ApplicationController
     @posts = categories_id.empty? ? @posts : @posts.filter_by_categories(categories_id)
   end
 
+  # update read count
+  def read_count
+    @post.visits.create
+  end
+
   # toogle like
-  def like    
-    if current_user.liked? @post 
+  def like 
+    if current_user.liked? @post
       @post.unliked_by current_user
       puts current_user.liked? @post 
       puts "like"
@@ -108,7 +138,7 @@ class Dashboard::PostsController < ApplicationController
       puts current_user.liked? @post
       puts "unlikes"
     end
-    render partial:"dashboard/posts/like.js.erb"
+    render partial:"dashboard/posts/js_erb/like.js.erb" 
   end
   
   # toogle unlike
@@ -122,7 +152,7 @@ class Dashboard::PostsController < ApplicationController
       puts current_user.disliked? @post
       puts "dislike"
     end
-    render partial:"dashboard/posts/unlike.js.erb"
+    render partial:"dashboard/posts/js_erb/unlike.js.erb"
   end
   
   # rate
@@ -136,7 +166,7 @@ class Dashboard::PostsController < ApplicationController
       @post.rate_by_user_with_score current_user, score
       @post.save
     end
-    render partial:"dashboard/posts/rate.js.erb"
+    render partial:"dashboard/posts/js_erb/rate.js.erb"
   end
 
   private
@@ -157,16 +187,16 @@ class Dashboard::PostsController < ApplicationController
     def check_post_status
       @post = Post.find_by id:params[:id]
 
-      if @post.is_new?
+      if @post.new_created?
         return condition_post_if_status_is 'new'
-      elsif @post.is_rejected?
+      elsif @post.rejected?
         return condition_post_if_status_is 'rejected'
       end
     end
 
     def condition_post_if_status_is status
       # nếu người dùng đã đăng nhập và là tác giả hoặc admin thì tiếp tục process
-      return if current_user&.is_admin? || current_user&.is_author_of?(@post)
+      return if current_user&.admin? || current_user&.is_author_of?(@post)
       # nếu không thì redirect và alert
       return status=="new" ? message_and_redirect_if_post_is_new : message_and_redirect_if_post_is_rejected
     end
@@ -186,10 +216,9 @@ class Dashboard::PostsController < ApplicationController
       return redirect_back fallback_location:root_path  
     end
 
-    # kiểm tra người change status có phải là admin hay không
+    # kiểm tra người change status có phải là admin hay không 
     def check_admin_to_change_status
       @post = Post.find_by id:params[:id]
-      return message_and_redirect_if_user_not_admin unless current_user || current_user.is_admin?
-      return
+      return message_and_redirect_if_user_not_admin unless current_user || current_user.admin?
     end
 end

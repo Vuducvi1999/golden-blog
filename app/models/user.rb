@@ -1,6 +1,7 @@
-class User < ApplicationRecord
 
-  before_create :set_role_user, :set_username
+
+class User < ApplicationRecord
+  before_create :set_username
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
@@ -16,14 +17,10 @@ class User < ApplicationRecord
 
   acts_as_voter
 
-  ROLES = {
-    :admin => 1,
-    :user => 0
+  enum role: {
+    :user => 0,
+    :admin => 1
   }
-
-  def is_admin?
-    self.role == User::ROLES[:admin]
-  end
 
   def get_rate_with post
     self.rates.find_by(post_id: post.id)
@@ -37,7 +34,7 @@ class User < ApplicationRecord
     data = access_token.info
     user = User.where(email: data['email']).first
 
-    # Uncomment the section below if you want users to be created if they don't exist
+    # Uncomment the section below if you want users to be created if they don't exist 
     unless user
         user = User.create(
           username: data['name'],
@@ -46,14 +43,19 @@ class User < ApplicationRecord
         )
     end
     user.confirmed_at = DateTime.now
-    user
+    user.access_token = access_token.credentials.token
+    user 
   end
 
-  private 
-  def set_role_user 
-    self.role = ROLES[:user]
+  def get_avatar 
+    avatar.present? ? self.avatar : ActionController::Base.helpers.asset_path('avatar-default.png')
   end
-  
+
+  def facebook
+    @facebook ||= Koala::Facebook::API.new(access_token)
+  end
+
+  private
   def set_username
     if User.find_by(username: self.username).present?
       self.username = self.email.split("@")[0]
