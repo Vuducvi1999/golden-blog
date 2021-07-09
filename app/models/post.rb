@@ -22,7 +22,7 @@ class Post < ApplicationRecord
     rejected: 2
   }
   
-  scope :all_includes, -> { approved.includes(:post_categories, :comments, :rates, :visits) }
+  scope :all_includes, -> { approved.includes(:categories, :post_categories, :comments, :rates, :visits) }
 
   scope :filter_by_categories, ->(categories_id){
     where "post_categories.category_id in (#{categories_id.join(',')})"
