@@ -16,8 +16,9 @@ class Dashboard::PostsController < ApplicationController
 
   def show
     @comment_paginate = @post.comments.paginate(page: params[:page], per_page: 10).order(updated_at: :desc)
-
     @related_posts = @post.related_posts
+    @more_from_author_posts = Post.all
+
     respond_to do |format|
       format.html
       format.js {render partial:'dashboard/posts/js_erb/show.js.erb'}

@@ -95,16 +95,25 @@
             - else 
               i#message-no-comment.my-3 style="font-size:1.1rem" 
                 | Haven't had comments! Be the first user comment.
-      .col-4.bg-light-1 
-        .h-100.bg-light-2.px-3.pt-3
-          #related-posts.sticky-top.pb-3
-            h4.mb-3 Related Posts 
-            .tab-content 
+      .col-4 
+        #related-posts.sticky-top
+          .bg-light-2
+            span.mb-3.p-3.header-related Related Posts 
+            .tab-content.p-3.pt-0 
               - @related_posts.each_with_index do |post, index| 
                 .post-preview
                   = render partial: 'shared/post_related_item', locals:{post: post}
                 - if index != @related_posts.length - 1
                   hr.my-2  
+          .bg-light-2.sticky-top.mt-2 
+            span.mb-3.p-3.header-related More from #{@post.user.username}
+            .tab-content.p-3.pt-0 
+              - @more_from_author_posts.each_with_index do |post, index| 
+                .post-preview
+                  = render partial: 'shared/post_related_item', locals:{post: post}
+                - if index != @more_from_author_posts.length - 1
+                  hr.my-2 
+                    
 
 
 
