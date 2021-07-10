@@ -92,6 +92,10 @@ class Post < ApplicationRecord
     sort_by_categories = sort_by_reading.sort_by {|post| post.categories.pluck(:id).intersection(post_categories).count }
     sort_by_categories.reverse
   end
+
+  def more_from_author_posts
+    self.user.posts.approved.sort_by {|post| post.read_count}.reverse[0..2]
+  end
   
   def reading_time
     words_per_minute = 150
