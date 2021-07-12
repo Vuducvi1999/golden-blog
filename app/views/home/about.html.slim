@@ -8,7 +8,7 @@
   title About 
 
 main.mb-4
-  .container.px-4.px-lg-5
+  .container.px-4.px-lg-5.mt-3
     .row.gx-4.gx-lg-5.justify-content-center
       .col-md-10.col-lg-8.col-xl-7
         p
@@ -19,4 +19,4 @@ main.mb-4
           | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut consequuntur magnam, excepturi aliquid ex itaque esse est vero natus quae optio aperiam soluta voluptatibus corporis atque iste neque sit tempora!
 
 
-
+/ = render partial:'shared/notification_toast', locals:{notification:Notification.first}

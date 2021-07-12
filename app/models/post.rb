@@ -58,7 +58,7 @@ class Post < ApplicationRecord
   }
 
   def average_score
-    self.rates.average(:score)
+    self.rates.average(:score) || 0
   end 
 
   def read_count

@@ -10,6 +10,18 @@ class Dashboard::CommentsController < ApplicationController
     flash[:alert] = "Fail to add comment"
     end
 
+    notification = Notification.create(
+      message:"comment your post: #{@post.title}",
+      link: post_path(@post),
+      sender: current_user,
+      recipient: @post.user 
+    )
+    html = ApplicationController.render(
+      partial: 'shared/notification_item',
+      locals: { item: notification }
+    )
+    ActionCable.server.broadcast "notifications:#{current_user.id}", {action:'add', html:html, notification:notification} 
+
     render partial:'dashboard/comments/create.js.erb'
   end
   
@@ -20,6 +32,15 @@ class Dashboard::CommentsController < ApplicationController
   
   def destroy
     @comment.destroy 
+
+    notification = Notification.find_by(
+      message:"comment your post: #{@post.title}",
+      sender: current_user,
+      recipient: @post.user 
+    )
+    notification.destroy
+    ActionCable.server.broadcast "notifications:#{current_user.id}", {action:'remove', notification:notification}
+
     render partial:'dashboard/comments/destroy.js.erb', locals: {comment: @comment}
   end
 

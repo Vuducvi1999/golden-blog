@@ -174,5 +174,37 @@
 }
 
 .container{
-  margin-top: 3rem;
+  margin-top: 5rem;
+}
+
+.text-transform-none{
+  text-transform: none !important;
+}
+
+.notification{
+  font-size: 0.9rem;
+  width: 350px;
+  box-shadow: 0px 0px 8px 2px #0000000d;
+
+  & .notification-header{
+    display: flex;
+    justify-content: space-between;
+  }
+
+  & .close-btn{
+    font-style: normal;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    background: #80808042;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  & .notification-body{
+  }
 }

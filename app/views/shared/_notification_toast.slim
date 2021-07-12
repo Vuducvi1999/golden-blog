@@ -1,0 +1,11 @@
+.notification.px-3.py-2 
+  .notification-header.pb-2 
+    p.m-0 Thông báo mới 
+    i.close-btn &#x00d7;
+  .notification-body.row  
+    .avatar.col-3.pe-3 
+      img.img-fluid src="#{url_for(notification.sender.get_avatar)}" 
+    .message.col-9.p-0 
+      = link_to "#{notification.link}" do 
+        span.me-1.fw-bold #{notification.sender.username}
+        | #{notification.message} 

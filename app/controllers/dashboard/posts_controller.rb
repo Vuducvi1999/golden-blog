@@ -124,7 +124,7 @@ class Dashboard::PostsController < ApplicationController
     @posts = categories_id.empty? ? @posts : @posts.filter_by_categories(categories_id)
   end
 
-  # update read count
+  # update read count 
   def read_count
     @post.visits.create
   end
@@ -133,12 +133,22 @@ class Dashboard::PostsController < ApplicationController
   def like 
     if current_user.liked? @post
       @post.unliked_by current_user
-      puts current_user.liked? @post 
-      puts "like"
+      notification = Notification.find_by(
+        message:"like your post: #{@post.title}",
+        sender: current_user,
+        recipient: @post.user 
+      )
+      notification.destroy 
+      ActionCable.server.broadcast "notifications:#{current_user.id}", {action:'remove', notification:notification} 
     else 
       @post.liked_by current_user
-      puts current_user.liked? @post
-      puts "unlikes"
+      notification = Notification.create(
+        message:"like your post: #{@post.title}", 
+        link: post_path(@post),
+        sender: current_user,
+        recipient: @post.user 
+      )
+      ActionCable.server.broadcast "notifications:#{current_user.id}", {action:'add', notification:notification} 
     end
     render partial:"dashboard/posts/js_erb/like.js.erb" 
   end
