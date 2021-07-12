@@ -58,7 +58,8 @@ class Post < ApplicationRecord
   }
 
   def average_score
-    self.rates.average(:score)
+    result = self.rates.average(:score)
+    result ||= 0 
   end 
 
   def read_count
@@ -93,7 +94,7 @@ class Post < ApplicationRecord
   end
 
   def more_from_author_posts
-    self.user.posts.approved.sort_by {|post| post.read_count}.reverse[0..2] 
+    self.user.posts.approved.sort_by {|post| post.read_count}.reverse[0..2]
   end
   
   def reading_time
