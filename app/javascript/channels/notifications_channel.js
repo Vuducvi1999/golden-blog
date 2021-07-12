@@ -17,7 +17,7 @@ consumer.subscriptions.create("NotificationsChannel", {
     console.log(target);
     if(data.action === 'add'){
       target.prepend(data.html_header);
-      $(`body`).append(data.html_toast);
+      $(`#notifications-container`).append(data.html_toast);
       number_notifications.text(parseInt(number_notifications.text()) + 1)
     }else if(data.action === 'remove'){
       $(`#notification_id_${notification.id}`).remove();

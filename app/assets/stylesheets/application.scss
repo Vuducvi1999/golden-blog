@@ -181,15 +181,18 @@
   text-transform: none !important;
 }
 
+#notifications-container {
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+  z-index: 10000000000000000000;
+}
+
 .notification {
   font-size: 0.9rem;
   width: 350px;
   box-shadow: 0px 0px 8px 5px #0000001f;
-  position: fixed;
-  bottom: 1rem;
-  left: 1rem;
   background: #fff;
-  z-index: 10000000000000000000;
 
   & .notification-header {
     display: flex;
