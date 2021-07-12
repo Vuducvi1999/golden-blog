@@ -10,25 +10,26 @@
 .container.mb-5
   .row.gx-4.gx-lg-5
     .col-3 
-      ul.nav.flex-column.nav-pills
-        li.nav-item [data-bs-target="#pills-1"] 
-          .active.cursor-pointer.d-block.nav-link.px-2 data-bs-toggle="pill" data-bs-target="#pills-new-posts"
-            img.me-2 src="https://img.icons8.com/ios/50/000000/new.png" style='width: 28px'
-            h6.d-inline New Posts 
-        li.nav-item [data-bs-target="#pills-2"]
-          .cursor-pointer.d-block.nav-link.px-2 data-bs-toggle="pill" data-bs-target="#pills-top-rating"
-            img.me-2 src="https://img.icons8.com/ios/50/000000/rating.png" style='width: 28px'
-            h6.d-inline Top rating 
-        li.nav-item [data-bs-target="#pills-3"] 
-          .cursor-pointer.d-block.nav-link.px-2 data-bs-toggle="pill" data-bs-target="#pills-most-reading"
-            img.me-2 src="https://img.icons8.com/ios/50/000000/reading.png" style='width: 28px'
-            h6.d-inline Most reading
-      h5.my-3 Categories 
-      div 
-        - Category.pluck(:id, :name).each do |item|
-          = link_to search_dashboard_posts_path(categories_id:[item[0]]),\
-          class:'me-1 badge bg-secondary badge-category fw-bold font-monospace', style:'font-size:0.9rem' do 
-            | #{item[1]} 
+      #filter-sidebar.sticky-top
+        ul.nav.flex-column.nav-pills
+          li.nav-item [data-bs-target="#pills-1"] 
+            .active.cursor-pointer.d-block.nav-link.px-2 data-bs-toggle="pill" data-bs-target="#pills-new-posts"
+              img.me-2 src="https://img.icons8.com/ios/50/000000/new.png" style='width: 28px'
+              h6.d-inline New Posts 
+          li.nav-item [data-bs-target="#pills-2"]
+            .cursor-pointer.d-block.nav-link.px-2 data-bs-toggle="pill" data-bs-target="#pills-top-rating"
+              img.me-2 src="https://img.icons8.com/ios/50/000000/rating.png" style='width: 28px'
+              h6.d-inline Top rating 
+          li.nav-item [data-bs-target="#pills-3"] 
+            .cursor-pointer.d-block.nav-link.px-2 data-bs-toggle="pill" data-bs-target="#pills-most-reading"
+              img.me-2 src="https://img.icons8.com/ios/50/000000/reading.png" style='width: 28px'
+              h6.d-inline Most reading
+        h5.my-3 Categories 
+        div 
+          - Category.pluck(:id, :name).each do |item|
+            = link_to search_dashboard_posts_path(categories_id:[item[0]]),\
+            class:'me-1 badge bg-secondary badge-category fw-bold font-monospace', style:'font-size:0.9rem' do 
+              | #{item[1]} 
     #posts-home.col-6.tab-content
       - if @new_posts.empty?
         p.text-muted.m-0.text-center
@@ -54,48 +55,36 @@
           - if index != @most_reading.length - 1
             hr.my-4
     .col-3 
-      h4.mb-3 Hostest Posts 
-      ul.nav.d-flex.mb-3
-        li.btn.p-0.py-1.focus-box-none.flex-grow-1.hostest-posts.active [data-bs-toggle="pill" data-bs-target="#pills-weekly-hostest"]
-          | Weekly  
-        li.btn.p-0.py-1.focus-box-none.flex-grow-1.hostest-posts [data-bs-toggle="pill" data-bs-target="#pills-monthly-hostest"]
-          | Mothly 
-        li.btn.p-0.py-1.focus-box-none.flex-grow-1.hostest-posts [data-bs-toggle="pill" data-bs-target="#pills-yearly-hostest"]
-          | All time 
-      .tab-content 
-        #pills-weekly-hostest.tab-pane.fade.active.show 
-          - @weekly_hostest.each_with_index do |post, index| 
-            .post-preview
-              = render partial: 'shared/post_hostest_item', locals:{post: post, type:'weekly'}
-            - if index != @weekly_hostest.length - 1
-              hr.my-4 
-        #pills-monthly-hostest.tab-pane.fade
-          - @monthly_hostest.each_with_index do |post, index| 
-            .post-preview
-              = render partial: 'shared/post_hostest_item', locals:{post: post, type:'monthly'}
-            - if index != @monthly_hostest.length - 1
-              hr.my-4 
-        #pills-yearly-hostest.tab-pane.fade
-          - @yearly_hostest.each_with_index do |post, index| 
-            .post-preview
-              = render partial: 'shared/post_hostest_item', locals:{post: post, type:'yearly'}
-            - if index != @yearly_hostest.length - 1
-              hr.my-4 
+      #hostest-post-sidebar.sticky-top
+        h4.mb-3 Hostest Posts 
+        ul.nav.d-flex.mb-3
+          li.btn.p-0.py-1.focus-box-none.flex-grow-1.hostest-posts.active [data-bs-toggle="pill" data-bs-target="#pills-weekly-hostest"]
+            | Weekly  
+          li.btn.p-0.py-1.focus-box-none.flex-grow-1.hostest-posts [data-bs-toggle="pill" data-bs-target="#pills-monthly-hostest"]
+            | Mothly 
+          li.btn.p-0.py-1.focus-box-none.flex-grow-1.hostest-posts [data-bs-toggle="pill" data-bs-target="#pills-yearly-hostest"]
+            | All time 
+        .tab-content 
+          #pills-weekly-hostest.tab-pane.fade.active.show 
+            - @weekly_hostest.each_with_index do |post, index| 
+              .post-preview
+                = render partial: 'shared/post_hostest_item', locals:{post: post, type:'weekly'}
+              - if index != @weekly_hostest.length - 1
+                hr.my-4 
+          #pills-monthly-hostest.tab-pane.fade
+            - @monthly_hostest.each_with_index do |post, index| 
+              .post-preview
+                = render partial: 'shared/post_hostest_item', locals:{post: post, type:'monthly'}
+              - if index != @monthly_hostest.length - 1
+                hr.my-4 
+          #pills-yearly-hostest.tab-pane.fade
+            - @yearly_hostest.each_with_index do |post, index| 
+              .post-preview
+                = render partial: 'shared/post_hostest_item', locals:{post: post, type:'yearly'}
+              - if index != @yearly_hostest.length - 1
+                hr.my-4 
 
 
 
 script 
-  | $(document).on('turbolinks:load',()=>{
-  |   Array.from($('.nav.nav-pills .nav-item .nav-link')).forEach(item=>{
-  |     item.onclick = ()=> {
-  |       Array.from($('.nav.nav-pills .nav-item .nav-link')).forEach(item=>item.classList.remove('active'));
-  |       item.classList.add('active');
-  |     }
-  |   });
-  |   Array.from($('.hostest-posts')).forEach(item=>{
-  |     item.onclick = ()=> {
-  |       Array.from($('.hostest-posts')).forEach(item=>item.classList.remove('active'));
-  |       item.classList.add('active');
-  |     }
-  |   });
-  | })
+  = render 'home/js_erb/index_home.js.erb'

@@ -2,7 +2,7 @@ class HomeController < ApplicationController
   skip_before_action :authenticate_user!
 
   def index 
-    post_all = Post.all.approved.includes(:post_categories, :comments, :rates, :visits)  
+    post_all = Post.all_includes
     @new_posts = post_all.new_posts 
     @top_rating = post_all.top_rating 
     @most_reading = post_all.most_reading
