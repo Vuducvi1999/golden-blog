@@ -20,7 +20,7 @@ nav#mainNav.navbar.navbar-expand-lg.border-0 class='#{add_classes}'
             a#header-notifications.dropdown-toggle.nav-link.px-lg-3.py-3.py-lg-4 href="#" data-bs-toggle="dropdown"
               span.position-relative 
                 | Notifications
-                .position-absolute.top-0.translate-middle.rounded-pill.badge.bg-primary 
+                .position-absolute.translate-middle.rounded-pill.badge.bg-primary style='top:-40%;'
                   | #{current_user.received_notifications.count} 
             ul class="dropdown-menu bg-custom-transparent border-0 user-dropdown-menu " aria-labelledby="header-notifications"
               - current_user.received_notifications.each do |item| 
