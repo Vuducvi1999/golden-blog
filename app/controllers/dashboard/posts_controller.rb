@@ -139,7 +139,7 @@ class Dashboard::PostsController < ApplicationController
         recipient: @post.user 
       )
       notification.destroy 
-      ActionCable.server.broadcast "notifications:#{current_user.id}", {action:'remove', notification:notification} 
+      ActionCable.server.broadcast "notifications:#{@post.user.id}", {action:'remove', notification:notification} 
     else 
       @post.liked_by current_user
       notification = Notification.create(
@@ -148,7 +148,20 @@ class Dashboard::PostsController < ApplicationController
         sender: current_user,
         recipient: @post.user 
       )
-      ActionCable.server.broadcast "notifications:#{current_user.id}", {action:'add', notification:notification} 
+      html_header = ApplicationController.render(
+        partial: 'shared/notification_item',
+        locals: { item: notification }
+      )
+      html_toast = ApplicationController.render(
+        partial: 'shared/notification_toast',
+        locals: {notification: notification}
+      )
+      ActionCable.server.broadcast "notifications:#{@post.user.id}", {
+        action:'add', 
+        html_header:html_header, 
+        html_toast:html_toast,
+        notification:notification
+      } 
     end
     render partial:"dashboard/posts/js_erb/like.js.erb" 
   end

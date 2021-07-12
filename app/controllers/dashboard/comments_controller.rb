@@ -16,18 +16,27 @@ class Dashboard::CommentsController < ApplicationController
       sender: current_user,
       recipient: @post.user 
     )
-    html = ApplicationController.render(
+    html_header = ApplicationController.render(
       partial: 'shared/notification_item',
       locals: { item: notification }
     )
-    ActionCable.server.broadcast "notifications:#{current_user.id}", {action:'add', html:html, notification:notification} 
+    html_toast = ApplicationController.render(
+      partial: 'shared/notification_toast',
+      locals: {notification: notification}
+    )
+    ActionCable.server.broadcast "notifications:#{@post.user.id}", {
+      action:'add', 
+      html_header:html_header, 
+      html_toast:html_toast,
+      notification:notification
+    } 
 
     render partial:'dashboard/comments/create.js.erb'
   end
   
   def update    
     flash[:alert] = "Fail to update comment" unless @comment.update(comment_params)
-    render partial:'dashboard/comments/update.js.erb'
+    render partial:'dashboard/comments/update.js.erb' 
   end
   
   def destroy
@@ -39,7 +48,7 @@ class Dashboard::CommentsController < ApplicationController
       recipient: @post.user 
     )
     notification.destroy
-    ActionCable.server.broadcast "notifications:#{current_user.id}", {action:'remove', notification:notification}
+    ActionCable.server.broadcast "notifications:#{@post.user.id}", {action:'remove', notification:notification}
 
     render partial:'dashboard/comments/destroy.js.erb', locals: {comment: @comment}
   end

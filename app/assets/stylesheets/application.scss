@@ -148,50 +148,55 @@
     width: 2rem;
     margin-right: 10px;
   }
-  & .post-username{
+  & .post-username {
     font-weight: bold;
   }
 
-  & .post-created{
+  & .post-created {
     font-size: 0.9rem;
   }
 }
 
-.bg-lightblue{
+.bg-lightblue {
   background: lightblue !important;
 }
 
-.bg-facebook{
-  background: #3B5998 !important;
+.bg-facebook {
+  background: #3b5998 !important;
 }
 
-.bg-light-1{
+.bg-light-1 {
   background: #eef0f1 !important;
 }
 
-.bg-light-2{
+.bg-light-2 {
   background: #f9fafa !important;
 }
 
-.container{
+.container {
   margin-top: 5rem;
 }
 
-.text-transform-none{
+.text-transform-none {
   text-transform: none !important;
 }
 
-.notification{
+.notification {
   font-size: 0.9rem;
   width: 350px;
-  box-shadow: 0px 0px 8px 2px #0000000d;
+  box-shadow: 0px 0px 8px 5px #0000001f;
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+  background: #fff;
+  z-index: 10000000000000000000;
 
-  & .notification-header{
+  & .notification-header {
     display: flex;
     justify-content: space-between;
   }
 
-  & .close-btn{
+  & .close-btn {
     font-style: normal;
     font-size: 1.5rem;
     font-weight: bold;
@@ -203,8 +208,5 @@
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-
-  & .notification-body{
   }
 }
