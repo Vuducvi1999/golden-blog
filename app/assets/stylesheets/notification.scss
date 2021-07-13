@@ -1,0 +1,49 @@
+#notifications-container {
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+  z-index: 10000000000000000000;
+}
+
+.notification {
+  font-size: 0.9rem;
+  width: 350px;
+  box-shadow: 0px 0px 8px 5px #0000001f;
+  background: #fff;
+
+  & .notification-header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  & .close-btn {
+    font-style: normal;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    background: #80808042;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+nav#mainNav.navbar.navbar-expand-lg {
+  & .notification-dropdown {
+    width: 400px;
+    box-shadow: 0 12px 28px 0 #0000001f, 0 2px 4px 0 #0000001f,
+      inset 0 0 0 1px #0000001f;
+    & .text-primary {
+      color: #0085a1 !important;
+    }
+    & li .row:hover{
+      background: #e7e7e7;
+    }
+  }
+  & .position-absolute.translate-middle{
+    color: #fff !important;
+  }
+}

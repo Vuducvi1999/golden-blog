@@ -131,8 +131,9 @@ class Dashboard::PostsController < ApplicationController
 
   # toogle like
   def like 
-    if current_user.liked? @post
-      @post.unliked_by current_user
+    like = current_user.get_likeable @post 
+    if like 
+      like.destroy
       notification = Notification.find_by(
         message:"like your post: #{@post.title}",
         sender: current_user,
@@ -141,7 +142,7 @@ class Dashboard::PostsController < ApplicationController
       notification.destroy 
       ActionCable.server.broadcast "notifications:#{@post.user.id}", {action:'remove', notification:notification} 
     else 
-      @post.liked_by current_user
+      current_user.likes.create(likeable: @post)
       notification = Notification.create(
         message:"like your post: #{@post.title}", 
         link: post_path(@post),

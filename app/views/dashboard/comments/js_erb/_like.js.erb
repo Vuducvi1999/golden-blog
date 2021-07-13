@@ -1,0 +1,18 @@
+
+
+
+if($(`#comment_id_${<%=comment.id%>} .fas.fa-heart.text-danger`)[0]){
+  $(`#comment_id_${<%=comment.id%>} .fas.fa-heart.text-danger`)
+  .toggleClass('far').toggleClass('fas').toggleClass('text-danger');
+
+  const likeNumberElement = $(`#comment_id_${<%=comment.id%>} .react-1`)
+  likeNumberElement.text(Number(likeNumberElement.text()) - 1)
+}
+else {
+  $(`#comment_id_${<%=comment.id%>} .far.fa-heart`)
+  .toggleClass('far').toggleClass('fas').toggleClass('text-danger');
+
+  const likeNumberElement = $(`#comment_id_${<%=comment.id%>} .react-1`)
+  likeNumberElement.text(Number(likeNumberElement.text()) + 1)
+}
+

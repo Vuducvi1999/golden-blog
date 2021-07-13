@@ -10,20 +10,22 @@ class User < ApplicationRecord
          :omniauthable, omniauth_providers: [:google_oauth2, :facebook]
 
   has_many :posts, dependent: :destroy
-  has_many :comments, dependent: :destroy
+  has_many :comments, as: :commentable, dependent: :destroy
+  has_many :likes, dependent: :destroy 
   has_many :rates, dependent: :destroy
-  has_many :sent_notifications, :class_name => 'Notification', :foreign_key => 'sender_id'
-  has_many :received_notifications, :class_name => 'Notification', :foreign_key => 'recipient_id'
-
+  has_many :sent_notifications, :class_name => 'Notification', :foreign_key => 'sender_id', dependent: :destroy
+  has_many :received_notifications, :class_name => 'Notification', :foreign_key => 'recipient_id', dependent: :destroy
 
   has_one_attached :avatar, dependent: :destroy
-
-  acts_as_voter
 
   enum role: {
     :user => 0,
     :admin => 1
   }
+
+  def get_likeable likeable
+    self.likes.find_by(likeable_id: likeable.id, likeable_type: likeable.class.name)
+  end
 
   def get_rate_with post
     self.rates.find_by(post_id: post.id)

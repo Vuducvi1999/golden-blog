@@ -4,23 +4,14 @@ $( document ).on('turbolinks:load', function() {
 
   $(window).scroll(function(event){
     var st = $(this).scrollTop();
-    if (st > lastScrollTop){
-      $("#vote-component").css({
-        top: `1rem`,
-        transition: `ease 0.2s`
-      })
-      $("#related-posts").css({
-        top: `1rem`,
-        transition: `ease 0.2s`
-      })
-    } else {
-      $("#vote-component").css({
-        top: `calc(${headerHeight}px + 1rem)`
-      })
-      $("#related-posts").css({
-        top: `calc(${headerHeight}px + 1rem)`
-      })
-    }
+
+    $("#vote-component").css({
+      top: `calc(${headerHeight}px + 1rem)`
+    })
+    $("#related-posts").css({
+      top: `calc(${headerHeight}px + 1rem)`
+    })
+    
     lastScrollTop = st;
   })
   

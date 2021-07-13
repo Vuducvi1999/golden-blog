@@ -13,9 +13,14 @@ Rails.application.routes.draw do
   namespace :dashboard do
     get '/' => "dashboard#index"
     get 'manage/posts' => 'dashboard#manage_posts'
+    post 'notification/:user_id/:notification_id'=> 'notifications#readed', as: 'notification'
     resources :categories, path:'manage/categories', except: %i[show]
     resources :posts, except: %i[show] do
-      resources :comments, except: %i[show index new edit]
+      resources :comments, except: %i[show index new edit] do
+        member do
+          post 'like'
+        end
+      end
       member do
         post 'approve_post'
         post 'reject_post'
@@ -33,7 +38,7 @@ Rails.application.routes.draw do
   namespace :dashboard, path:"posts", as:"post"  do
     resources :posts, path:'', as:'', only: %i[show]
   end
-
+  
 
   
 end

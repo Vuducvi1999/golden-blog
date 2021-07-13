@@ -1,6 +1,6 @@
 class Dashboard::CommentsController < ApplicationController
   before_action :set_post 
-  before_action :set_comment, only: %i[update destroy]
+  before_action :set_comment, only: %i[update destroy like]
   
   def create
     @comment = @post.comments.build(comment_params)
@@ -51,6 +51,43 @@ class Dashboard::CommentsController < ApplicationController
     ActionCable.server.broadcast "notifications:#{@post.user.id}", {action:'remove', notification:notification}
 
     render partial:'dashboard/comments/destroy.js.erb', locals: {comment: @comment}
+  end
+
+  def like
+    like = current_user.get_likeable @comment 
+    if like 
+      like.destroy
+      notification = Notification.find_by(
+        message:"like your comment: #{@comment.content}",
+        sender: current_user,
+        recipient: @post.user 
+      )
+      notification.destroy 
+      ActionCable.server.broadcast "notifications:#{@post.user.id}", {action:'remove', notification:notification} 
+    else 
+      current_user.likes.create(likeable: @comment)
+      notification = Notification.create(
+        message:"like your comment: #{@comment.content}", 
+        link: post_path(@post),
+        sender: current_user,
+        recipient: @post.user 
+      )
+      html_header = ApplicationController.render(
+        partial: 'shared/notification_item',
+        locals: { item: notification }
+      )
+      html_toast = ApplicationController.render(
+        partial: 'shared/notification_toast',
+        locals: {notification: notification}
+      )
+      ActionCable.server.broadcast "notifications:#{@post.user.id}", {
+        action:'add', 
+        html_header:html_header, 
+        html_toast:html_toast,
+        notification:notification
+      } 
+    end 
+    render partial:"dashboard/comments/js_erb/like.js.erb", locals:{comment: @comment}
   end
 
   private

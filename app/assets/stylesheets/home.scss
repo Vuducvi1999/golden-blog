@@ -1,66 +1,42 @@
 nav#mainNav.navbar.navbar-expand-lg.user-layout {
+  background-color: #fff;
   & * {
     color: #212529 !important;
     &:hover {
-      color: #d3d2d2 !important;
+      color: #0085a1 !important;
     }
   }
-  &.is-fixed {
-    background-color: #212529;
-    & * {
-      color: #fff !important;
+  .dropdown-menu.border-0 {
+    background: #fff;
+    & .dropdown-item {
       &:hover {
-        color: #0085a1 !important;
+        background-color: transparent;
+        color: #0085a1;
       }
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.0625em;
     }
   }
 }
-
-.dropdown-menu.bg-custom-transparent.border-0 {
-  & .dropdown-item {
+nav#mainNav.navbar.navbar-expand-lg {
+  background-color: #212529;
+  & * {
+    color: #fff !important;
     &:hover {
-      color: #0085a1;
-    }
-    font-size: 0.75rem;
-    font-weight: 800;
-    letter-spacing: 0.0625em;
-    text-transform: uppercase;
-  }
-
-  &.user-dropdown-menu .dropdown-item {
-    &:hover {
-      background-color: transparent;
+      color: #0085a1 !important;
     }
   }
-  &.guest-dropdown-menu .dropdown-item {
-    color: #fff;
-    &:hover {
-      background-color: transparent;
-      color: #c8c8c8;
-    }
-  }
-}
-
-nav.is-fixed {
-  & .dropdown-menu.bg-custom-transparent.border-0 {
-    .dropdown-item {
+  .dropdown-menu.border-0 {
+    background: #212529;
+    & .dropdown-item {
       &:hover {
-        color: #0085a1 !important;
+        background-color: transparent;
+        color: #0085a1;
       }
-    }
-
-    &.user-dropdown-menu {
-      background-color: #212529 !important;
-      & .dropdown-item {
-        color: #fff;
-      }
-    }
-
-    &.guest-dropdown-menu {
-      background-color: rgba(255, 255, 255, 0.9) !important;
-      & .dropdown-item {
-        color: #212529;
-      }
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.0625em;
     }
   }
 }
@@ -118,8 +94,8 @@ ul.dropdown-menu {
 }
 
 .item-check-search {
-  padding: .5rem 3rem !important;
-  &:hover{
+  padding: 0.5rem 3rem !important;
+  &:hover {
     background: #ddf7ff;
   }
 }

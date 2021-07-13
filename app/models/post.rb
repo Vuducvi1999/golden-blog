@@ -10,11 +10,12 @@ class Post < ApplicationRecord
   belongs_to :user
   has_many :post_categories, dependent: :destroy
   has_many :categories, through: :post_categories, dependent: :destroy
-  has_many :comments, dependent: :destroy
+  has_many :comments, as: :commentable, dependent: :destroy
+  has_many :likes, as: :likeable, dependent: :destroy 
   has_many :rates, dependent: :destroy
   has_many :visits, dependent: :destroy
 
-  acts_as_votable 
+
 
   enum status: {
     new_created: 0,
@@ -22,7 +23,7 @@ class Post < ApplicationRecord
     rejected: 2
   }
   
-  scope :all_includes, -> { approved.includes(:categories, :post_categories, :comments, :rates, :visits) }
+  scope :all_includes, -> { approved.includes(:categories, :post_categories, :rates, :visits, :comments) }
 
   scope :filter_by_categories, ->(categories_id){
     where "post_categories.category_id in (#{categories_id.join(',')})"

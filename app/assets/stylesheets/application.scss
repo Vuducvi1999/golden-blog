@@ -18,6 +18,7 @@
 @import "./home.scss";
 @import "./posts.scss";
 @import "./dashboard.scss";
+@import "./notification.scss";
 @import "social-share-button";
 
 .sign-in-with {
@@ -181,35 +182,10 @@
   text-transform: none !important;
 }
 
-#notifications-container {
-  position: fixed;
-  bottom: 1rem;
-  left: 1rem;
-  z-index: 10000000000000000000;
+.hover-lightgrey:hover {
+  background: #f6f6f6;
 }
 
-.notification {
-  font-size: 0.9rem;
-  width: 350px;
-  box-shadow: 0px 0px 8px 5px #0000001f;
-  background: #fff;
-
-  & .notification-header {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  & .close-btn {
-    font-style: normal;
-    font-size: 1.5rem;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    background: #80808042;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+.hover-text-none:hover {
+  color: #000;
 }
