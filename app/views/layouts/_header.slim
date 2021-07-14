@@ -20,10 +20,13 @@ nav#mainNav.navbar.navbar-expand-lg.border-0.position-fixed class='#{add_classes
             a#header-notifications.dropdown-toggle.nav-link.px-lg-3.py-3.py-lg-3 href="#" data-bs-toggle="dropdown"
               span.position-relative 
                 | Notifications
-                .position-absolute.translate-middle.rounded-pill.badge.bg-primary style='top:-40%;'
-                  | #{current_user.received_notifications.count} 
+                .position-absolute.translate-middle.rounded-pill.badge.bg-primary[
+                  class="#{current_user.received_notifications.unread.count != 0 ? '' : 'd-none'}" 
+                  style='top:-40%;'
+                ]
+                  | #{current_user.received_notifications.unread.count} 
             ul class="dropdown-menu border-0 notification-dropdown py-2" aria-labelledby="header-notifications"
-              - current_user.get_notifications_ordered.each_with_index do |item, index|                   
+              - current_user.received_notifications.ordered.each_with_index do |item, index|                   
                 li.px-2 id="notification_id_#{item.id}" 
                   - message_split = item.message.split(':', 2)
                   = link_to dashboard_notification_path(item.recipient.id, item), method:'post' do

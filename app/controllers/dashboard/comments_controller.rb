@@ -10,62 +10,10 @@ class Dashboard::CommentsController < ApplicationController
     flash[:alert] = "Fail to add comment"
     end
 
-    notification = Notification.create(
-      notifiable: @comment,
-      message:"comment your post: #{@post.title}",
-      link: post_path(@post),
-      sender: current_user,
-      recipient: @post.user 
-    )
-    html_header = ApplicationController.render(
-      partial: 'shared/notification_item',
-      locals: { notification: notification }
-    )
-    html_toast = ApplicationController.render(
-      partial: 'shared/notification_toast',
-      locals: {notification: notification}
-    )
-    ActionCable.server.broadcast "notifications:#{@post.user.id}", {
-      action:'add', 
-      html_header:html_header, 
-      html_toast:html_toast,
-      notification:notification
-    } 
-
-    render partial:'dashboard/comments/create.js.erb'
-  end
-  
-  def update    
-    flash[:alert] = "Fail to update comment" unless @comment.update(comment_params)
-    render partial:'dashboard/comments/update.js.erb' 
-  end
-  
-  def destroy
-    notification = Notification.find_by notifiable: @comment 
-    ActionCable.server.broadcast "notifications:#{@post.user.id}", {
-      action:'remove', 
-      notification:notification,
-      desc_number:@comment.comments_count + 1
-    }
-    @comment.destroy 
-    notification.destroy
-
-    render partial:'dashboard/comments/destroy.js.erb'
-
-  end
-
-  def like
-    like = current_user.get_likeable @comment 
-    if like 
-      notification = Notification.find_by notifiable: like 
-      ActionCable.server.broadcast "notifications:#{@post.user.id}", {action:'remove', notification:notification} 
-      like.destroy
-      notification.destroy 
-    else 
-      created_like = current_user.likes.create(likeable: @comment)
+    if @post.user.id != current_user.id 
       notification = Notification.create(
-        notifiable: created_like,
-        message:"like your comment: #{@comment.content}", 
+        notifiable: @comment,
+        message:"comment your post: #{@post.title}",
         link: post_path(@post),
         sender: current_user,
         recipient: @post.user 
@@ -84,6 +32,80 @@ class Dashboard::CommentsController < ApplicationController
         html_toast:html_toast,
         notification:notification
       } 
+    end
+
+    html = ApplicationController.render_with_signed_in_user(
+      current_user,
+      partial:'dashboard/comments/comment_base_item', 
+      locals:{comment: @comment}
+    )
+    # ActionCable.server.broadcast "comment_channel", {
+    #   html:html,
+    #   action:'create',
+    #   number_comments: @post.number_comments
+    # } 
+
+    render partial:'dashboard/comments/create.js.erb'
+  end
+  
+  def update    
+    flash[:alert] = "Fail to update comment" unless @comment.update(comment_params)
+    render partial:'dashboard/comments/update.js.erb' 
+  end
+  
+  def destroy
+    if @post.user.id != current_user.id
+      notification = Notification.find_by notifiable: @comment 
+      ActionCable.server.broadcast "notifications:#{@post.user.id}", {
+        action:'remove', 
+        notification:notification,
+        desc_number:@comment.comments_count + 1
+      } 
+      notification.destroy
+    end
+    @comment.destroy 
+
+    render partial:'dashboard/comments/destroy.js.erb'
+
+  end
+
+  def like
+    like = current_user.get_likeable @comment 
+    if like 
+      if @post.user.id != current_user.id
+        notification = Notification.find_by notifiable: like 
+        ActionCable.server.broadcast "notifications:#{@post.user.id}", {
+          action:'remove', 
+          notification:notification
+        } 
+        notification.destroy 
+      end
+      like.destroy
+    else 
+      created_like = current_user.likes.create(likeable: @comment)
+      if @post.user.id != current_user.id
+        notification = Notification.create(
+          notifiable: created_like,
+          message:"like your comment: #{@comment.content}", 
+          link: post_path(@post),
+          sender: current_user,
+          recipient: @post.user 
+        )
+        html_header = ApplicationController.render(
+          partial: 'shared/notification_item',
+          locals: { notification: notification }
+        )
+        html_toast = ApplicationController.render(
+          partial: 'shared/notification_toast',
+          locals: {notification: notification}
+        )
+        ActionCable.server.broadcast "notifications:#{@post.user.id}", {
+          action:'add', 
+          html_header:html_header, 
+          html_toast:html_toast,
+          notification:notification
+        } 
+      end
     end 
     render partial:"dashboard/comments/js_erb/like.js.erb"
   end
@@ -96,27 +118,29 @@ class Dashboard::CommentsController < ApplicationController
     flash[:alert] = "Fail to reply comment"
     end 
 
-    notification = Notification.create(
-      notifiable: @reply_comment,
-      message:"reply your comment: #{@comment.content}",
-      link: post_path(@post),
-      sender: current_user,
-      recipient: @post.user 
-    )
-    html_header = ApplicationController.render(
-      partial: 'shared/notification_item',
-      locals: { notification: notification }
-    )
-    html_toast = ApplicationController.render(
-      partial: 'shared/notification_toast',
-      locals: {notification: notification}
-    )
-    ActionCable.server.broadcast "notifications:#{@post.user.id}", {
-      action:'add', 
-      html_header:html_header, 
-      html_toast:html_toast,
-      notification:notification 
-    } 
+    if @post.user.id != current_user.id
+      notification = Notification.create(
+        notifiable: @reply_comment,
+        message:"reply your comment: #{@comment.content}",
+        link: post_path(@post),
+        sender: current_user,
+        recipient: @post.user 
+      )
+      html_header = ApplicationController.render(
+        partial: 'shared/notification_item',
+        locals: { notification: notification }
+      )
+      html_toast = ApplicationController.render(
+        partial: 'shared/notification_toast',
+        locals: {notification: notification}
+      )
+      ActionCable.server.broadcast "notifications:#{@post.user.id}", {
+        action:'add', 
+        html_header:html_header, 
+        html_toast:html_toast,
+        notification:notification 
+      } 
+    end
 
     render partial:'dashboard/comments/reply.js.erb'
   end

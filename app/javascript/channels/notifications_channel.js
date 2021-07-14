@@ -19,12 +19,19 @@ consumer.subscriptions.create("NotificationsChannel", {
     if(data.action === 'add'){
       target.prepend(data.html_header);
       $(`#notifications-container`).append(data.html_toast);
+
       const count = 1
-      number_notifications.text(parseInt(number_notifications.text()) + count)
+      number_notifications.text(parseInt(number_notifications.text()) + count).removeClass('d-none')
     }else if(data.action === 'remove'){
-      $(`#notification_id_${notification.id}`).remove();
-      const count = parseInt(data.desc_number)||1
-      number_notifications.text(parseInt(number_notifications.text()) - count)
+      $(`#notification_id_${notification.id}`).remove(); 
+
+      const count = parseInt(data.desc_number) || 1
+      if(notification.readed === false)
+        number_notifications.text(parseInt(number_notifications.text()) - count).removeClass('d-none')
+      
+      if(parseInt(number_notifications.text()) === 0)
+        number_notifications.addClass('d-none');
+      
     }
   }
 });
