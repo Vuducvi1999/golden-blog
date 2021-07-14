@@ -1,6 +1,6 @@
 class Dashboard::CommentsController < ApplicationController
   before_action :set_post 
-  before_action :set_comment, only: %i[update destroy like]
+  before_action :set_comment, only: %i[update destroy like reply]
   
   def create
     @comment = @post.comments.build(comment_params)
@@ -18,7 +18,7 @@ class Dashboard::CommentsController < ApplicationController
     )
     html_header = ApplicationController.render(
       partial: 'shared/notification_item',
-      locals: { item: notification }
+      locals: { notification: notification }
     )
     html_toast = ApplicationController.render(
       partial: 'shared/notification_toast',
@@ -74,7 +74,7 @@ class Dashboard::CommentsController < ApplicationController
       )
       html_header = ApplicationController.render(
         partial: 'shared/notification_item',
-        locals: { item: notification }
+        locals: { notification: notification }
       )
       html_toast = ApplicationController.render(
         partial: 'shared/notification_toast',
@@ -90,9 +90,41 @@ class Dashboard::CommentsController < ApplicationController
     render partial:"dashboard/comments/js_erb/like.js.erb", locals:{comment: @comment}
   end
 
+  def reply 
+    @reply_comment = @comment.comments.build(comment_params)
+    @reply_comment.user = current_user
+    
+    unless @reply_comment.save 
+    flash[:alert] = "Fail to reply comment"
+    end 
+
+    notification = Notification.create(
+      message:"reply your comment: #{@comment.content}",
+      link: post_path(@post),
+      sender: current_user,
+      recipient: @post.user 
+    )
+    html_header = ApplicationController.render(
+      partial: 'shared/notification_item',
+      locals: { notification: notification }
+    )
+    html_toast = ApplicationController.render(
+      partial: 'shared/notification_toast',
+      locals: {notification: notification}
+    )
+    ActionCable.server.broadcast "notifications:#{@post.user.id}", {
+      action:'add', 
+      html_header:html_header, 
+      html_toast:html_toast,
+      notification:notification
+    } 
+
+    render partial:'dashboard/comments/reply.js.erb'
+  end
+
   private
     def set_comment
-      @comment = @post.comments.find_by(id: params[:id])
+      @comment = Comment.find_by(id: params[:id])
       
       unless @comment.present?
         flash[:info] = "Not found comment"

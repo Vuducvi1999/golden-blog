@@ -19,6 +19,7 @@ Rails.application.routes.draw do
       resources :comments, except: %i[show index new edit] do
         member do
           post 'like'
+          post 'reply'  
         end
       end
       member do

@@ -4,6 +4,9 @@
 if($(`#comment_id_${<%=comment.id%>} .fas.fa-heart.text-danger`)[0]){
   $(`#comment_id_${<%=comment.id%>} .fas.fa-heart.text-danger`)
   .toggleClass('far').toggleClass('fas').toggleClass('text-danger');
+  
+  $(`#comment_id_${<%=comment.id%>} .bg-lightdanger`)
+  .toggleClass('bg-lightdanger').toggleClass('not-bg-lightdanger')
 
   const likeNumberElement = $(`#comment_id_${<%=comment.id%>} .react-1`)
   likeNumberElement.text(Number(likeNumberElement.text()) - 1)
@@ -11,6 +14,9 @@ if($(`#comment_id_${<%=comment.id%>} .fas.fa-heart.text-danger`)[0]){
 else {
   $(`#comment_id_${<%=comment.id%>} .far.fa-heart`)
   .toggleClass('far').toggleClass('fas').toggleClass('text-danger');
+
+  $(`#comment_id_${<%=comment.id%>} .not-bg-lightdanger`)
+  .toggleClass('bg-lightdanger').toggleClass('not-bg-lightdanger')
 
   const likeNumberElement = $(`#comment_id_${<%=comment.id%>} .react-1`)
   likeNumberElement.text(Number(likeNumberElement.text()) + 1)

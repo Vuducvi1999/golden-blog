@@ -151,7 +151,7 @@ class Dashboard::PostsController < ApplicationController
       )
       html_header = ApplicationController.render(
         partial: 'shared/notification_item',
-        locals: { item: notification }
+        locals: { notification: notification }
       )
       html_toast = ApplicationController.render(
         partial: 'shared/notification_toast',

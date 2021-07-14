@@ -1,15 +1,15 @@
-li.px-2 id="notification_id_#{item.id}" 
-  - message_split = item.message.split(':', 2)
-  = link_to dashboard_notification_path(item.recipient.id, item), method:'post' do
+li.px-2 id="notification_id_#{notification.id}" 
+  - message_split = notification.message.split(':', 2)
+  = link_to dashboard_notification_path(notification.recipient.id, notification), method:'post' do
     .row.m-0.py-2 style="font-size: 0.9rem"
       .avatar.col-2.p-0.ps-2
-        img.img-fluid src="#{url_for(item.sender.get_avatar)}" 
+        img.img-fluid src="#{url_for(notification.sender.get_avatar)}" 
       .message.col-10.p-0.ps-3.d-flex.align-items-baseline 
         div style='pointer-events: none;'
-          span.me-1.fw-bold #{item.sender.username}
+          span.me-1.fw-bold #{notification.sender.username}
           | #{message_split[0]} 
           span.me-1.fw-bold #{message_split[1]}
           .text-primary.fw-bold style='font-size:0.7rem' 
-            | #{time_ago_in_words item.created_at} ago
-        - unless item.readed 
+            | #{time_ago_in_words notification.created_at} ago
+        - unless notification.readed 
           i.fas.fa-circle.text-primary.px-2 style='font-size: 0.8rem'

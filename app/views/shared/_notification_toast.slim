@@ -19,7 +19,7 @@
         | #{time_ago_in_words notification.created_at} ago
 
 script 
-  | setTimeout(()=>$(`#notification_toast_id_#{notification.id}`).fadeToggle(500), 5000);
+  | setTimeout(()=>$(`#notification_toast_id_#{notification.id}`).fadeOut(500), 5000);
   | $(`#close_notification_id_#{notification.id}`).click(()=>{
-  |    $(`#notification_toast_id_#{notification.id}`).fadeToggle(500); 
+  |    $(`#notification_toast_id_#{notification.id}`).fadeOut(500); 
   | })

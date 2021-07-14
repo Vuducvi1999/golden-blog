@@ -1,0 +1,53 @@
+
+
+
+.my-3.row style="font-family: sans-serif;" id="comment_id_#{comment.id}" 
+  .col-1.image-user 
+    img.w-100 src="#{comment.user.get_avatar}"
+  .col-11.ps-0.info-comment
+    .d-flex.align-items-center 
+      span.me-2.fw-bold.fs-6 
+        | #{comment.user.username} 
+      p.m-0 style="font-size: .8rem; color:rgba(0,0,0,.4)"
+        i class="far fa-clock me-1"
+        | #{time_ago_in_words comment.created_at} ago&nbsp;
+        | #{comment.created_at == comment.updated_at ? '' : '(edited)'}
+      - if current_user.present? && current_user.id == comment.user.id
+        i#dropdownMenuLink.fas.fa-ellipsis-h.cursor-pointer.fs-6.text-secondary.me-2.ms-auto data-bs-toggle="dropdown"
+        ul.dropdown-menu.dropdown-menu-end aria-labelledby="dropdownMenuLink"
+          li.dropdown-item.fs-6 
+            span.d-block.cursor-pointer id="edit_click_id_#{comment.id}" Edit 
+          li.dropdown-item.fs-6 
+            = link_to 'Delete', dashboard_post_comment_path(@post, comment), method:'delete', remote:true, class:'d-block'
+            
+    p.m-0 style="white-space: pre-line; " id="comment_content_#{comment.id}"
+      | #{comment.content} 
+    .mt-2.d-flex 
+      = link_to like_dashboard_post_comment_path(@post, comment), method:'post', remote:true, class:'hover-text-none' do
+        .rounded.px-2.py-1.d-flex.align-items-center.cursor-pointer.hover-lightgrey[
+          class="#{current_user&.get_likeable(comment) ? 'bg-lightdanger' : 'not-bg-lightdanger'}" 
+          style="font-size: 0.8rem"
+        ]
+          i class="#{current_user&.get_likeable(comment) ? 'fas fa-heart text-danger' : 'far fa-heart'} me-1" style="font-size: 1rem"
+          span.react-1
+            | #{comment.likes.count} 
+          | &nbsp;likes 
+      .rounded.px-2.py-1.d-flex.align-items-center.cursor-pointer.hover-lightgrey style="font-size: 0.8rem"
+        i class="fas fa-reply me-1 #{}" style="font-size: 1rem"
+        span.react-2 
+          | Reply 
+    = form_with model: [:dashboard, @post, comment], method:'patch', local:false, class:'d-none mt-2' do |f|
+      = f.text_area :content, rows:3, class:'form-control focus-box-none' 
+      .d-flex.justify-content-end.mt-2 
+        span class='btn btn-secondary py-2 px-2 fs-6 me-2' id="cancel_id_#{comment.id}" Cancel 
+        = f.submit "Change", class:'btn btn-success py-2 px-2 fs-6'
+    = form_with model: Comment.new, url: reply_dashboard_post_comment_path(@post, comment), method:'post',\
+    local:false, class:'d-none mt-2' do |f|
+      = f.text_area :content, rows:3, class:'form-control focus-box-none' 
+      .d-flex.justify-content-end.mt-2 
+        span class='btn btn-secondary py-2 px-2 fs-6 me-2' id="cancel_id_#{comment.id}" Cancel 
+        = f.submit "Change", class:'btn btn-success py-2 px-2 fs-6'
+
+
+script 
+  = render partial:'dashboard/comments/js_erb/comment_base_item.js', locals:{comment: comment}
