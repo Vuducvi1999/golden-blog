@@ -42,13 +42,13 @@ class Dashboard::CommentsController < ApplicationController
   def destroy
     @comment.destroy 
 
-    notification = Notification.find_by(
-      message:"comment your post: #{@post.title}",
-      sender: current_user,
-      recipient: @post.user 
-    )
-    notification.destroy
-    ActionCable.server.broadcast "notifications:#{@post.user.id}", {action:'remove', notification:notification}
+    # notification = Notification.find_by(
+    #   message:"comment your post: #{@post.title}",
+    #   sender: current_user,
+    #   recipient: @post.user 
+    # )
+    # notification.destroy
+    # ActionCable.server.broadcast "notifications:#{@post.user.id}", {action:'remove', notification:notification}
 
     render partial:'dashboard/comments/destroy.js.erb', locals: {comment: @comment}
   end
@@ -116,7 +116,7 @@ class Dashboard::CommentsController < ApplicationController
       action:'add', 
       html_header:html_header, 
       html_toast:html_toast,
-      notification:notification
+      notification:notification 
     } 
 
     render partial:'dashboard/comments/reply.js.erb'

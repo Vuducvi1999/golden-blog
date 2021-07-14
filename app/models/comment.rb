@@ -5,4 +5,7 @@ class Comment < ApplicationRecord
   has_many :likes, as: :likeable, dependent: :destroy 
 
   validates :content, presence: true, allow_blank: false 
+
+  scope :order_created_at, -> { order(created_at:'desc')}
+  
 end 

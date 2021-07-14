@@ -25,28 +25,31 @@
     .mt-2.d-flex 
       = link_to like_dashboard_post_comment_path(@post, comment), method:'post', remote:true, class:'hover-text-none' do
         .rounded.px-2.py-1.d-flex.align-items-center.cursor-pointer.hover-lightgrey[
-          class="#{current_user&.get_likeable(comment) ? 'bg-lightdanger' : 'not-bg-lightdanger'}" 
+          class="#{current_user&.get_likeable(comment) ? 'bg-lightdanger pointer-events-none' : 'not-bg-lightdanger'}" 
           style="font-size: 0.8rem"
         ]
           i class="#{current_user&.get_likeable(comment) ? 'fas fa-heart text-danger' : 'far fa-heart'} me-1" style="font-size: 1rem"
           span.react-1
             | #{comment.likes.count} 
           | &nbsp;likes 
-      .rounded.px-2.py-1.d-flex.align-items-center.cursor-pointer.hover-lightgrey style="font-size: 0.8rem"
+      .rounded.px-2.py-1.d-flex.align-items-center.cursor-pointer.hover-lightgrey[
+        style="font-size: 0.8rem"
+        id="reply_click_id_#{comment.id}"
+      ]
         i class="fas fa-reply me-1 #{}" style="font-size: 1rem"
         span.react-2 
           | Reply 
     = form_with model: [:dashboard, @post, comment], method:'patch', local:false, class:'d-none mt-2' do |f|
       = f.text_area :content, rows:3, class:'form-control focus-box-none' 
       .d-flex.justify-content-end.mt-2 
-        span class='btn btn-secondary py-2 px-2 fs-6 me-2' id="cancel_id_#{comment.id}" Cancel 
+        span class='btn btn-secondary py-2 px-2 fs-6 me-2' id="cancel_edit_id_#{comment.id}" Cancel 
         = f.submit "Change", class:'btn btn-success py-2 px-2 fs-6'
     = form_with model: Comment.new, url: reply_dashboard_post_comment_path(@post, comment), method:'post',\
     local:false, class:'d-none mt-2' do |f|
-      = f.text_area :content, rows:3, class:'form-control focus-box-none' 
+      = f.text_area :content, rows:3, class:'form-control focus-box-none', placeholder:"Words..." 
       .d-flex.justify-content-end.mt-2 
-        span class='btn btn-secondary py-2 px-2 fs-6 me-2' id="cancel_id_#{comment.id}" Cancel 
-        = f.submit "Change", class:'btn btn-success py-2 px-2 fs-6'
+        span class='btn btn-secondary py-2 px-2 fs-6 me-2' id="cancel_reply_id_#{comment.id}" Cancel 
+        = f.submit "Reply", class:'btn btn-success py-2 px-2 fs-6' 
 
 
 script 

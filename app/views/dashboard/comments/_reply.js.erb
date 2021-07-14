@@ -1,0 +1,15 @@
+
+
+
+$("#reply_container_id_<%=@comment.id%>")
+.prepend(`
+  <div class="offset-1">
+    <%= j render partial:'comment_item', locals:{comment:@reply_comment} %>
+  </div>
+`)
+
+$(`#comment_content_<%=@comment.id%>`)
+.next().next().next()
+.toggleClass('d-none').toggleClass('d-block')
+.children('textarea').val('')
+

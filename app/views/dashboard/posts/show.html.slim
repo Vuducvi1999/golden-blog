@@ -79,7 +79,7 @@
           #comments-list.list-comments-post
             - unless @post.comments.empty?
               #wrap-comments-component 
-                - @comment_paginate.each do |comment|
+                - @comment_paginate.each do |comment| 
                   = render partial: 'dashboard/comments/comment_item', locals: {comment: comment}
               #call-paginate-ajax.d-flex.justify-content-center 
                 = will_paginate @comment_paginate, inner_window: 2, outer_window: 1,\
