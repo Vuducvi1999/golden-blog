@@ -15,14 +15,14 @@ class Dashboard::PostsController < ApplicationController
   end
 
   def show
-    @comment_paginate = @post.comments.paginate(page: params[:page], per_page: 10).order(updated_at: :desc)
+    @comment_paginate = @post.comments.order(created_at: :desc)
     @related_posts = @post.related_posts
     @more_from_author_posts = @post.more_from_author_posts
 
     respond_to do |format|
       format.html
       format.js {render partial:'dashboard/posts/js_erb/show.js.erb'}
-    end
+    end 
   end
 
   def new
@@ -133,17 +133,14 @@ class Dashboard::PostsController < ApplicationController
   def like 
     like = current_user.get_likeable @post 
     if like 
-      like.destroy
-      notification = Notification.find_by(
-        message:"like your post: #{@post.title}",
-        sender: current_user,
-        recipient: @post.user 
-      )
-      notification.destroy 
+      notification = Notification.find_by notifiable: like
       ActionCable.server.broadcast "notifications:#{@post.user.id}", {action:'remove', notification:notification} 
+      like.destroy
+      notification.destroy 
     else 
-      current_user.likes.create(likeable: @post)
+      created_like = current_user.likes.create(likeable: @post)
       notification = Notification.create(
+        notifiable: created_like,
         message:"like your post: #{@post.title}", 
         link: post_path(@post),
         sender: current_user,

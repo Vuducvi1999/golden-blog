@@ -14,14 +14,17 @@ consumer.subscriptions.create("NotificationsChannel", {
     const target = $(`[aria-labelledby="header-notifications"]`)
     const number_notifications = $(`.position-absolute.translate-middle.rounded-pill`)
     const notification = data.notification
+    console.log(data)
     
     if(data.action === 'add'){
       target.prepend(data.html_header);
       $(`#notifications-container`).append(data.html_toast);
-      number_notifications.text(parseInt(number_notifications.text()) + 1)
+      const count = 1
+      number_notifications.text(parseInt(number_notifications.text()) + count)
     }else if(data.action === 'remove'){
       $(`#notification_id_${notification.id}`).remove();
-      number_notifications.text(parseInt(number_notifications.text()) - 1)
+      const count = parseInt(data.desc_number)||1
+      number_notifications.text(parseInt(number_notifications.text()) - count)
     }
   }
 });

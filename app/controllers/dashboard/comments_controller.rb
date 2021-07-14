@@ -11,6 +11,7 @@ class Dashboard::CommentsController < ApplicationController
     end
 
     notification = Notification.create(
+      notifiable: @comment,
       message:"comment your post: #{@post.title}",
       link: post_path(@post),
       sender: current_user,
@@ -40,33 +41,30 @@ class Dashboard::CommentsController < ApplicationController
   end
   
   def destroy
+    notification = Notification.find_by notifiable: @comment 
+    ActionCable.server.broadcast "notifications:#{@post.user.id}", {
+      action:'remove', 
+      notification:notification,
+      desc_number:@comment.comments_count + 1
+    }
     @comment.destroy 
+    notification.destroy
 
-    # notification = Notification.find_by(
-    #   message:"comment your post: #{@post.title}",
-    #   sender: current_user,
-    #   recipient: @post.user 
-    # )
-    # notification.destroy
-    # ActionCable.server.broadcast "notifications:#{@post.user.id}", {action:'remove', notification:notification}
+    render partial:'dashboard/comments/destroy.js.erb'
 
-    render partial:'dashboard/comments/destroy.js.erb', locals: {comment: @comment}
   end
 
   def like
     like = current_user.get_likeable @comment 
     if like 
-      like.destroy
-      notification = Notification.find_by(
-        message:"like your comment: #{@comment.content}",
-        sender: current_user,
-        recipient: @post.user 
-      )
-      notification.destroy 
+      notification = Notification.find_by notifiable: like 
       ActionCable.server.broadcast "notifications:#{@post.user.id}", {action:'remove', notification:notification} 
+      like.destroy
+      notification.destroy 
     else 
-      current_user.likes.create(likeable: @comment)
+      created_like = current_user.likes.create(likeable: @comment)
       notification = Notification.create(
+        notifiable: created_like,
         message:"like your comment: #{@comment.content}", 
         link: post_path(@post),
         sender: current_user,
@@ -87,7 +85,7 @@ class Dashboard::CommentsController < ApplicationController
         notification:notification
       } 
     end 
-    render partial:"dashboard/comments/js_erb/like.js.erb", locals:{comment: @comment}
+    render partial:"dashboard/comments/js_erb/like.js.erb"
   end
 
   def reply 
@@ -99,6 +97,7 @@ class Dashboard::CommentsController < ApplicationController
     end 
 
     notification = Notification.create(
+      notifiable: @reply_comment,
       message:"reply your comment: #{@comment.content}",
       link: post_path(@post),
       sender: current_user,

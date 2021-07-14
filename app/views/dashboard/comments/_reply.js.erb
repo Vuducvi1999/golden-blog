@@ -11,5 +11,7 @@ $("#reply_container_id_<%=@comment.id%>")
 $(`#comment_content_<%=@comment.id%>`)
 .next().next().next()
 .toggleClass('d-none').toggleClass('d-block')
-.children('textarea').val('')
+.children('textarea').val('') 
 
+$("#count-number-comments").html("<%= @post.number_comments %> comments")
+$("#comments_count_post").html("<%= @post.number_comments %>")

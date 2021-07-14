@@ -15,8 +15,6 @@ class Post < ApplicationRecord
   has_many :rates, dependent: :destroy
   has_many :visits, dependent: :destroy
 
-
-
   enum status: {
     new_created: 0,
     approved: 1,
@@ -42,7 +40,7 @@ class Post < ApplicationRecord
     .sort_by {|post| post.created_at}.reverse 
   }
   scope :most_reading, ->{
-    sort_by {|post| post.read_count }.reverse 
+    sort_by {|post| post.read_count}.reverse 
     .sort_by {|post| post.created_at}.reverse 
   }
   scope :weekly_hostest, ->{
@@ -57,9 +55,17 @@ class Post < ApplicationRecord
     where(visits: {created_at: DateTime.now.beginning_of_year..DateTime.now.end_of_year}) 
     .sort_by {|post| post.yearly_read_count }.reverse 
   }
+  
+  def number_comments
+    count = self.comments.includes(:comments).count
+    self.comments.each do |item|
+      count += item.comments_count
+    end
+    count 
+  end
 
   def average_score
-    self.rates.average(:score) || 0
+    self.rates.average(:score) || 0 
   end 
 
   def read_count

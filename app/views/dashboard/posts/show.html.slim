@@ -29,7 +29,7 @@
           .flex-column.align-items-end.my-3 
             i.far.fa-comment-dots
             p#comments_count_post.m-0.fw-bold.font-monospace.text-center
-              | #{@post.comments.count}
+              | #{@post.number_comments}
       .col-7.bg-white.p-4  
         - if current_user&.is_author_of?(@post) && @post.new_created?
           p.mb-3.text-center.border.border-danger.m-0.py-2 style="font-size:1.3rem"     
@@ -75,15 +75,13 @@
                 |  to comment. 
 
           h5#count-number-comments.border-bottom.pb-2
-            | #{@post.comments.length} comments
+            | #{@post.number_comments} comments
           #comments-list.list-comments-post
             - unless @post.comments.empty?
               #wrap-comments-component 
                 - @comment_paginate.each do |comment| 
                   = render partial: 'dashboard/comments/comment_item', locals: {comment: comment}
-              #call-paginate-ajax.d-flex.justify-content-center 
-                = will_paginate @comment_paginate, inner_window: 2, outer_window: 1,\
-                  :renderer => RemoteLinkPaginationHelper::LinkRenderer 
+
             - else 
               i#message-no-comment.my-3 style="font-size:1.1rem" 
                 | Haven't had comments! Be the first user comment.
