@@ -23,6 +23,10 @@ class User < ApplicationRecord
     :admin => 1
   }
 
+  def get_notifications_ordered
+    self.received_notifications.order(created_at:'desc')
+  end
+
   def get_likeable likeable
     self.likes.find_by(likeable_id: likeable.id, likeable_type: likeable.class.name)
   end
