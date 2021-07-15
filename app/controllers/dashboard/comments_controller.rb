@@ -63,6 +63,7 @@ class Dashboard::CommentsController < ApplicationController
       } 
       notification.destroy
     end
+    @comment.destroy 
     
     ActionCable.server.broadcast "comment_channel", {
       action:'destroy', 
@@ -70,7 +71,6 @@ class Dashboard::CommentsController < ApplicationController
       comment: @comment 
     } 
 
-    @comment.destroy 
     render partial:'dashboard/comments/destroy.js.erb'
 
   end
