@@ -34,17 +34,6 @@ class Dashboard::CommentsController < ApplicationController
       } 
     end
 
-    html = ApplicationController.render(
-      current_user,
-      partial:'dashboard/comments/comment_item', 
-      locals:{comment: @comment, post: @post} 
-    )
-    ActionCable.server.broadcast "comment_channel", {
-      html:html,
-      action:'create',
-      number_comments: @post.number_comments
-    } 
-
     render partial:'dashboard/comments/create.js.erb'
   end
   
@@ -54,23 +43,7 @@ class Dashboard::CommentsController < ApplicationController
   end
   
   def destroy
-    if @post.user.id != current_user.id
-      notification = Notification.find_by notifiable: @comment, sender: current_user, recipient: @post.user
-      ActionCable.server.broadcast "notifications:#{@post.user.id}", {
-        action:'remove', 
-        notification:notification,
-        desc_number:@comment.comments_of_user_count(current_user) + 1
-      } 
-      notification.destroy
-    end
     @comment.destroy 
-    
-    ActionCable.server.broadcast "comment_channel", {
-      action:'destroy', 
-      number_comments: @post.number_comments, 
-      comment: @comment 
-    } 
-
     render partial:'dashboard/comments/destroy.js.erb'
 
   end
@@ -78,24 +51,16 @@ class Dashboard::CommentsController < ApplicationController
   def like
     like = current_user.get_likeable @comment 
     if like 
-      if @post.user.id != current_user.id
-        notification = Notification.find_by notifiable: like 
-        ActionCable.server.broadcast "notifications:#{@post.user.id}", {
-          action:'remove', 
-          notification:notification
-        } 
-        notification.destroy 
-      end
       like.destroy
     else 
       created_like = current_user.likes.create(likeable: @comment)
-      if @post.user.id != current_user.id
+      if @comment.user.id != current_user.id
         notification = Notification.create(
           notifiable: created_like,
           message:"like your comment: #{@comment.content}", 
           link: post_path(@post),
           sender: current_user,
-          recipient: @post.user 
+          recipient: @comment.user 
         )
         html_header = ApplicationController.render(
           partial: 'shared/notification_item',
@@ -105,7 +70,7 @@ class Dashboard::CommentsController < ApplicationController
           partial: 'shared/notification_toast',
           locals: {notification: notification}
         )
-        ActionCable.server.broadcast "notifications:#{@post.user.id}", {
+        ActionCable.server.broadcast "notifications:#{@comment.user.id}", {
           action:'add', 
           html_header:html_header, 
           html_toast:html_toast,
@@ -124,13 +89,13 @@ class Dashboard::CommentsController < ApplicationController
     flash[:alert] = "Fail to reply comment"
     end 
 
-    if @post.user.id != current_user.id
+    if @comment.user.id != current_user.id
       notification = Notification.create(
         notifiable: @reply_comment,
         message:"reply your comment: #{@comment.content}",
         link: post_path(@post),
         sender: current_user,
-        recipient: @post.user 
+        recipient: @comment.user 
       )
       html_header = ApplicationController.render(
         partial: 'shared/notification_item',
@@ -140,25 +105,13 @@ class Dashboard::CommentsController < ApplicationController
         partial: 'shared/notification_toast',
         locals: {notification: notification}
       )
-      ActionCable.server.broadcast "notifications:#{@post.user.id}", {
+      ActionCable.server.broadcast "notifications:#{@comment.user.id}", {
         action:'add', 
         html_header:html_header, 
         html_toast:html_toast,
         notification:notification 
       } 
     end
-
-    html = ApplicationController.render_with_signed_in_user(
-      current_user,
-      partial:'dashboard/comments/comment_item', 
-      locals:{comment:@reply_comment, post: @post}
-    )
-    ActionCable.server.broadcast "comment_channel", {
-      html:html,
-      action:'reply',
-      number_comments: @post.number_comments,
-      comment: @comment
-    } 
 
     render partial:'dashboard/comments/reply.js.erb'
   end

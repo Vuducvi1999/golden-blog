@@ -23,12 +23,13 @@ consumer.subscriptions.create("NotificationsChannel", {
       const count = 1
       number_notifications.text(parseInt(number_notifications.text()) + count).removeClass('d-none')
     }else if(data.action === 'remove'){
+      console.log($(`#notification_id_${notification.id}`))
       $(`#notification_id_${notification.id}`).remove(); 
 
-      const count = parseInt(data.desc_number) || 1
+      const count = parseInt(data.desc_number) || 1 
       if(notification.readed === false)
-        number_notifications.text(parseInt(number_notifications.text()) - count).removeClass('d-none')
-      
+        number_notifications.text(parseInt(number_notifications.text()) - 1).removeClass('d-none')
+
       if(parseInt(number_notifications.text()) === 0)
         number_notifications.addClass('d-none');
       

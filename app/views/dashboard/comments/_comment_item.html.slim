@@ -1,12 +1,12 @@
 
 
 div id="comment_id_#{comment.id}"
-  = render partial:'dashboard/comments/comment_base_item', locals:{comment:comment, post:post} 
+  = render partial:'dashboard/comments/comment_base_item', locals:{comment:comment} 
 
 
   div id="reply_container_id_#{comment.id}"
     - comment.comments.order_created_at.each do |item| 
       .offset-1 
-        = render partial:'dashboard/comments/comment_item', locals:{comment:item, post:post} 
+        = render partial:'dashboard/comments/comment_item', locals:{comment:item} 
 
 
