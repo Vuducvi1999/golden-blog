@@ -16,5 +16,13 @@ class Comment < ApplicationRecord
     end
     count 
   end
+
+  def comments_of_user_count user
+    count = self.comments.includes(:user).where(user:{id: user.id}).count
+    self.comments.each do |item|
+      count += item.comments_of_user_count user
+    end
+    count
+  end
   
 end 

@@ -12,13 +12,17 @@
         i class="far fa-clock me-1"
         | #{time_ago_in_words comment.created_at} ago&nbsp;
         | #{comment.created_at == comment.updated_at ? '' : '(edited)'}
-      - if current_user.present? && current_user.id == comment.user.id
-        i#dropdownMenuLink.fas.fa-ellipsis-h.cursor-pointer.fs-6.text-secondary.me-2.ms-auto data-bs-toggle="dropdown"
-        ul.dropdown-menu.dropdown-menu-end aria-labelledby="dropdownMenuLink"
+      - if current_user.present? && current_user.id == comment.user.id 
+        i.fas.fa-ellipsis-h.cursor-pointer.fs-6.text-secondary.me-2.ms-auto[
+          data-bs-toggle="dropdown" 
+          id="actions_comment_id_#{comment.id}"
+        ]
+        ul.dropdown-menu.dropdown-menu-end aria-labelledby="actions_comment_id_#{comment.id}"
           li.dropdown-item.fs-6 
             span.d-block.cursor-pointer id="edit_click_id_#{comment.id}" Edit 
           li.dropdown-item.fs-6 
             = link_to 'Delete', dashboard_post_comment_path(post, comment), method:'delete', remote:true, class:'d-block'
+
             
     p.m-0 style="white-space: pre-line; " id="comment_content_#{comment.id}"
       | #{comment.content} 

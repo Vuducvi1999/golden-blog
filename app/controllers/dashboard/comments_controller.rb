@@ -20,11 +20,11 @@ class Dashboard::CommentsController < ApplicationController
       )
       html_header = ApplicationController.render(
         partial: 'shared/notification_item',
-        locals: { notification: notification }
+        locals: {notification: notification}
       )
       html_toast = ApplicationController.render(
         partial: 'shared/notification_toast',
-        locals: {notification: notification}
+        locals: {notification: notification} 
       )
       ActionCable.server.broadcast "notifications:#{@post.user.id}", {
         action:'add', 
@@ -34,10 +34,10 @@ class Dashboard::CommentsController < ApplicationController
       } 
     end
 
-    html = ApplicationController.render_with_signed_in_user(
+    html = ApplicationController.render(
       current_user,
       partial:'dashboard/comments/comment_item', 
-      locals:{comment: @comment, post: @post}
+      locals:{comment: @comment, post: @post} 
     )
     ActionCable.server.broadcast "comment_channel", {
       html:html,
@@ -59,7 +59,7 @@ class Dashboard::CommentsController < ApplicationController
       ActionCable.server.broadcast "notifications:#{@post.user.id}", {
         action:'remove', 
         notification:notification,
-        desc_number:@comment.comments_count + 1
+        desc_number:@comment.comments_of_user_count(current_user) + 1
       } 
       notification.destroy
     end
