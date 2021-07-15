@@ -36,26 +36,26 @@ class Dashboard::CommentsController < ApplicationController
 
     html = ApplicationController.render_with_signed_in_user(
       current_user,
-      partial:'dashboard/comments/comment_base_item', 
-      locals:{comment: @comment}
+      partial:'dashboard/comments/comment_item', 
+      locals:{comment: @comment, post: @post}
     )
-    # ActionCable.server.broadcast "comment_channel", {
-    #   html:html,
-    #   action:'create',
-    #   number_comments: @post.number_comments
-    # } 
+    ActionCable.server.broadcast "comment_channel", {
+      html:html,
+      action:'create',
+      number_comments: @post.number_comments
+    } 
 
     render partial:'dashboard/comments/create.js.erb'
   end
   
-  def update    
+  def update 
     flash[:alert] = "Fail to update comment" unless @comment.update(comment_params)
     render partial:'dashboard/comments/update.js.erb' 
   end
   
   def destroy
     if @post.user.id != current_user.id
-      notification = Notification.find_by notifiable: @comment 
+      notification = Notification.find_by notifiable: @comment, sender: current_user, recipient: @post.user
       ActionCable.server.broadcast "notifications:#{@post.user.id}", {
         action:'remove', 
         notification:notification,
@@ -63,8 +63,14 @@ class Dashboard::CommentsController < ApplicationController
       } 
       notification.destroy
     end
-    @comment.destroy 
+    
+    ActionCable.server.broadcast "comment_channel", {
+      action:'destroy', 
+      number_comments: @post.number_comments, 
+      comment: @comment 
+    } 
 
+    @comment.destroy 
     render partial:'dashboard/comments/destroy.js.erb'
 
   end
@@ -141,6 +147,18 @@ class Dashboard::CommentsController < ApplicationController
         notification:notification 
       } 
     end
+
+    html = ApplicationController.render_with_signed_in_user(
+      current_user,
+      partial:'dashboard/comments/comment_item', 
+      locals:{comment:@reply_comment, post: @post}
+    )
+    ActionCable.server.broadcast "comment_channel", {
+      html:html,
+      action:'reply',
+      number_comments: @post.number_comments,
+      comment: @comment
+    } 
 
     render partial:'dashboard/comments/reply.js.erb'
   end

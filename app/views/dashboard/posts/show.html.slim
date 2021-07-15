@@ -80,7 +80,7 @@
             - unless @post.comments.empty?
               #wrap-comments-component 
                 - @comment_paginate.each do |comment| 
-                  = render partial: 'dashboard/comments/comment_item', locals: {comment: comment}
+                  = render partial: 'dashboard/comments/comment_item', locals: {comment: comment, post:@post}
 
             - else 
               i#message-no-comment.my-3 style="font-size:1.1rem" 

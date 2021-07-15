@@ -1,6 +1,6 @@
 $('#wrap-comments-component').html(
 "<%  @comment_paginate.each do |comment| %>"+
-  "<%= j render partial: 'dashboard/comments/comment_item', locals: {comment: comment}%>"+
+  "<%= j render partial: 'dashboard/comments/comment_item', locals: {comment: comment, post:@post}%>"+
   "<%end %>"
 );
 $('#call-paginate-ajax').html(
