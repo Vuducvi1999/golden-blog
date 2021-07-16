@@ -30,4 +30,11 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  pundit:
+    errors:
+      default: "User permission denied"
+      user:
+        waiting_to_approve: "This post is being process by admin to approve!"
+        was_rejected_by_admin: "This post was rejected by admin!"
+        deny_approve_action: "Only admin can approve post!"
+        deny_reject_action: "Only admin can reject post!"
