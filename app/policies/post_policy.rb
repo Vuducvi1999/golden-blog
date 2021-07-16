@@ -9,10 +9,11 @@ class PostPolicy < ApplicationPolicy
     # nếu không phải admin hoặc không phải author 
     unless user&.admin? || user&.is_author_of?(record)
       if record.new_created?
-        raise Pundit::NotAuthorizedError.new 'user.waiting_to_approve'
+        return raise Pundit::NotAuthorizedError.new 'user.waiting_to_approve'
       elsif record.rejected?
-        raise Pundit::NotAuthorizedError.new 'user.was_rejected_by_admin'
+        return raise Pundit::NotAuthorizedError.new 'user.was_rejected_by_admin'
       end
+      return true 
     end 
     true 
   end
@@ -21,11 +22,13 @@ class PostPolicy < ApplicationPolicy
     unless user&.admin?
       raise Pundit::NotAuthorizedError.new 'user.deny_approve_action'
     end
+    true
   end
 
   def reject_post?
     unless user&.admin?
       raise Pundit::NotAuthorizedError.new 'user.deny_reject_action'
     end
+    true
   end
 end

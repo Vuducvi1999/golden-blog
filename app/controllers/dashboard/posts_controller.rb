@@ -2,10 +2,7 @@
 class Dashboard::PostsController < ApplicationController
   before_action :authenticate_user!, except: %i[show search]
   before_action :set_post, only: %i[show edit update destroy approve_post reject_post like dislike rate read_count]
-  # before_action :check_post_status, only: %i[show]
-  # before_action :check_admin_to_change_status, only: %i[approve_post reject_post]
   skip_before_action :verify_authenticity_token, :authenticate_user!, only: %i[read_count]
-
   
   include Rails.application.routes.url_helpers
 
@@ -126,7 +123,7 @@ class Dashboard::PostsController < ApplicationController
     @posts = categories_id.empty? ? @posts : @posts.filter_by_categories(categories_id)
   end
 
-  # update read count 
+  # update read count by visitors
   def read_count
     @post.visits.create
   end
@@ -173,21 +170,6 @@ class Dashboard::PostsController < ApplicationController
     render partial:"dashboard/posts/js_erb/like.js.erb" 
   end
   
-  # toogle unlike
-  def dislike
-    if current_user.disliked? @post 
-      @post.undisliked_by current_user
-      puts current_user.disliked? @post 
-      puts "undislike"
-    else 
-      @post.disliked_by current_user
-      puts current_user.disliked? @post
-      puts "dislike"
-    end
-    render partial:"dashboard/posts/js_erb/unlike.js.erb"
-  end
-  
-  # rate
   def rate 
     score = params[:score]
     unless current_user.get_rate_with @post
@@ -213,41 +195,5 @@ class Dashboard::PostsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def post_params
       params.require(:post).permit(:title,:content,:thumbnail,:short_description)
-    end
-    
-    # kiểm tra status post và redirect nếu truy cập không hợp lệ
-    def check_post_status 
-      if @post.new_created?
-        return condition_post_if_status_is 'new'
-      elsif @post.rejected?
-        return condition_post_if_status_is 'rejected'
-      end
-    end
-
-    def condition_post_if_status_is status
-      # nếu người dùng đã đăng nhập và là tác giả hoặc admin thì tiếp tục process 
-      return if current_user&.admin? || current_user&.is_author_of?(@post)
-      # nếu không thì redirect và alert 
-      return status=="new" ? message_and_redirect_if_post_is_new : message_and_redirect_if_post_is_rejected
-    end
-
-    def message_and_redirect_if_post_is_new
-      flash[:info] = "This post is being process by admin to approve!"
-      return redirect_back fallback_location:root_path  
-    end
-    
-    def message_and_redirect_if_post_is_rejected 
-      flash[:info] = "This post was rejected by admin!"
-      return redirect_back fallback_location:root_path  
-    end
-
-    def message_and_redirect_if_user_not_admin
-      flash[:info] = "Only admin can approve post!"
-      return redirect_back fallback_location:root_path  
-    end
-
-    # kiểm tra người change status có phải là admin hay không 
-    def check_admin_to_change_status 
-      return message_and_redirect_if_user_not_admin unless current_user || current_user.admin?
     end
 end

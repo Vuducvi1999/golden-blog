@@ -26,7 +26,6 @@ Rails.application.routes.draw do
         post 'approve_post'
         post 'reject_post'
         post 'like'
-        post 'dislike'
         post 'rate'
         post 'read_count'
       end

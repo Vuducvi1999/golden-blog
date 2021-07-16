@@ -38,3 +38,4 @@ en:
         was_rejected_by_admin: "This post was rejected by admin!"
         deny_approve_action: "Only admin can approve post!"
         deny_reject_action: "Only admin can reject post!"
+        read_notification: "Only user can read notification"
