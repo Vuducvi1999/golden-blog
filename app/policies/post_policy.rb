@@ -9,7 +9,7 @@ class PostPolicy < ApplicationPolicy
     # nếu không phải admin hoặc không phải author 
     unless user&.admin? || user&.is_author_of?(record)
       if record.new_created?
-        return raise Pundit::NotAuthorizedError.new 'user.waiting_to_approve'
+      return raise Pundit::NotAuthorizedError.new 'user.waiting_to_approve'
       elsif record.rejected?
         return raise Pundit::NotAuthorizedError.new 'user.was_rejected_by_admin'
       end

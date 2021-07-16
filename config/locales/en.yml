@@ -39,3 +39,4 @@ en:
         deny_approve_action: "Only admin can approve post!"
         deny_reject_action: "Only admin can reject post!"
         read_notification: "Only user can read notification"
+        admin_access: "Only admin can access"

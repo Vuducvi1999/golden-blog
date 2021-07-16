@@ -1,13 +1,13 @@
-class Dashboard::DashboardController < Dashboard::BaseController
-  skip_before_action :check_admin_account, only: %i[index]
+class Dashboard::DashboardController < ApplicationController
   require 'will_paginate/array'
 
   def index
   end
 
   def manage_posts
-    posts_group = Post.all.order(updated_at: :desc).group_by(&:status)
+    authorize :manage, :check_admin?, policy_class: ManagePolicy
 
+    posts_group = Post.all.order(updated_at: :desc).group_by(&:status)
     new_posts = posts_group['new_created'] ||= []
     approved_posts = posts_group['approved'] ||= []
     rejected_posts = posts_group['rejected'] ||= []

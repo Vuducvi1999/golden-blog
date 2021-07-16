@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   include Pundit
   rescue_from Pundit::NotAuthorizedError do |e| 
     flash[:alert] = I18n.t "#{e.message}", scope: "pundit.errors", default: :default
-    redirect_to(about_path)
+    redirect_to(request.referrer || root_path)
   end
 
   before_action :authenticate_user!

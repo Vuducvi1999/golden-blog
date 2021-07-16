@@ -7,7 +7,7 @@ class Dashboard::CommentsController < ApplicationController
     @comment.user = current_user
     
     unless @comment.save 
-    flash[:alert] = "Fail to add comment"
+    flash[:alert] = "Fail to add comment" 
     end
 
     if @post.user.id != current_user.id 

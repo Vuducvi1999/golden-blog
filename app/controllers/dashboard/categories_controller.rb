@@ -1,4 +1,5 @@
-class Dashboard::CategoriesController < Dashboard::BaseController
+class Dashboard::CategoriesController < ApplicationController
+  before_action :check_admin
   before_action :set_category, only: %i[ edit update destroy ]
 
   def index
@@ -39,6 +40,10 @@ class Dashboard::CategoriesController < Dashboard::BaseController
     # Use callbacks to share common setup or constraints between actions.
     def set_category
       @category = Category.find(params[:id])
+    end
+
+    def check_admin
+      authorize :manage, :check_admin?, policy_class: ManagePolicy
     end
 
     # Only allow a list of trusted parameters through.
