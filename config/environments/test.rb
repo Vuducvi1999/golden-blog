@@ -5,13 +5,8 @@ require "active_support/core_ext/integer/time"
 # your test database is "scratch space" for the test suite and is wiped
 # and recreated between test runs. Don't rely on the data there!
 
-RSpec.configure do |config|
-  config.include Devise::Test::ControllerHelpers, type: :controller
-end
-
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
-  config.include Devise::Test::ControllerHelpers, type: :controller
   config.cache_classes = true
 
   # Do not eager load code on boot. This avoids loading your whole application

@@ -14,7 +14,7 @@
         = render "devise/shared/error_messages", resource: resource
         .mb-3
           = f.label :email, class:'mb-2'
-          br
+          br 
           = f.email_field :email, autofocus: true, autocomplete: "email", value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email),\
           class:'form-control'
         .mb-3.d-grid.gap-1

@@ -15,6 +15,7 @@ class Dashboard::PostsController < ApplicationController
     @comment_paginate = @post.comments.order(created_at: :desc)
     @related_posts = @post.related_posts
     @more_from_author_posts = @post.more_from_author_posts
+    byebug
 
     respond_to do |format|
       format.html

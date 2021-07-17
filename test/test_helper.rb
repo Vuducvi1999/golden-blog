@@ -13,5 +13,3 @@ class ActiveSupport::TestCase
   
 
 end
-
-config.include Devise::Test::ControllerHelpers, type: :controller

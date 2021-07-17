@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   add_flash_types :info
 
   def after_sign_in_path_for(resource) 
-    :root 
+    root_path
   end
 
   def self.render_with_signed_in_user(user, *args)
