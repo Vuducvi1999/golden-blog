@@ -10,11 +10,10 @@ class Post < ApplicationRecord
   belongs_to :user
   has_many :post_categories, dependent: :destroy
   has_many :categories, through: :post_categories, dependent: :destroy
-  has_many :comments, dependent: :destroy
+  has_many :comments, as: :commentable, dependent: :destroy
+  has_many :likes, as: :likeable, dependent: :destroy 
   has_many :rates, dependent: :destroy
   has_many :visits, dependent: :destroy
-
-  acts_as_votable 
 
   enum status: {
     new_created: 0,
@@ -22,7 +21,7 @@ class Post < ApplicationRecord
     rejected: 2
   }
   
-  scope :all_includes, -> { approved.includes(:categories, :post_categories, :comments, :rates, :visits) }
+  scope :all_includes, -> { approved.includes(:categories, :post_categories, :rates, :visits, :comments) }
 
   scope :filter_by_categories, ->(categories_id){
     where "post_categories.category_id in (#{categories_id.join(',')})"
@@ -41,7 +40,7 @@ class Post < ApplicationRecord
     .sort_by {|post| post.created_at}.reverse 
   }
   scope :most_reading, ->{
-    sort_by {|post| post.read_count }.reverse 
+    sort_by {|post| post.read_count}.reverse 
     .sort_by {|post| post.created_at}.reverse 
   }
   scope :weekly_hostest, ->{
@@ -56,10 +55,17 @@ class Post < ApplicationRecord
     where(visits: {created_at: DateTime.now.beginning_of_year..DateTime.now.end_of_year}) 
     .sort_by {|post| post.yearly_read_count }.reverse 
   }
+  
+  def number_comments
+    count = self.comments.includes(:comments).count
+    self.comments.each do |item|
+      count += item.comments_count
+    end
+    count 
+  end
 
   def average_score
-    result = self.rates.average(:score)
-    result ||= 0 
+    self.rates.average(:score) || 0 
   end 
 
   def read_count
@@ -94,7 +100,7 @@ class Post < ApplicationRecord
   end
 
   def more_from_author_posts
-    self.user.posts.approved.sort_by {|post| post.read_count}.reverse[0..2]
+    self.user.posts.approved.sort_by {|post| post.read_count}.reverse[0..2] 
   end
   
   def reading_time

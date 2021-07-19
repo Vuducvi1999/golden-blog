@@ -26,3 +26,11 @@ ActiveStorage.start()
 require("trix")
 require("@rails/actiontext")
 
+
+document.addEventListener('turbolinks:load', () => {
+  let needTags = document.querySelectorAll('figcaption.attachment__caption')
+  needTags.forEach(item=>{
+      item.classList.add('caption','text-muted')
+      item.classList.remove('attachment__caption')
+  })
+})

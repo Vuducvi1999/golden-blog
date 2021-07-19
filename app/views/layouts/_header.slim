@@ -3,7 +3,7 @@
 - else 
   - add_classes = ''
 
-nav#mainNav.navbar.navbar-expand-lg.border-0 class='#{add_classes}'
+nav#mainNav.navbar.navbar-expand-lg.border-0.position-fixed class='#{add_classes}'
   .container.mt-0.px-4.px-lg-5
     = link_to root_path, class:'navbar-brand ' do
       | GoldenOld Blog
@@ -13,37 +13,64 @@ nav#mainNav.navbar.navbar-expand-lg.border-0 class='#{add_classes}'
     #navbarResponsive.collapse.navbar-collapse
       ul.navbar-nav.ms-auto.py-4.py-lg-0  style="position: relative"
         li.nav-item
-          a class='nav-link px-lg-3 py-3 py-lg-4 cursor-pointer' data-bs-toggle="modal" data-bs-target="#search-modal"
+          a class='nav-link px-lg-3 py-3 py-lg-3 cursor-pointer' data-bs-toggle="modal" data-bs-target="#search-modal"
             | Search
+        - if current_user
+          li.nav-item.dropdown
+            a#header-notifications.dropdown-toggle.nav-link.px-lg-3.py-3.py-lg-3 href="#" data-bs-toggle="dropdown"
+              span.position-relative 
+                | Notifications
+                .position-absolute.translate-middle.rounded-pill.badge.bg-primary[
+                  class="#{current_user.received_notifications.unread.count != 0 ? '' : 'd-none'}" 
+                  style='top:-40%;'
+                ]
+                  | #{current_user.received_notifications.unread.count} 
+            ul class="dropdown-menu border-0 notification-dropdown py-2" aria-labelledby="header-notifications"
+              - current_user.received_notifications.ordered.each_with_index do |item, index|                   
+                li.px-2 id="notification_id_#{item.id}" 
+                  - message_split = item.message.split(':', 2)
+                  = link_to dashboard_notification_path(item.recipient.id, item), method:'post' do
+                    .row.m-0.py-2 style="font-size: 0.9rem"
+                      .avatar.col-2.p-0.ps-2
+                        img.img-fluid src="#{url_for(item.sender.get_avatar)}" 
+                      .message.col-10.p-0.ps-3.d-flex.align-items-baseline 
+                        div style='pointer-events: none;' 
+                          span.me-1.fw-bold #{item.sender.username}
+                          | #{message_split[0]} 
+                          span.me-1.fw-bold.notification-message #{message_split[1]}
+                          .text-primary.fw-bold style='font-size:0.7rem' 
+                            | #{time_ago_in_words item.created_at} ago
+                        - unless item.readed
+                          i.fas.fa-circle.text-primary.px-2 style='font-size: 0.8rem'
         li.nav-item
-          = link_to about_path, class:'nav-link px-lg-3 py-3 py-lg-4' do 
+          = link_to about_path, class:'nav-link px-lg-3 py-3 py-lg-3' do 
             | About
         li.nav-item
-          = link_to contact_path, class:'nav-link px-lg-3 py-3 py-lg-4' do 
+          = link_to contact_path, class:'nav-link px-lg-3 py-3 py-lg-3' do 
             | Contact
         li.nav-item
-          = link_to privacy_path, class:'nav-link px-lg-3 py-3 py-lg-4' do 
+          = link_to privacy_path, class:'nav-link px-lg-3 py-3 py-lg-3' do 
             | Privacy
         li.nav-item.dropdown
-          a#header-account-menu.dropdown-toggle.nav-link.px-lg-3.py-3.py-lg-4 href="#" data-bs-toggle="dropdown"
+          a#header-account-menu.dropdown-toggle.nav-link.px-lg-3.py-3.py-lg-3 href="#" data-bs-toggle="dropdown"
             - if current_user.present?
               |  #{current_user.username}
             - else 
               |  Hello guest 
           - if current_user.present?
-            ul class="dropdown-menu bg-custom-transparent border-0 user-dropdown-menu " aria-labelledby="header-account-menu"
+            ul class="dropdown-menu  border-0 user-dropdown-menu " aria-labelledby="header-account-menu"
               li
-                = link_to  "Dashboard", dashboard_path, class:'dropdown-item '
+                = link_to  "DASHBOARD", dashboard_path, class:'dropdown-item '
               li 
-                = link_to  "Profile", edit_user_registration_path, class:'dropdown-item '
+                = link_to  "PROFILE", edit_user_registration_path, class:'dropdown-item '
               li
-                = link_to  "signout", destroy_user_session_path, method:'delete', class:'dropdown-item '
+                = link_to  "SIGNOUT", destroy_user_session_path, method:'delete', class:'dropdown-item '
           - else 
-            ul class="dropdown-menu bg-custom-transparent border-0 guest-dropdown-menu " aria-labelledby="header-account-menu"
+            ul class="dropdown-menu  border-0 guest-dropdown-menu " aria-labelledby="header-account-menu"
               li
-                = link_to  "Log in", new_user_session_path, class:'dropdown-item '
+                = link_to  "LOG IN", new_user_session_path, class:'dropdown-item '
               li 
-                = link_to  "Sign up", new_user_registration_path, class:'dropdown-item '
+                = link_to  "SIGN UP", new_user_registration_path, class:'dropdown-item '
 
 = form_with url: search_dashboard_posts_path, method:'get', class:'modal content-collapse-search ', id:'search-modal' do |f|
   .modal-dialog.modal-dialog-scrollable.modal-lg 

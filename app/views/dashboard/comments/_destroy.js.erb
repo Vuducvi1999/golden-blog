@@ -1,9 +1,12 @@
-$(`#comment_id_${<%= comment.id%>}`).remove()
-$("#count-number-comments").html("<%= @post.comments.length %> comments")
-$("#comments_count_post").html("<%= @post.comments.length %>")
-if(<%= @post.comments.length%> === 0)
+
+
+$(`#comment_id_${<%= @comment.id%>}`).remove()
+$("#count-number-comments").html("<%= @post.number_comments %> comments")
+$("#comments_count_post").html("<%= @post.number_comments %>")
+if(<%= @post.number_comments%> === 0)
   $("#comments-list").html(
     `<i class='my-3' id='message-no-comment' style="font-size:1.1rem"> 
       Haven't had comments! Be the first user comment.
     </i>`
   )
+

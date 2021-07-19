@@ -18,6 +18,7 @@
 @import "./home.scss";
 @import "./posts.scss";
 @import "./dashboard.scss";
+@import "./notification.scss";
 @import "social-share-button";
 
 .sign-in-with {
@@ -148,31 +149,51 @@
     width: 2rem;
     margin-right: 10px;
   }
-  & .post-username{
+  & .post-username {
     font-weight: bold;
   }
 
-  & .post-created{
+  & .post-created {
     font-size: 0.9rem;
   }
 }
 
-.bg-lightblue{
+.bg-lightblue {
   background: lightblue !important;
 }
 
-.bg-facebook{
-  background: #3B5998 !important;
+.bg-facebook {
+  background: #3b5998 !important;
 }
 
-.bg-light-1{
+.bg-light-1 {
   background: #eef0f1 !important;
 }
 
-.bg-light-2{
+.bg-light-2 {
   background: #f9fafa !important;
 }
 
-.container{
-  margin-top: 3rem;
+.container {
+  margin-top: 5rem;
+}
+
+.text-transform-none {
+  text-transform: none !important;
+}
+
+.hover-lightgrey:hover {
+  background: #f6f6f6;
+}
+
+.hover-text-none:hover {
+  color: #000;
+}
+
+.bg-lightdanger{
+  background: #FBE7E7;
+}
+
+.pointer-events-none{
+  pointer-events: none;
 }

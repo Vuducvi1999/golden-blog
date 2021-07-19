@@ -1,0 +1,19 @@
+
+
+var toggleStyleCommentEdit = ()=>{
+  $(`#comment_content_<%=comment.id%>`).toggleClass('d-none')
+  .next().toggleClass('d-none').toggleClass('d-block')
+  .next().toggleClass('d-none').toggleClass('d-block')
+}
+
+$(`#edit_click_id_<%=comment.id%>`).click(toggleStyleCommentEdit)
+$(`#cancel_edit_id_<%=comment.id%>`).click(toggleStyleCommentEdit)
+
+var toggleStyleCommentReply = ()=>{
+  $(`#comment_content_<%=comment.id%>`)
+  .next().next().next()
+  .toggleClass('d-none').toggleClass('d-block')
+}
+
+$(`#reply_click_id_<%=comment.id%>`).click(toggleStyleCommentReply)
+$(`#cancel_reply_id_<%=comment.id%>`).click(toggleStyleCommentReply)

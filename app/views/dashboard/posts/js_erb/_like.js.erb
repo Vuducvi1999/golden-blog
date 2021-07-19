@@ -1,3 +1,2 @@
-$("#score-vote").text(`<%= @post.weighted_score%>`)
-$('#like-vote i').toggleClass('text-success')
-$('#unlike-vote i').removeClass('text-danger')
+$("#score-vote").text(`<%= @post.likes.count%>`)
+$('#like-vote i').toggleClass('fas fa-heart text-danger').toggleClass('far fa-heart')

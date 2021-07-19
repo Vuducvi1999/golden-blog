@@ -2,27 +2,25 @@
 class Dashboard::PostsController < ApplicationController
   before_action :authenticate_user!, except: %i[show search]
   before_action :set_post, only: %i[show edit update destroy approve_post reject_post like dislike rate read_count]
-  before_action :check_post_status, only: %i[show]
-  before_action :check_admin_to_change_status, only: %i[approve_post reject_post]
   skip_before_action :verify_authenticity_token, :authenticate_user!, only: %i[read_count]
-
   
   include Rails.application.routes.url_helpers
-  
 
   def index
     @posts = current_user.posts.order("updated_at desc")
   end
 
   def show
-    @comment_paginate = @post.comments.paginate(page: params[:page], per_page: 10).order(updated_at: :desc)
+    authorize @post 
+    @comment_paginate = @post.comments.order(created_at: :desc)
     @related_posts = @post.related_posts
     @more_from_author_posts = @post.more_from_author_posts
+    byebug
 
     respond_to do |format|
       format.html
       format.js {render partial:'dashboard/posts/js_erb/show.js.erb'}
-    end
+    end 
   end
 
   def new
@@ -77,6 +75,7 @@ class Dashboard::PostsController < ApplicationController
 
   # Cho phép admin approved
   def approve_post
+    authorize @post
     @post.approved!
     @post.status_change_at = DateTime.now 
     
@@ -101,6 +100,7 @@ class Dashboard::PostsController < ApplicationController
 
   # Cho phép admin rejected
   def reject_post
+    authorize @post
     @post.rejected!
     @post.status_change_at = DateTime.now 
 
@@ -124,40 +124,53 @@ class Dashboard::PostsController < ApplicationController
     @posts = categories_id.empty? ? @posts : @posts.filter_by_categories(categories_id)
   end
 
-  # update read count
+  # update read count by visitors
   def read_count
     @post.visits.create
   end
 
   # toogle like
   def like 
-    if current_user.liked? @post
-      @post.unliked_by current_user
-      puts current_user.liked? @post 
-      puts "like"
+    like = current_user.get_likeable @post 
+    if like 
+      if @post.user.id != current_user.id
+        notification = Notification.find_by notifiable: like
+        ActionCable.server.broadcast "notifications:#{@post.user.id}", {
+          action:'remove', 
+          notification:notification
+        } 
+        notification.destroy 
+      end
+      like.destroy
     else 
-      @post.liked_by current_user
-      puts current_user.liked? @post
-      puts "unlikes"
+      created_like = current_user.likes.create(likeable: @post)
+      if @post.user.id != current_user.id
+        notification = Notification.create(
+          notifiable: created_like,
+          message:"like your post: #{@post.title}", 
+          link: post_path(@post),
+          sender: current_user,
+          recipient: @post.user 
+        )
+        html_header = ApplicationController.render(
+          partial: 'shared/notification_item',
+          locals: { notification: notification }
+        )
+        html_toast = ApplicationController.render(
+          partial: 'shared/notification_toast',
+          locals: {notification: notification}
+        )
+        ActionCable.server.broadcast "notifications:#{@post.user.id}", {
+          action:'add', 
+          html_header:html_header, 
+          html_toast:html_toast,
+          notification:notification
+        } 
+      end
     end
     render partial:"dashboard/posts/js_erb/like.js.erb" 
   end
   
-  # toogle unlike
-  def dislike
-    if current_user.disliked? @post 
-      @post.undisliked_by current_user
-      puts current_user.disliked? @post 
-      puts "undislike"
-    else 
-      @post.disliked_by current_user
-      puts current_user.disliked? @post
-      puts "dislike"
-    end
-    render partial:"dashboard/posts/js_erb/unlike.js.erb"
-  end
-  
-  # rate
   def rate 
     score = params[:score]
     unless current_user.get_rate_with @post
@@ -183,44 +196,5 @@ class Dashboard::PostsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def post_params
       params.require(:post).permit(:title,:content,:thumbnail,:short_description)
-    end
-    
-    # kiểm tra status post và redirect nếu truy cập không hợp lệ
-    def check_post_status
-      @post = Post.find_by id:params[:id]
-
-      if @post.new_created?
-        return condition_post_if_status_is 'new'
-      elsif @post.rejected?
-        return condition_post_if_status_is 'rejected'
-      end
-    end
-
-    def condition_post_if_status_is status
-      # nếu người dùng đã đăng nhập và là tác giả hoặc admin thì tiếp tục process
-      return if current_user&.admin? || current_user&.is_author_of?(@post)
-      # nếu không thì redirect và alert
-      return status=="new" ? message_and_redirect_if_post_is_new : message_and_redirect_if_post_is_rejected
-    end
-
-    def message_and_redirect_if_post_is_new
-      flash[:info] = "This post is being process by admin to approve!"
-      return redirect_back fallback_location:root_path  
-    end
-    
-    def message_and_redirect_if_post_is_rejected
-      flash[:info] = "This post was rejected by admin!"
-      return redirect_back fallback_location:root_path  
-    end
-
-    def message_and_redirect_if_user_not_admin
-      flash[:info] = "Only admin can approve post!"
-      return redirect_back fallback_location:root_path  
-    end
-
-    # kiểm tra người change status có phải là admin hay không 
-    def check_admin_to_change_status
-      @post = Post.find_by id:params[:id]
-      return message_and_redirect_if_user_not_admin unless current_user || current_user.admin?
     end
 end

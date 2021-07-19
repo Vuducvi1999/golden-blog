@@ -1,0 +1,25 @@
+
+
+
+- message_split = notification.message.split(':', 2) 
+
+.notification.px-3.py-2.mb-2 id="notification_toast_id_#{notification.id}" style="transition: 0.3s ease;"
+  .notification-header.pb-2 
+    p.m-0.fw-bold New notification  
+    i.close-btn id="close_notification_id_#{notification.id}" &#x00d7;
+  .notification-body.row 
+    .avatar.col-3.pe-3 
+      img.img-fluid src="#{url_for(notification.sender.get_avatar)}" 
+    .message.col-9.p-0 
+      = link_to dashboard_notification_path(notification.recipient.id, notification), method:'post' do 
+        span.me-1.fw-bold #{notification.sender.username}
+        | #{message_split[0]} 
+        span.me-1.fw-bold.notification-message #{message_split[1]}
+      .text-primary style='font-size:0.7rem' 
+        | #{time_ago_in_words notification.created_at} ago
+
+script 
+  | setTimeout(()=>$(`#notification_toast_id_#{notification.id}`).fadeOut(500), 5000);
+  | $(`#close_notification_id_#{notification.id}`).click(()=>{
+  |    $(`#notification_toast_id_#{notification.id}`).fadeOut(500); 
+  | })

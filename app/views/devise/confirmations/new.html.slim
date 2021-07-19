@@ -7,14 +7,14 @@
 - site_headings = {h1: "Confirmation instructions", subheading: "Didn't receive confirmation instructions?"}
 = render partial:'layouts/banner', locals:{banner_path:banner_path, site_headings:site_headings}
 
-.container 
+.container.mt-5
   .row
     .col-6.offset-3.mb-5
       = form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f|
         = render "devise/shared/error_messages", resource: resource
         .mb-3
           = f.label :email, class:'mb-2'
-          br
+          br 
           = f.email_field :email, autofocus: true, autocomplete: "email", value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email),\
           class:'form-control'
         .mb-3.d-grid.gap-1
