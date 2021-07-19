@@ -33,13 +33,14 @@ class Dashboard::PostsController < Dashboard::BaseController
   def create
     @post = current_user.posts.build(post_params)
     # thêm categories vào post
-    categories_id = params[:post][:categories_id].select{|item| item.present?}
+    categories_id = params[:post][:categories_id].select{|item| item.present?} 
     categories = Category.where(id:categories_id)
     @post.categories = categories 
     
     if @post.save      
       @post.update(post_facebook?: true) if params[:post_facebook]
-
+      PostMailer.create_post(current_user, @post).deliver_later
+      
       redirect_to @post, notice: "Post was successfully created." 
     else
       render :new, status: :unprocessable_entity 
