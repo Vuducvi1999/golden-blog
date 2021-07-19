@@ -1,4 +1,4 @@
-class Dashboard::NotificationsController < ApplicationController
+class Dashboard::NotificationsController < Dashboard::BaseController
   before_action :set_notification
 
   def readed

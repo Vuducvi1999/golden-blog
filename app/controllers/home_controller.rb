@@ -8,7 +8,7 @@ class HomeController < ApplicationController
     @most_reading = post_all.most_reading
     @weekly_hostest = post_all.weekly_hostest
     @monthly_hostest = post_all.monthly_hostest
-    @yearly_hostest = post_all.yearly_hostest
+    @yearly_hostest = post_all.yearly_hostest 
   end
 
   def contact

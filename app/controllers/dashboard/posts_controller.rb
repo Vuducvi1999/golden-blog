@@ -1,6 +1,7 @@
 
-class Dashboard::PostsController < ApplicationController
+class Dashboard::PostsController < Dashboard::BaseController
   before_action :authenticate_user!, except: %i[show search]
+  before_action :check_user, except: %i[show search]
   before_action :set_post, only: %i[show edit update destroy approve_post reject_post like dislike rate read_count]
   skip_before_action :verify_authenticity_token, :authenticate_user!, only: %i[read_count]
   
@@ -15,7 +16,6 @@ class Dashboard::PostsController < ApplicationController
     @comment_paginate = @post.comments.order(created_at: :desc)
     @related_posts = @post.related_posts
     @more_from_author_posts = @post.more_from_author_posts
-    byebug
 
     respond_to do |format|
       format.html

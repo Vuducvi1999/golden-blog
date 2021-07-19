@@ -1,4 +1,4 @@
-class Dashboard::CategoriesController < ApplicationController
+class Dashboard::CategoriesController < Dashboard::BaseController
   before_action :check_admin
   before_action :set_category, only: %i[ edit update destroy ]
 
