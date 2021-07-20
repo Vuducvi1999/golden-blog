@@ -69,3 +69,5 @@ gem 'koala'
 gem 'redis'
 gem 'pundit', git:'https://github.com/varvet/pundit'
 gem 'sidekiq'
+gem 'premailer-rails'
+

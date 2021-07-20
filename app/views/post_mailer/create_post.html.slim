@@ -1,22 +1,17 @@
 
-doctype html
-html
-  head
-    = stylesheet_pack_tag 'application'
-    link[href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css"]
-    link[href="https://fonts.googleapis.com/css?family=Open Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css"]
-  body
-    style
-      |  *{font-size: 0.5rem !important;} 
 
 
-      
+    = debug(stylesheet_pack_tag 'mailer' , 'data-turbolinks-track': 'reload')
+
+    = debug stylesheet_pack_tag 'mailer', media: 'all', 'data-turbolinks-track': 'reload'
+    / = debug stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
+    = debug stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'  
     .container.mt-3 
       .row.pb-5
         h1.mb-3 You have created a post 
         .col-4 
           img.img-fluid src="#{url_for(@post.thumbnail)}"
-          .d-flex.mt-3.align-items-baseline.font-monospace style="font-size: 1rem"
+          .d-flex.mt-3.align-items-baseline.font-monospace style="font-size: 1rem" 
             i class="fas fa-tags me-2"
             - @post.categories.pluck(:id,:name).each do |item|
                 span class='me-2 badge bg-secondary badge-category fw-bold' 
@@ -26,7 +21,7 @@ html
             h3 #{@post.title}
             h4 #{@post.short_description}
             .content-post-mailer
-              | #{@post.content.to_s.html_safe}
+              | #{@post.content.to_s.html_safe} 
             = link_to  post_url(@post), class:'btn-outline-primary btn' do 
               | Go to your post 
               i class="fas fa-long-arrow-alt-right"
