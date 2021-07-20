@@ -4,7 +4,8 @@ class PostMailer < ApplicationMailer
     @post = post 
     mail(
       to: @user.email,
-      subject:  "Created Post: #{@post.title}"
+      subject:  "Created Post: #{@post.title}",
+      content_type: "text/html"
     )
   end
 end
