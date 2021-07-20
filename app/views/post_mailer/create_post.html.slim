@@ -1,28 +1,23 @@
 
 
 
-    = debug(stylesheet_pack_tag 'mailer' , 'data-turbolinks-track': 'reload')
-
-    = debug stylesheet_pack_tag 'mailer', media: 'all', 'data-turbolinks-track': 'reload'
-    / = debug stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
-    = debug stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'  
-    .container.mt-3 
-      .row.pb-5
-        h1.mb-3 You have created a post 
-        .col-4 
-          img.img-fluid src="#{url_for(@post.thumbnail)}"
-          .d-flex.mt-3.align-items-baseline.font-monospace style="font-size: 1rem" 
-            i class="fas fa-tags me-2"
-            - @post.categories.pluck(:id,:name).each do |item|
-                span class='me-2 badge bg-secondary badge-category fw-bold' 
-                  | #{item[1]}
-        .col-8
-          .my-3
-            h3 #{@post.title}
-            h4 #{@post.short_description}
-            .content-post-mailer
-              | #{@post.content.to_s.html_safe} 
-            = link_to  post_url(@post), class:'btn-outline-primary btn' do 
-              | Go to your post 
-              i class="fas fa-long-arrow-alt-right"
+.container.mt-3 
+  .row.pb-5
+    h1.mb-3 You have created a post 
+    .col-4 
+      img.img-fluid src="#{url_for(@post.thumbnail)}"
+      .d-flex.mt-3.align-items-baseline.font-monospace style="font-size: 1rem" 
+        i class="fas fa-tags me-2"
+        - @post.categories.pluck(:id,:name).each do |item|
+            span class='me-2 badge bg-secondary badge-category fw-bold' 
+              | #{item[1]}
+    .col-8 
+      .my-3
+        h3 #{@post.title}
+        h4 #{@post.short_description}
+        .content-post-mailer
+          | #{@post.content.to_s.html_safe} 
+        = link_to post_url(@post), class:'btn-outline-primary btn' do 
+          | Go to your post 
+          i class="fas fa-long-arrow-alt-right"
 
