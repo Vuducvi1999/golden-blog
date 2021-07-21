@@ -1,0 +1,30 @@
+
+
+.container.mt-3 
+  .row 
+    .col-8.offset-2
+      .alert.alert-success.border.border-success.border-3 
+        h6.text-dark Your post has been approved
+        h5.text-dark.mt-3 Post info:
+        table.table.table-sm.table-borderless.text-dark.m-0 style="font-family: sans-serif; font-size: 1rem" 
+          tbody 
+            tr 
+              th.alert-success.fst-italic Title 
+              th.alert-success #{@post.title} 
+            tr 
+              th.alert-success.fst-italic Short Desciption 
+              th.alert-success #{@post.short_description}
+            tr 
+              th.alert-success.fst-italic Created at 
+              th.alert-success #{@post.created_at.strftime("%m/%d/%Y, %H:%M")}
+            tr 
+              th.alert-danger.fst-italic Approved at 
+              th.alert-danger #{@post.updated_at.strftime("%m/%d/%Y, %H:%M")}
+            tr 
+              th.alert-success.fst-italic Post facebook 
+              th.alert-success #{@post.post_facebook?} 
+            tr 
+              th.alert-success.fst-italic Categories 
+              th.alert-success #{@post.categories.pluck(:name).join(', ')}
+
+

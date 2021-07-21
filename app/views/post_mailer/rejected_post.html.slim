@@ -1,0 +1,30 @@
+
+
+.container.mt-3 
+  .row 
+    .col-8.offset-2
+      .alert.alert-danger.border.border-danger.border-3 
+        h6.text-dark Your post has been rejected
+        h5.text-dark.mt-3 Post info:
+        table.table.table-sm.table-borderless.text-dark.m-0 style="font-family: sans-serif; font-size: 1rem" 
+          tbody 
+            tr 
+              th.alert-danger.fst-italic Title 
+              th.alert-danger #{@post.title} 
+            tr 
+              th.alert-danger.fst-italic Short Desciption 
+              th.alert-danger #{@post.short_description}
+            tr 
+              th.alert-danger.fst-italic Created at 
+              th.alert-danger #{@post.created_at.strftime("%m/%d/%Y, %H:%M")}
+            tr 
+              th.alert-danger.fst-italic Rejected at 
+              th.alert-danger #{@post.updated_at.strftime("%m/%d/%Y, %H:%M")}
+            tr 
+              th.alert-danger.fst-italic Post facebook 
+              th.alert-danger #{@post.post_facebook?} 
+            tr 
+              th.alert-danger.fst-italic Categories 
+              th.alert-danger #{@post.categories.pluck(:name).join(', ')}
+
+

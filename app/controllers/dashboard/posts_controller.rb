@@ -81,6 +81,7 @@ class Dashboard::PostsController < Dashboard::BaseController
     @post.status_change_at = DateTime.now 
     
     if @post.save 
+      PostMailer.approved_post(current_user, @post).deliver_later
       respond_to do |format|
         format.html
         format.js { render partial:"dashboard/posts/js_erb/approve_post.js.erb" }
@@ -106,6 +107,7 @@ class Dashboard::PostsController < Dashboard::BaseController
     @post.status_change_at = DateTime.now 
 
     if @post.save 
+      PostMailer.rejected_post(current_user, @post).deliver_later
       respond_to do |format|
         format.html
         format.js { render partial:"dashboard/posts/js_erb/reject_post.js.erb" }
