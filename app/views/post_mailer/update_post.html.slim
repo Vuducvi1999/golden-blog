@@ -15,6 +15,7 @@
               | #{item[1]}
       div style="display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; margin-bottom: 1rem;"
         | #{@post.content.to_s.html_safe} 
+        
       = link_to post_url(@post), class:'btn-outline-primary btn' do 
         | Go to your post 
         i class="fas fa-long-arrow-alt-right"

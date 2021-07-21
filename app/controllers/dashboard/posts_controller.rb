@@ -54,6 +54,8 @@ class Dashboard::PostsController < Dashboard::BaseController
     @post.categories = categories
 
     if @post.update(post_params)
+      PostMailer.update_post(current_user, @post).deliver_later
+
       if @post.approved? && @post.post_facebook_id != ''
         Graph.put_object(@post.post_facebook_id, '', {
           message: @post.text_content
@@ -70,7 +72,9 @@ class Dashboard::PostsController < Dashboard::BaseController
     unless @post.post_facebook_id.empty?
       Graph.delete_object @post.post_facebook_id
     end
+    PostMailer.delete_post(current_user, @post).deliver_later 
     @post.destroy
+    
     redirect_to dashboard_posts_path, notice: "Post was successfully destroyed." 
   end
 

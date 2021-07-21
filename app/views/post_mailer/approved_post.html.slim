@@ -26,5 +26,8 @@
             tr 
               th.alert-success.fst-italic Categories 
               th.alert-success #{@post.categories.pluck(:name).join(', ')}
+        = link_to post_url(@post), class:'btn-outline-primary btn mt-3 px-2 py-1' do 
+          | Go to your post 
+          i class="fas fa-long-arrow-alt-right"
 
 

@@ -27,4 +27,6 @@
               th.alert-danger.fst-italic Categories 
               th.alert-danger #{@post.categories.pluck(:name).join(', ')}
 
-
+        = link_to post_url(@post), class:'btn-outline-primary btn mt-3 px-2 py-1' do 
+          | Go to your post 
+          i class="fas fa-long-arrow-alt-right"
