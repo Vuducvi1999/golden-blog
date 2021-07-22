@@ -14,7 +14,6 @@ import "channels"
 import 'bootstrap'
 import '../stylesheets/application.scss'
 import "@fortawesome/fontawesome-free/css/all"
-import "./social-share-button.js.erb"
 
 global.toastr = require("toastr")
 

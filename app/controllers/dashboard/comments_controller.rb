@@ -1,4 +1,4 @@
-class Dashboard::CommentsController < ApplicationController
+class Dashboard::CommentsController < Dashboard::BaseController
   before_action :set_post 
   before_action :set_comment, only: %i[update destroy like reply]
   
@@ -8,7 +8,7 @@ class Dashboard::CommentsController < ApplicationController
     
     unless @comment.save 
     flash[:alert] = "Fail to add comment" 
-    end
+    end 
 
     if @post.user.id != current_user.id 
       notification = Notification.create(
@@ -136,7 +136,7 @@ class Dashboard::CommentsController < ApplicationController
     end
 
     def comment_params
-      params.require(:comment).permit(:content)
+      params.require(:comment).permit(:content) 
     end
   
 end

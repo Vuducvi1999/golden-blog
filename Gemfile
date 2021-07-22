@@ -68,3 +68,7 @@ gem 'social-share-button'
 gem 'koala'
 gem 'redis'
 gem 'pundit', git:'https://github.com/varvet/pundit'
+gem 'delayed_job_active_record'
+gem 'premailer-rails'
+gem "daemons"
+

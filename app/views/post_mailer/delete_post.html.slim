@@ -1,0 +1,30 @@
+
+
+.container.mt-3 
+  .row 
+    .col-8.offset-2
+      .alert.alert-info.border.border-info.border-3 
+        h6.text-dark Your have deleted a post
+        h5.text-dark.mt-3 Post info:
+        table.table.table-sm.table-borderless.text-dark.m-0 style="font-family: sans-serif; font-size: 1rem" 
+          tbody 
+            tr 
+              th.alert-info.fst-italic Title 
+              th.alert-info #{@post.title} 
+            tr 
+              th.alert-info.fst-italic Short Desciption 
+              th.alert-info #{@post.short_description}
+            tr 
+              th.alert-info.fst-italic Created at 
+              th.alert-info #{@post.created_at.strftime("%m/%d/%Y, %H:%M")}
+            tr 
+              th.alert-info.fst-italic Deleted at 
+              th.alert-info #{@post.updated_at.strftime("%m/%d/%Y, %H:%M")}
+            tr 
+              th.alert-info.fst-italic Post facebook 
+              th.alert-info #{@post.post_facebook?} 
+            tr 
+              th.alert-info.fst-italic Categories 
+              th.alert-info #{@post.categories.pluck(:name).join(', ')}
+
+

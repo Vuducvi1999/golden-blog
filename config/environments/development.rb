@@ -13,6 +13,7 @@ Rails.application.configure do
     authentication:       'plain',
     enable_starttls_auto: true,
   }
+  config.active_job.queue_adapter = :async
 
   # In the development environment your application's code is reloaded any time
   # it changes. This slows down response time but is perfect for development

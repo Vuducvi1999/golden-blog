@@ -1,4 +1,4 @@
-class Dashboard::DashboardController < ApplicationController
+class Dashboard::DashboardController < Dashboard::BaseController
   require 'will_paginate/array'
 
   def index
@@ -7,7 +7,7 @@ class Dashboard::DashboardController < ApplicationController
   def manage_posts
     authorize :manage, :check_admin?, policy_class: ManagePolicy
 
-    posts_group = Post.all.order(updated_at: :desc).group_by(&:status)
+    posts_group = Post.all.order(updated_at: :desc).group_by(&:status) 
     new_posts = posts_group['new_created'] ||= []
     approved_posts = posts_group['approved'] ||= []
     rejected_posts = posts_group['rejected'] ||= []

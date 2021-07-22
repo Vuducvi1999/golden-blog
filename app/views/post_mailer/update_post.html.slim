@@ -1,0 +1,22 @@
+
+
+
+.container.mt-3 
+  .row.pb-5.d-flex
+    h1.mb-3.text-center You have updated a post 
+    .col-8.offset-2  
+      h3 #{@post.title}
+      h4 #{@post.short_description}
+      img.w-100 src="#{url_for(@post.thumbnail)}"
+      .d-flex.mt-3.align-items-baseline.font-monospace style="font-size: 1rem" 
+        i class="fas fa-tags me-2"
+        - @post.categories.pluck(:id,:name).each do |item|
+            span class='me-2 badge bg-secondary badge-category fw-bold' 
+              | #{item[1]}
+      div style="display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; margin-bottom: 1rem;"
+        | #{@post.content.to_s.html_safe} 
+        
+      = link_to post_url(@post), class:'btn-outline-primary btn' do 
+        | Go to your post 
+        i class="fas fa-long-arrow-alt-right"
+

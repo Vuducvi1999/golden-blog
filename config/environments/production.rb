@@ -1,6 +1,6 @@
 require "active_support/core_ext/integer/time"
 
-Rails.application.configure doz
+Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
   config.action_mailer.default_url_options = { :host => 'vuducvi-golden-blog.herokuapp.com' }
@@ -14,6 +14,8 @@ Rails.application.configure doz
     authentication:       'plain',
     enable_starttls_auto: true,
   }
+  config.active_job.queue_adapter = :async
+
 
   # Code is not reloaded between requests.
   config.cache_classes = true

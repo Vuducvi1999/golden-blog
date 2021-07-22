@@ -1,6 +1,7 @@
 
-class Dashboard::PostsController < ApplicationController
+class Dashboard::PostsController < Dashboard::BaseController
   before_action :authenticate_user!, except: %i[show search]
+  before_action :check_user, except: %i[show search]
   before_action :set_post, only: %i[show edit update destroy approve_post reject_post like dislike rate read_count]
   skip_before_action :verify_authenticity_token, :authenticate_user!, only: %i[read_count]
   
@@ -15,7 +16,6 @@ class Dashboard::PostsController < ApplicationController
     @comment_paginate = @post.comments.order(created_at: :desc)
     @related_posts = @post.related_posts
     @more_from_author_posts = @post.more_from_author_posts
-    byebug
 
     respond_to do |format|
       format.html
@@ -33,13 +33,14 @@ class Dashboard::PostsController < ApplicationController
   def create
     @post = current_user.posts.build(post_params)
     # thêm categories vào post
-    categories_id = params[:post][:categories_id].select{|item| item.present?}
+    categories_id = params[:post][:categories_id].select{|item| item.present?} 
     categories = Category.where(id:categories_id)
     @post.categories = categories 
     
     if @post.save      
       @post.update(post_facebook?: true) if params[:post_facebook]
-
+      PostMailer.create_post(current_user, @post).deliver_later
+      
       redirect_to @post, notice: "Post was successfully created." 
     else
       render :new, status: :unprocessable_entity 
@@ -53,6 +54,8 @@ class Dashboard::PostsController < ApplicationController
     @post.categories = categories
 
     if @post.update(post_params)
+      PostMailer.update_post(current_user, @post).deliver_later
+
       if @post.approved? && @post.post_facebook_id != ''
         Graph.put_object(@post.post_facebook_id, '', {
           message: @post.text_content
@@ -69,7 +72,9 @@ class Dashboard::PostsController < ApplicationController
     unless @post.post_facebook_id.empty?
       Graph.delete_object @post.post_facebook_id
     end
+    PostMailer.delete_post(current_user, @post).deliver_later 
     @post.destroy
+    
     redirect_to dashboard_posts_path, notice: "Post was successfully destroyed." 
   end
 
@@ -80,6 +85,7 @@ class Dashboard::PostsController < ApplicationController
     @post.status_change_at = DateTime.now 
     
     if @post.save 
+      PostMailer.approved_post(@post.user, @post).deliver_later
       respond_to do |format|
         format.html
         format.js { render partial:"dashboard/posts/js_erb/approve_post.js.erb" }
@@ -105,6 +111,7 @@ class Dashboard::PostsController < ApplicationController
     @post.status_change_at = DateTime.now 
 
     if @post.save 
+      PostMailer.rejected_post(@post.user, @post).deliver_later
       respond_to do |format|
         format.html
         format.js { render partial:"dashboard/posts/js_erb/reject_post.js.erb" }
