@@ -13,9 +13,6 @@
   meta property="og:image" content="#{root_url[0...-1] + url_for(@post.thumbnail)}"
 
 
-
-
-
 .bg-light-1.pt-3  
   .container.mt-3 
     .row.pb-5 
@@ -62,11 +59,8 @@
             | Share 
           script 
             | document.getElementById('share-facebook-btn').onclick = function() {
-            |  FB.ui({
-            |    display: 'popup',
-            |    method: 'share',
-            |    href: "#{url_for(only_path:false)}",
-            |  }, function(response){});
+            |  window.open("https://www.facebook.com/sharer/sharer.php?u=" + 
+            |   "#{url_for(only_path:false)}", "about", "width=600, height=400, scrollbars=no");
             | }
           #rate-component
             = render partial:"dashboard/posts/rate_form"
