@@ -15,6 +15,7 @@ Rails.application.configure do
     enable_starttls_auto: true,
   }
   config.active_job.queue_adapter = :delayed_job
+  config.secret_key_base = ENV['SECRET_KEY_BASE'] || '123'
 
 
   # Code is not reloaded between requests.
