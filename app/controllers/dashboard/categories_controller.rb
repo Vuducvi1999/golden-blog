@@ -48,7 +48,7 @@ class Dashboard::CategoriesController < Dashboard::BaseController
 
     # Only allow a list of trusted parameters through.
     def category_params
-      params.require(:category).permit(name:'')
+      params.require(:category).permit(:name)
     end
 
 
