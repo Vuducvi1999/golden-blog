@@ -78,7 +78,7 @@ ActiveRecord::Schema.define(version: 2021_07_21_032950) do
     t.datetime "run_at"
     t.datetime "locked_at"
     t.datetime "failed_at"
-    t.string "locked_by" 
+    t.string "locked_by"
     t.string "queue"
     t.datetime "created_at", precision: 6
     t.datetime "updated_at", precision: 6
