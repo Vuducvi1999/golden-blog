@@ -39,7 +39,7 @@ class Dashboard::PostsController < Dashboard::BaseController
     
     if @post.save      
       @post.update(post_facebook?: true) if params[:post_facebook]
-      PostMailer.create_post(current_user, @post).deliver_later
+      PostMailer.create_post(current_user.id, @post.id).deliver_later
       
       redirect_to @post, notice: "Post was successfully created." 
     else
@@ -54,7 +54,7 @@ class Dashboard::PostsController < Dashboard::BaseController
     @post.categories = categories
 
     if @post.update(post_params)
-      PostMailer.update_post(current_user, @post).deliver_later
+      PostMailer.update_post(current_user.id, @post.id).deliver_later
 
       if @post.approved? && @post.post_facebook_id != ''
         Graph.put_object(@post.post_facebook_id, '', {
@@ -72,7 +72,7 @@ class Dashboard::PostsController < Dashboard::BaseController
     unless @post.post_facebook_id.empty?
       Graph.delete_object @post.post_facebook_id
     end
-    PostMailer.delete_post(current_user, @post).deliver_later 
+    PostMailer.delete_post(current_user.id, @post.id).deliver_later 
     @post.destroy
     
     redirect_to dashboard_posts_path, notice: "Post was successfully destroyed." 
@@ -85,7 +85,7 @@ class Dashboard::PostsController < Dashboard::BaseController
     @post.status_change_at = DateTime.now 
     
     if @post.save 
-      PostMailer.approved_post(@post.user, @post).deliver_later
+      PostMailer.approved_post(current_user.id, @post.id).deliver_later
       respond_to do |format|
         format.html
         format.js { render partial:"dashboard/posts/js_erb/approve_post.js.erb" }
@@ -111,7 +111,7 @@ class Dashboard::PostsController < Dashboard::BaseController
     @post.status_change_at = DateTime.now 
 
     if @post.save 
-      PostMailer.rejected_post(@post.user, @post).deliver_later
+      PostMailer.rejected_post(current_user.id, @post.id).deliver_later
       respond_to do |format|
         format.html
         format.js { render partial:"dashboard/posts/js_erb/reject_post.js.erb" }

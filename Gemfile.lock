@@ -93,6 +93,7 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     concurrent-ruby (1.1.9)
+    connection_pool (2.2.5)
     crass (1.0.6)
     css_parser (1.9.0)
       addressable
@@ -155,6 +156,10 @@ GEM
       addressable
       faraday
       json (>= 1.8)
+    launchy (2.5.0)
+      addressable (~> 2.7)
+    letter_opener (1.7.0)
+      launchy (~> 2.2)
     loofah (2.10.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -294,6 +299,10 @@ GEM
       childprocess (>= 0.5, < 4.0)
       rubyzip (>= 1.2.2)
     semantic_range (3.0.0)
+    sidekiq (6.2.2)
+      connection_pool (>= 2.2.2)
+      rack (~> 2.0)
+      redis (>= 4.2.0)
     slim (4.1.0)
       temple (>= 0.7.6, < 0.9)
       tilt (>= 2.0.6, < 2.1)
@@ -361,6 +370,7 @@ DEPENDENCIES
   jbuilder (~> 2.7)
   jquery-rails
   koala
+  letter_opener
   omniauth-facebook
   omniauth-google-oauth2
   omniauth-rails_csrf_protection
@@ -375,6 +385,7 @@ DEPENDENCIES
   sass-rails (>= 6)
   scenic
   selenium-webdriver
+  sidekiq
   slim
   slim-rails
   social-share-button

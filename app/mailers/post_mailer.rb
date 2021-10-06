@@ -1,7 +1,7 @@
 class PostMailer < ApplicationMailer
-  def create_post user, post 
-    @user = user 
-    @post = post 
+  def create_post user_id, post_id 
+    @user = User.find user_id
+    @post = Post.find post_id
     mail(
       to: @user.email,
       subject:  "You have created post - GoldenBlog",
@@ -9,9 +9,9 @@ class PostMailer < ApplicationMailer
     )
   end
 
-  def update_post user, post
-    @user = user 
-    @post = post
+  def update_post user_id, post_id
+    @user = User.find user_id
+    @post = Post.find post_id
     mail(
       to: @user.email,
       subject: "You have updated post - GoldenBlog",
@@ -19,9 +19,9 @@ class PostMailer < ApplicationMailer
     )
   end
 
-  def delete_post user, post
-    @user = user 
-    @post = post
+  def delete_post user_id, post_id
+    @user = User.find user_id
+    @post = Post.find post_id
     mail(
       to: @user.email,
       subject: "You have deteled post - GoldenBlog",
@@ -29,9 +29,9 @@ class PostMailer < ApplicationMailer
     )
   end
 
-  def approved_post user, post
-    @user = user 
-    @post = post
+  def approved_post user_id, post_id
+    @user = User.find user_id
+    @post = Post.find post_id
     mail(
       to: @user.email,
       subject: "Approved post - GoldenBlog",
@@ -39,9 +39,9 @@ class PostMailer < ApplicationMailer
     )
   end
   
-  def rejected_post user, post
-    @user = user 
-    @post = post
+  def rejected_post user_id, post_id
+    @user = User.find user_id
+    @post = Post.find post_id
     mail(
       to: @user.email,
       subject: "Rejected post - GoldenBlog",

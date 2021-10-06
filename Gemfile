@@ -73,3 +73,5 @@ gem 'delayed_job_active_record'
 gem 'premailer-rails'
 gem "daemons"
 gem 'scenic'
+gem 'sidekiq'
+gem 'letter_opener'
