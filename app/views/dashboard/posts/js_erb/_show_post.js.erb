@@ -18,7 +18,7 @@ $( document ).on('turbolinks:load', function() {
   
   lastScrollTop = st;
   
-  let listPostReaded = JSON.parse(sessionStorage.getItem('post_readed')) || [];
+  let listPostReaded = JSON.parse(localStorage.getItem('post_readed')) || [];
 
   if( !listPostReaded.includes(<%= @post.id %>) ) {
     fetch('<%= read_count_dashboard_post_path(@post)%>',{
@@ -32,7 +32,7 @@ $( document ).on('turbolinks:load', function() {
     })
 
     listPostReaded.push(<%= @post.id %>);
-    sessionStorage.setItem('post_readed', JSON.stringify(listPostReaded));
+    localStorage.setItem('post_readed', JSON.stringify(listPostReaded));
   }
   
 })
