@@ -3,7 +3,7 @@ class Dashboard::PostsController < Dashboard::BaseController
   before_action :authenticate_user!, except: %i[show search]
   before_action :check_user, except: %i[show search]
   before_action :set_post, only: %i[show edit update destroy approve_post reject_post like dislike rate read_count]
-  skip_before_action :verify_authenticity_token, :authenticate_user!, only: %i[read_count]
+  skip_before_action :verify_authenticity_token, :authenticate_user!, :check_user, only: %i[read_count]
   
   include Rails.application.routes.url_helpers
 

@@ -37,12 +37,12 @@ class Post < ApplicationRecord
     order('created_at DESC')
   }
   scope :top_rating, ->{
-    sort_by {|post| post.average_score}.reverse 
-    .sort_by {|post| post.created_at}.reverse 
+    sort_by {|post| post.created_at}.reverse 
+    .sort_by {|post| post.average_score}.reverse 
   }
   scope :most_reading, ->{
-    sort_by {|post| post.read_count}.reverse 
-    .sort_by {|post| post.created_at}.reverse 
+    sort_by {|post| post.created_at}.reverse 
+    .sort_by {|post| post.read_count}.reverse 
   }
   scope :weekly_hostest, ->{
     where(visits: {created_at: DateTime.now.beginning_of_week..DateTime.now.end_of_week})

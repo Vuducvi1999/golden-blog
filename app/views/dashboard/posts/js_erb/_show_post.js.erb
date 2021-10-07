@@ -21,18 +21,21 @@ $( document ).on('turbolinks:load', function() {
   let listPostReaded = JSON.parse(localStorage.getItem('post_readed')) || [];
 
   if( !listPostReaded.includes(<%= @post.id %>) ) {
-    fetch('<%= read_count_dashboard_post_path(@post)%>',{
-      method: 'POST'
-    })
-    .then(()=> {
+    $.ajax({
+      url:'<%= read_count_dashboard_post_path(@post)%>',
+      type: "POST",
+      success:function(result){
         $('#read_count_post').text(<%= @post.read_count + 1 %>);
-    })
-    .catch((e)=> {
-      console.log(e);
+      },
+      error:function(result){
+        alert("error" + result);
+      }
     })
 
     listPostReaded.push(<%= @post.id %>);
     localStorage.setItem('post_readed', JSON.stringify(listPostReaded));
+  }else{
+    console.log('not load')
   }
   
 })
