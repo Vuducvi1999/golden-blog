@@ -202,6 +202,6 @@ class Dashboard::PostsController < Dashboard::BaseController
 
     # Only allow a list of trusted parameters through.
     def post_params
-      params.require(:post).permit(:title,:content,:thumbnail,:short_description)
+      params.require(:post).permit(:title,:content,:thumbnail,:short_description,:categories_id)
     end
 end
