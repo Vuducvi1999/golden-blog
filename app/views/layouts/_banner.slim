@@ -32,13 +32,16 @@ header.masthead.m-0 style="background-image: url(#{banner_path})"
                 .d-flex.justify-content-between.fst-normal style="position: absolute; top: 100%; margin-top: 1rem"
                   - if post.new_created?
                     #change-status-actions
-                      = link_to approve_post_dashboard_post_path(@post), method:'post', remote: true, class:'focus-box-none btn text-success p-0 fs-5' do 
+                      = link_to approve_post_dashboard_post_path(@post), method:'post', remote: true,\
+                        class:'focus-box-none btn text-success p-0 fs-5' do 
                         i class="fas fa-check me-1"
                         | Approve
                       span.mx-3.fs-4
-                      = link_to reject_post_dashboard_post_path(@post), method:'post', remote: true, class:'focus-box-none btn text-danger p-0 fs-5' do 
+                      = link_to reject_post_dashboard_post_path(@post), method:'post', remote: true,\
+                        class:'focus-box-none btn text-danger p-0 fs-5' do 
                         i class="fas fa-times me-1"
                         | Reject
+                      div class="spinner-border d-none" role="status"
                     p#result-change-status.fs-5.m-0.fw-bold.fs-4.fst-normal
                   - elsif @post.approved? 
                     p.fs-5.text-success.m-0.fw-bold.fs-4.fst-normal

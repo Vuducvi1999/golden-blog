@@ -12,6 +12,7 @@ import Turbolinks from "turbolinks"
 import * as ActiveStorage from "@rails/activestorage"
 import "channels"
 import 'bootstrap'
+import './custom'
 import '../stylesheets/application.scss'
 import "@fortawesome/fontawesome-free/css/all"
 
