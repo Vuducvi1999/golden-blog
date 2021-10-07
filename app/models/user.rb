@@ -44,10 +44,10 @@ class User < ApplicationRecord
         user = User.create(
           username: data['name'],
           email: data['email'],
-          password: Devise.friendly_token[0,20]
+          password: Devise.friendly_token[0,20],
+          confirmed_at: DateTime.now,
         )
     end
-    user.confirmed_at = DateTime.now
     user.access_token = access_token.credentials.token
     user 
   end
