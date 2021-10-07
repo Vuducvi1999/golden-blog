@@ -29,8 +29,9 @@ class Post < ApplicationRecord
   scope :search_by, ->(post_title){
     approved
     .joins(:post_categories)
+    .distinct
     .where(["lower(title) like ?","%#{post_title.downcase}%"])
-    .order('created_at DESC') 
+    .order('created_at DESC')
   }
   scope :new_posts, ->{
     order('created_at DESC')
