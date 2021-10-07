@@ -42,7 +42,8 @@
           i[style="font-size: .7em"]
             |  (we need your current password to confirm your changes)
           br
-          = f.password_field :current_password, autocomplete: "current-password", class:'form-control'
+          = f.password_field :current_password, autocomplete: "current-password", class:'form-control',\
+            placeholder:'default is 12345678 if you socially login'
         .mb-3.row.align-items-center
           .col-3            
             = f.label :avatar, class:'btn w-100 fs-5', style:'cursor: pointer' do
