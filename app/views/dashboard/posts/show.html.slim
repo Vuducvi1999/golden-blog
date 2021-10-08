@@ -59,15 +59,7 @@
         - if @post.approved? 
           #share-facebook-btn.text-light.h5.p-2.ps-0.mb-3.d-inline-block.bg-facebook.cursor-pointer 
             i class="fab fa-facebook-f border-end border-light px-3 py-1 me-2" 
-            | Share 
-          script 
-            | document.getElementById('share-facebook-btn').onclick = function() {
-            |  FB.ui({
-            |    display: 'popup',
-            |    method: 'share',
-            |    href: "#{url_for(only_path:false)}",
-            |  }, function(response){});
-            | }
+            | Share              
           #rate-component
             = render partial:"dashboard/posts/rate_form"
           .post-comment-create 
