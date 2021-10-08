@@ -1,12 +1,13 @@
 
 - content_for :head do 
   title Edit Category  
-
-.row.py-5
-  .col-2 
-  .col-8
-    = link_to dashboard_categories_path do 
-      i.fas.fa-long-arrow-alt-left
-      |  Back
-    h1 Editing Category
-    = render 'form', category: @category
+  
+.container.no-banner-styles.min-height
+  .row.py-5
+    .col-2 
+    .col-8
+      = link_to dashboard_categories_path do 
+        i.fas.fa-long-arrow-alt-left
+        |  Back
+      h1 Editing Category
+      = render 'form', category: @category
