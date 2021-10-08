@@ -10,10 +10,7 @@ document.addEventListener('turbolinks:load',()=>{
   })
   
   $('#share-facebook-btn').click(() => {
-    FB.ui({
-      display: 'popup',
-      method: 'share',
-      href: document.URL,
-    }, function(response){});
+    window.open('https://www.facebook.com/sharer/sharer.php?u=' + document.URL,
+                'facebook-share-dialog',"width=626, height=436")
   })
 })
