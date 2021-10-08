@@ -8,12 +8,12 @@ document.addEventListener('turbolinks:load',()=>{
       clickers.toArray().forEach(item=> $(item).hide())
     })
   })
-
+  
   $('#share-facebook-btn').click(() => {
     FB.ui({
       display: 'popup',
       method: 'share',
-      href: "https://github.com/heartcombo/devise",
+      href: "#{url_for(only_path:false)}",
     }, function(response){});
   })
 })
