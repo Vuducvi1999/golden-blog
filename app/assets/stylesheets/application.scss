@@ -158,6 +158,11 @@
   }
 }
 
+ul[aria-labelledby="header-notifications"] {
+  max-height: 85vh;
+  overflow: auto;
+}
+
 .bg-lightblue {
   background: lightblue !important;
 }
