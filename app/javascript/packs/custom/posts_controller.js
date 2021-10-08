@@ -13,7 +13,7 @@ document.addEventListener('turbolinks:load',()=>{
     FB.ui({
       display: 'popup',
       method: 'share',
-      href: "#{url_for(only_path:false)}",
+      href: document.URL,
     }, function(response){});
   })
 })
