@@ -6,11 +6,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
     if find_record.present?
       flash[:alert] = 'username already exist'
-      
+      redirect_back(fallback_location: root_path)
     elsif params[:user][:current_password].blank?
       flash[:alert] = "Current password can\\'t be blank"
-      
+      redirect_back(fallback_location: root_path)
     end
+
   end
 
   protected
