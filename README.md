@@ -1,24 +1,17 @@
-# README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
 
-Things you may want to cover:
 
-* Ruby version
+## Error solving
+1. **_Sign up_ for new account**
 
-* System dependencies
+	If you get this error when you try to create account, that is because gmail prevent any access from new location (our app). Now we need to grant required access by going to http://www.google.com/accounts/DisplayUnlockCaptcha and click continue. After this step, gmail will let 10 minutes for registering new app. 
+	 
+   Try to read https://support.google.com/mail/answer/7126229  at I can't sign in to my email client.
 
-* Configuration
+![image](https://user-images.githubusercontent.com/57878618/136525846-4f86e9f6-18d8-4a2f-af56-c3eca26eee17.png)
 
-* Database creation
+2. **Haven’t got any email, try to search on spam email.**
 
-* Database initialization
+3. **Contact us page is not working.**
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+	This should be a feature but I haven’t done yet.
