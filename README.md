@@ -147,6 +147,21 @@ Beside, here is some announcement you can have:
 - Your post had been reject by admin.
 
 
+## Gems and rails components used
+
+1. Gems
+- Devise – build authorization
+- Pundit – build authentication
+- Slim – template engine
+- Delayed job – background process
+- Koala – Facebook API operations
+	
+2. Rails components
+	
+- Action mailer
+- Active storage
+- Action cable
+
 
 ## Error solving
 1. **_Sign up_ for new account**
