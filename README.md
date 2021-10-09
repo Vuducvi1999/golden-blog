@@ -175,7 +175,9 @@ Beside, here is some announcement you can have:
 	<img src="https://user-images.githubusercontent.com/57878618/136525846-4f86e9f6-18d8-4a2f-af56-c3eca26eee17.png" width="400" height="300">
 </div>
 
-2. **Haven’t got any email, try to search on spam email.**
+2. **Haven’t got any email.**
+
+	Try to search on spam email or grant access to new app using http://www.google.com/accounts/DisplayUnlockCaptcha.
 
 3. **Contact us page is not working.**
 
