@@ -1,5 +1,5 @@
 class ApplicationMailer < ActionMailer::Base
 
-  default from: ENV['EMAIL']
+  default from: 'Admin GoldenBlog'
   layout 'mailer'
 end
