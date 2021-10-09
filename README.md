@@ -147,6 +147,9 @@ Beside, here is some announcement you can have:
 - Your post had been approved by admin.
 - Your post had been reject by admin.
 
+<div align="center">
+	<img src="https://user-images.githubusercontent.com/57878618/136646010-d2a06300-fce2-484f-b324-41c65bee6b76.png" width="540" height="100">
+</div>
 
 ## Gems and rails components used
 
