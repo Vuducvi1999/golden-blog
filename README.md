@@ -1,5 +1,10 @@
 
 
+## Admin account
+email: vuducvi20@gmail.com
+password: anhvipanndan
+
+
 ## Features
 	Overview
 1. **Post ranking**
