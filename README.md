@@ -88,6 +88,8 @@ List cases to receive new notification, whenever:
 	<img src="https://user-images.githubusercontent.com/57878618/136641297-14cebba6-23ad-4dec-8030-ba891ba944c5.png" width="280" height="350">
 </div>
 
+<a id='authorization'></a>
+
 	authorization
 1. **Sign in**.
 
@@ -132,12 +134,16 @@ Admin cannot create posts like user, but admin can create categories, and manage
 
 Admin have permission to access fanpage ([https://www.facebook.com/PhucVu2005App](https://www.facebook.com/PhucVu2005App))
 
+	Email notifications
+	
+First type of email you can receive is registration and instructions, i have listed them above, at [authorization](#authorization)
 
-
-
-
-
-
+Beside, here is some announcement you can have:
+- You have created your post.
+- You have edited your post.
+- You have deleted your post.
+- Your post had been approved by admin.
+- Your post had been reject by admin.
 
 
 
