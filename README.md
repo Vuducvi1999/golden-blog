@@ -177,7 +177,9 @@ Beside, here is some announcement you can have:
 
 2. **Haven’t got any email.**
 
-	Try to search on spam email or grant access to new app using http://www.google.com/accounts/DisplayUnlockCaptcha.
+	Try to search on spam email, _but the most cases is about your email haven't grant access for new app_ (like above issue).
+	
+	Grant access to new app using http://www.google.com/accounts/DisplayUnlockCaptcha.
 
 3. **Contact us page is not working.**
 
