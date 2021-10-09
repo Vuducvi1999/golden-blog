@@ -168,3 +168,6 @@ Beside, here is some announcement you can have:
 4. **My thumnail post was gone after a night?**
 
 	Heroku platform is auto remove uploaded attachment after 24h
+	
+## References
+Template: https://startbootstrap.com/theme/clean-blog
