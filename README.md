@@ -2,6 +2,7 @@
 
 ## Admin account
 email: vuducvi20@gmail.com
+
 password: anhvipanndan
 
 
@@ -163,3 +164,7 @@ Beside, here is some announcement you can have:
 3. **Contact us page is not working.**
 
 	This should be a feature but I haven’t done yet.
+
+4. **My thumnail post was gone after a night?**
+
+	Heroku platform is auto remove uploaded attachment after 24h
